@@ -1,0 +1,620 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+```{r}
+#| include: false
+
+# Importing packaegs, functions declaring globals
+source("R/packages.R")
+source("R/utils.R")
+source("R/globals.R")
+source("R/functions.R")
+source("R/dataprep_functions.R") # Preparing specialized (non-generic) functions
+source("R/viz_functions.R")
+
+# Preparing data
+source("R/0_dataprep.R")
+
+```
+
+### Managing food expenses
+
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-mfhi_m2d2_food
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- c("mfhi_f_p1mo_wwo_yes", "mfhi_f_p1mo_wwo_no", "mfhi_f_p1mo_wwo_dkr", 
+                "mfhi_f_p1mo_wwo_ti12", "mfhi_f_p1mo_wwo_ti310", "mfhi_f_p1mo_wwo_ti10", 
+                "mfhi_f_p12mos_wwo_yes", "mfhi_f_p12mos_wwo_no", "mfhi_f_p12mos_wwo_dkr", "mfhi_f_p12mos_wwo_napp")
+
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 30, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = TRUE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.01) 
+
+labels <- list(
+  title = "Food security",
+  subtitle =  "Adults (% 18+)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = paste(SOURCE, "Notes:")
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+palette <- c("#41BBD9", "#CEE5F2", "#FF9F1C", "grey90", "#E8DDB5", "#92B6B1", "#788AA3")
+names(palette) <- c("Yes", "No", "Don't know/refused", "Not applicable", "1-2 times", "3-10 times", "More than 10 times")
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_stem",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+```{r, fig.width = 12, fig.asp = 0.4}
+#| label: fig-mfhi_m2d2_food_main
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- c("mfhi_f_secure")
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 40, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = TRUE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.1) 
+
+labels <- list(
+  title = "Able to sustain food security in past 12 months",
+  subtitle =  "MFHI Component Indicator #1",
+  yax_ti = "Adults (% 18+)",
+  xax_ti = NULL,
+  caption = paste(SOURCE, "Notes:")
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", fill = "#41BBD9", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE, color = "red")
+)
+
+palette <- c("#41BBD9", "#CEE5F2", "#FF9F1C")
+names(palette) <- c("Able to pay in past 1 month", "Not able to pay in past 1 month", "Not applicable")
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_stem",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = TRUE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+### Managing core non-food expenses
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-mfhi_m2d2_nonfood
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- names(int_data)[str_detect(names(int_data), "mfhi_nf")]
+indicators <- indicators[!str_detect(indicators, "yapp|mfhi_nf_tot_cp|mfhi_nf_secure|mfhi_nf_secure_notmiss")]
+
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 40, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = FALSE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.1) 
+
+labels <- list(
+  title = "Ability to pay non-food expenses",
+  subtitle =  "Adults (% 18+)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = paste(SOURCE, "Notes:")
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+palette <- c("#41BBD9", "#CEE5F2", "#FF9F1C")
+names(palette) <- c("Yes", "No", "Not applicable")
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_category",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+```{r, fig.width = 12, fig.asp = 0.4}
+#| label: fig-mfhi_m2d2_nonfood_main
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- c("mfhi_nf_secure")
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 40, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = TRUE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.1) 
+
+labels <- list(
+  title = "Able to pay all applicable core non-food expenses in past 1 month",
+  subtitle =  "MFHI Component Indicator #2",
+  yax_ti = "Adults (% 18+)",
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, "Notes: This indicator is constructed using four questionnaire items asking whether the respondent has been unable to pay expenses in the past month related to: (1) Housing, (2) Energy, (3) Water and (4) Transportation. The indicator is constructed only considering the expenses that are applicable to the household"), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", fill = "#41BBD9", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE, color = "red")
+)
+
+palette <- c("#41BBD9", "#CEE5F2", "#FF9F1C")
+names(palette) <- c("Able to pay in past 1 month", "Not able to pay in past 1 month", "Not applicable")
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_stem",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = TRUE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+### Managing debt
+
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-m2d2_debt
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- names(int_data)[str_detect(names(int_data), "mfhi_d_p3mo_stress")]
+indicators <- indicators[!str_detect(indicators, "notmiss")]
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 40, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = TRUE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.1) 
+
+labels <- list(
+  title = "Difficulty repaying debt",
+  subtitle =  "Adults (% 18+)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, "Notes: This figure is based on responses to the following question: Think about the money you owe (for example to a bank, MFI, SACCO, a shopkeeper, friends or family or a loan you took over the phone). In the past 3 months have you had to reduce spending on food to repay any money that you owe?"), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+palette <- c("#41BBD9", "#CEE5F2", "#FF9F1C", "#DD99BB")
+names(palette) <- c("Yes", "No", "Not applicable (Does not owe money)", "Don't know/refused to answer")
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_stem",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+
+### Coping with risk 
+
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-m2d2_debt
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- names(int_data)[str_detect(names(int_data), "mfhi_ef_30d_srcany")]
+indicators <- indicators[!str_detect(indicators, "notmiss|difsmeornot|difany")]
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 40, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = FALSE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.05) 
+
+labels <- list(
+  title = "Access to emergency funds",
+  subtitle =  "Adults (% 18+)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, "Notes: This figure is based on responses to the following question: Think about the money you owe (for example to a bank, MFI, SACCO, a shopkeeper, friends or family or a loan you took over the phone). In the past 3 months have you had to reduce spending on food to repay any money that you owe?"), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+palette <- c("#41BBD9", "#CEE5F2", "#FF9F1C",  "#DB504A", "#DD99BB")
+names(palette) <- c("Yes, not at all difficult", "Yes, somewhat difficult", "Yes, very difficult", "Not possible", "Don't know/refused to answer")
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1.0001), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_stem",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+
+```{r, fig.width = 12, fig.asp = 0.4}
+#| label: fig-mfhi_m2d2_nonfood_main
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- c("mfhi_ef_30d_srcany_p_difsmeornot")
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 40, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = TRUE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.1) 
+
+labels <- list(
+  title = "Able to raise emergency funds in 30 days without major difficulty",
+  subtitle =  "MFHI Component Indicator #4",
+  yax_ti = "Adults (% 18+)",
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, "Notes: This indicator is constructed using four questionnaire items asking whether the respondent has been unable to pay expenses in the past month related to: (1) Housing, (2) Energy, (3) Water and (4) Transportation. The indicator is constructed only considering the expenses that are applicable to the household"), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", fill = "#41BBD9", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE, color = "red")
+)
+
+scales <- list(
+  fillcolor = NULL, 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_stem",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = TRUE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-mfhi_m2d2_nonfood
+#| echo: false
+#| warning: false
+#| fig-cap: "MSEs by sector of production"
+#| cap-location: margin
+
+indicators <- names(int_data)[str_detect(names(int_data), "mfhi_nf")]
+indicators <- indicators[!str_detect(indicators, "yapp|mfhi_nf_tot_cp|mfhi_nf_secure|mfhi_nf_secure_notmiss")]
+
+groups <- GROUPS[c("resp_all", "resp_gender", "resp_age_agg4_str", "hh_urbrur")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = int_data, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_name = 80, indicator_group = 60, indicator_stem = 40, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_name = TRUE, indicator_group = TRUE, indicator_stem = FALSE, indicator_branch = FALSE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_name = NULL, indicator_group = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.1) 
+
+labels <- list(
+  title = "Ability to pay non-food expenses",
+  subtitle =  "Adults (% 18+)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = paste(SOURCE, "Notes:")
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+palette <- c("#41BBD9", "#CEE5F2", "#FF9F1C")
+names(palette) <- c("Yes", "No", "Not applicable")
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_category",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
