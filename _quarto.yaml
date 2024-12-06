@@ -1,0 +1,26 @@
+
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - fsdkenya_finhealth.qmd
+
+website:
+  title: "The State of Financial Health in Kenya: Evidence from the 2024 FinAccess survey"
+  navbar:
+    right:
+      - href: fsdkenya_finhealth.qmd
+        text: Analysis
+
+format:
+  html:
+    keep-md: true
+    toc: true
+    toc-depth: 6
+    toc-location: left
+
+include-in-header: 
+  - text: |
+      <style>figure { padding: 3em 0 3em 0; }</style
+

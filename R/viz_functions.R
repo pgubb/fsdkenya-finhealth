@@ -1,7 +1,31 @@
 ####################################
 
+
+
+prep_tile_data <- function(ests, wrap) {
+  
+  cats <- c("Lo", "Mlo1", "Mlo2", "M", "Mhi1", "Mhi2", "Hi")
+  pal <- brewer.pal(7, "RdBu")
+  names(pal) <- cats
+
+  ests %>%
+    mutate(
+      valuecat = case_when(
+        mean < 0.2 ~ "Lo", 
+        mean >= 0.2 & mean < 0.3 ~ "Mlo1", 
+        mean >= 0.3 & mean < 0.4 ~ "Mlo2",
+        mean >= 0.4 & mean < 0.5 ~ "M", 
+        mean >= 0.5 & mean < 0.6 ~ "Mhi1", 
+        mean >= 0.6 & mean < 0.8 ~ "Mhi2", 
+        mean >= 0.8 ~ "Hi"),
+      fillcolor = pal[valuecat],
+      txtcolor = ifelse(valuecat %in% c("Lo", "Hi"), "white", "black")
+    ) 
+  
+}
+
 # Generic function to prepare estimates for plotting
-prep_fig_data <- function(ests, factor_params, include_valuelabel = TRUE, valuelabel_target = "mean", valuelabel_type = "pct", valuelabel_thresh = NULL) {
+prep_fig_data <- function(ests, factor_params, include_valuelabel = TRUE, valuelabel_target = "mean", valuelabel_type = "pct", valuelabel_thresh = NULL, valuelabel_round = 0) {
   
   wrap_sizes <- factor_params[["wrap_sizes"]]
   order_vars <- factor_params[["order_vars"]]
@@ -9,21 +33,21 @@ prep_fig_data <- function(ests, factor_params, include_valuelabel = TRUE, valuel
   
   ests %>%
     mutate(
-      indicator_group = style_factors(indicator_group, wrap_sizes[["indicator_group"]], reverse_order[["indicator_group"]], order_vars[["indicator_group"]]), 
+      indicator_category = style_factors(indicator_category, wrap_sizes[["indicator_category"]], reverse_order[["indicator_category"]], order_vars[["indicator_category"]]), 
       group_name = style_factors(group_name, wrap_sizes[["group_name"]], reverse_order[["group_name"]], order_vars[["group_name"]]), 
     ) %>% 
-    group_by(indicator_group) %>% 
+    group_by(indicator_category) %>% 
     mutate(
-      indicator_name = style_factors(indicator_name, wrap_sizes[["indicator_name"]], reverse_order[["indicator_name"]], order_vars[["indicator_name"]])
+      indicator_stem = style_factors(indicator_stem, wrap_sizes[["indicator_stem"]], reverse_order[["indicator_stem"]], order_vars[["indicator_stem"]]), 
     ) %>%
     group_by(indicator_stem) %>% 
     mutate(
-      indicator_stem = style_factors(indicator_stem, wrap_sizes[["indicator_stem"]], reverse_order[["indicator_stem"]], order_vars[["indicator_stem"]]), 
       indicator_branch = style_factors(indicator_branch, wrap_sizes[["indicator_branch"]], reverse_order[["indicator_branch"]], order_vars[["indicator_branch"]]), 
     ) %>%
     group_by(group_name) %>% 
     mutate(
-      group_cat_val = style_factors(group_cat_val, wrap_sizes[["group_cat_val"]], reverse_order[["group_cat_val"]], order_vars[["group_cat_val"]])
+      group_cat_val = style_factors(group_cat_val, wrap_sizes[["group_cat_val"]], reverse_order[["group_cat_val"]], order_vars[["group_cat_val"]]), 
+      group_cat_val = factor(group_cat_val, levels = str_wrap(GROUPCAT_LEVELS, wrap_sizes[["group_cat_val"]]), ordered = TRUE)
     ) %>% 
     ungroup() %>%
     filter(!is.na(group_cat_val)) %>% 
@@ -32,12 +56,12 @@ prep_fig_data <- function(ests, factor_params, include_valuelabel = TRUE, valuel
   if (include_valuelabel) { 
     value = sym(valuelabel_target)
     if (valuelabel_type == "pct") {
-      fig_data %>% mutate(valuelabel = paste0(pctclean(!!value, 0), "%")) -> fig_data
+      fig_data %>% mutate(valuelabel = paste0(pctclean(!!value, valuelabel_round), "%")) -> fig_data
       if (!is.null(valuelabel_thresh)) { 
         fig_data %>% mutate(valuelabel = ifelse(!!value < valuelabel_thresh, NA, valuelabel)) -> fig_data
       }
     } else { 
-      fig_data %>% mutate(valuelabel = paste0(numclean(!!value, 1))) -> fig_data
+      fig_data %>% mutate(valuelabel = paste0(numclean(!!value, valuelabel_round))) -> fig_data
       if (!is.null(valuelabel_thresh)) { 
         fig_data %>% mutate(valuelabel = ifelse(!!value < valuelabel_thresh, NA, valuelabel)) -> fig_data
       }
@@ -326,7 +350,7 @@ fig_bar <- function(base_plot, data, params) {
       ndg_y = 0
     }
     p <- p +
-      geom_text(aes(y = barlabelpos, label = barlabel), hjust = 0, nudge_y = ndg_y, fontface = "bold", size = 4.25) 
+      geom_text(aes(y = barlabelpos, label = barlabel), hjust = 0, nudge_y = ndg_y, fontface = "bold", size = 3.75) 
   }
   
   return(p)

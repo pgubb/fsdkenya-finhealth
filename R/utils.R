@@ -104,7 +104,7 @@ reorder_factor <- function(x, order_var = NULL) {
     order_var <- sym(order_var)
     fct_reorder(x, !!order_var)
   } else { 
-    x
+    fct_inorder(x)
   }
   
 }
