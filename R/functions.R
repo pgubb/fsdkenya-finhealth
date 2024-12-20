@@ -1,4 +1,58 @@
 
+# Functions to retrieve and prepare data
+
+get_data <- function(year) { 
+  
+  path <- "data"
+  
+  if (year == 2024) {
+    file <- glue("{path}/FA_{year}_Public.dta")
+    data <- read_dta(file) %>% filter(A18 >= 18) %>% select(-starts_with("mfhi"))
+  }
+  if (year == 2021) {
+    file <- glue("{path}/FA_{year}_Public.sav")
+    data <- read_sav(file) %>% filter(A19 >= 18) %>% select(-starts_with("mfhi"))
+  }
+  if (year == 2019) {
+    file <- glue("{path}/FA_{year}_Public.sav")
+    data <- read_sav(file) %>% filter(a13 >= 18)
+  }
+  if (year == 2016) {
+    file <- glue("{path}/FA_{year}_Int.csv")
+    data <- read_csv(file) %>% select(-starts_with("year"))
+  }
+  
+  return(data)
+  
+}
+
+get_and_prep <- function(year) { 
+  
+  years <- c("2016" = 2015.6, "2019" = 2018.9, "2021" =  2021.6, "2024" = 2024.9)
+  
+  data <- get_data(year) %>% 
+    mutate(
+      year = year, 
+      year_c = years[as.character(year)],
+      year_f = factor(year, levels = c("2016", "2019", "2021", "2024"), ordered = TRUE)
+      )
+  
+  if (year == 2024) { 
+    data <- prep_2024(data) 
+    }
+  else if (year == 2021) { 
+    data <- prep_2021(data)
+  }
+  else if (year == 2019) { 
+    data <- prep_2019(data)
+  }
+  else if (year == 2016) { 
+    data <- prep_2016(data)
+  }
+  
+  return(data)
+  
+}
 
 
 # Function to compute summary statistics -------------------
@@ -55,7 +109,7 @@ compute_summary_mainlevel_2g <- function(inidcators, groups_l1, groups_l2, data,
            indicator_group = paste(indicator_domain, indicator_category, sep = ": "))
   
   if (!is.null(keep)) {
-    return(results %>% select(indicator, indicator_name, indicator_group, indicator_domain, indicator_caregory, indicator_stem, indicator_branch, group, group_name, group_cat_val, nobs, starts_with(keep)))
+    return(results %>% select(indicator, indicator_name, indicator_group, indicator_domain, indicator_category, indicator_stem, indicator_branch, group, group_name, group_cat_val, nobs, starts_with(keep)))
   } else {
     return(results)
   }
@@ -104,7 +158,7 @@ capture_terms_clse <- function(depvar, maineffects, confounds, data) {
     flag <- 0
   }
   
-  lm_fit <- feols(f, cluster = ~ Initial_block_ID, data = data)
+  lm_fit <- feols(f, cluster = ~ sample_psu, data = data)
   rsq <- glance(lm_fit)$adj.r.squared
   tidy(lm_fit) %>%
     mutate(adj_rsquared = rsq, depvar = depvar, confounds_flag = flag) %>%
@@ -136,13 +190,12 @@ prep_fig <- function(terms, depvar_labels, effect_labels, depvarlog = FALSE, mod
   
 }
 
-model_and_prepfig <-function(depvar, maineffect, confounds, data, depvar_labels, effect_labels, selected_country = NULL, depvarlog = FALSE, model_type_override = NULL) {
-  if (!is.null(selected_country)) { 
-    data <- data %>% filter(country == selected_country)
-  }
+model_and_prepfig <-function(depvar, maineffect, confounds, data, depvar_labels, effect_labels, depvarlog = FALSE, model_type_override = NULL) {
+
   terms <- capture_terms_clse(depvar, maineffect, confounds, data)
-  fig <- prep_fig(terms, depvar_labels, effect_labels, depvarlog, model_type_override) %>% mutate(country = selected_country)
+  fig <- prep_fig(terms, depvar_labels, effect_labels, depvarlog, model_type_override) 
   return(fig)
+  
 }
 
 

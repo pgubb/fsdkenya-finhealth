@@ -104,7 +104,7 @@ prep_reg_factors <- function(ests, factor_params, include_valuelabel = TRUE) {
 prep_reg_data <- function(data, depvarlog = FALSE, b_round = 1) {
   
   data %>%
-    group_by(country, depvar, model_type) %>%
+    group_by(depvar, model_type) %>%
     mutate(
       
       b = max(ifelse(term == "(Intercept)", fig_data, NA), na.rm = TRUE),
@@ -158,9 +158,8 @@ prep_reg_data <- function(data, depvarlog = FALSE, b_round = 1) {
       
       barlabel =  numclean(fig_data, n = 2),
       annotation = paste("R-sqrd:", round(adj_rsquared, 3), sep = " "),
-      annotation = ifelse(term == "(Intercept)", NA, annotation), 
+      annotation = ifelse(term == "(Intercept)", NA, annotation)
       
-      city = CITIES[country]
     )
   
 }
@@ -513,6 +512,15 @@ fig_flex <- function(data, vars, facets, params, scales, legend, labels, coord_f
         nrow = legend[["nrows"]], 
         reverse = legend[["reverse"]])
     ) 
+    if (params[["geom_type"]] == "point") { 
+      p <-  p + guides(
+        color = guide_legend(
+          title = legend[["title"]], 
+          direction = legend[["direction"]], 
+          nrow = legend[["nrows"]], 
+          reverse = legend[["reverse"]])
+      )  
+      }
   } else { 
     p <- p + guides(fill = "none")
   }
@@ -551,6 +559,7 @@ fig_flex <- function(data, vars, facets, params, scales, legend, labels, coord_f
   if (params[["geom_type"]] %in% c("bar", "point")) {
     
     if (scales[["yaxis"]][["type"]] == "number") {
+      if (params[["geom_type"]] == "bar") {
       if (params[["bars"]][["labeltotal"]]) {
         if (params[["bars"]][["labeltotal_extendmax"]]) {
           maxy <- max(data[["barlabelpos"]], na.rm = TRUE)
@@ -558,6 +567,7 @@ fig_flex <- function(data, vars, facets, params, scales, legend, labels, coord_f
         } else { 
           p <- p +  scale_y_continuous(position = scale_y_pos, labels = scales::label_comma(), expand = scales[["yaxis"]][["expand"]] )
         }
+      }
       } else { 
         p <- p +  scale_y_continuous(position = scale_y_pos, labels = scales::label_comma(), expand = scales[["yaxis"]][["expand"]] )
       }

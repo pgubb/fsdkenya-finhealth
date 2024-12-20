@@ -7,7 +7,7 @@ project:
     - fsdkenya_finhealth.qmd
 
 website:
-  title: "The State of Financial Health in Kenya: Evidence from the 2024 FinAccess survey"
+  title: "The State of Financial Health in Kenya: Evidence from FinAccess"
   navbar:
     right:
       - href: fsdkenya_finhealth.qmd

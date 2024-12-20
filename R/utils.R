@@ -4,6 +4,7 @@
 # Helper functions -------------------------
 # ++++++++++++++++++++++++++++++++++++++++++++
 
+
 # Creates a codebook mapping variable names to labels
 gen_varbook_vec <- function(data) {
   # Creating a named vector with all variable names and labels
@@ -101,10 +102,9 @@ reverse_factor <- function(x, reverse_order = NULL) {
 reorder_factor <- function(x, order_var = NULL) { 
   
   if (!is.null(order_var)) { 
-    order_var <- sym(order_var)
-    fct_reorder(x, !!order_var)
+    factor(x, order_var, ordered = TRUE)
   } else { 
-    fct_inorder(x)
+    x
   }
   
 }
@@ -120,12 +120,29 @@ get_adj_factors <- function(x, country, sector) {
 style_factors <- function(x, size, reverse_order, order_var) { 
   
   x <- wrap_factor(x, size)
-  x <- reverse_factor(x, reverse_order)   
   x <- reorder_factor(x, order_var)
+  x <- reverse_factor(x, reverse_order)   
   
   return(x)
   
 }
+
+
+scale_values <- function(x){
+  
+  min = min(x, na.rm = TRUE)
+  max = max(x, na.rm = TRUE)
+  
+  (x-min)/(max-min)
+  
+}
+
+scale_values_2 <- function(x, min, max){
+  
+  (x-min)/(max-min)
+  
+}
+
 
 # ++++++++++++++++++++++++++++
 # flattenCorrMatrix

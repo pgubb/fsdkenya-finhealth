@@ -1,5 +1,69 @@
+---
+title: "Analysis"
+lightbox: true
+---
 
 
+
+
+
+
+# Contextual factors 
+
+## Main income source
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Trends in livelihood](fsdkenya_finhealth_files/figure-html/fig-trends_main_income-1.png){#fig-trends_main_income width=1152}
+:::
+:::
+
+
+## Personal monthly income levels 
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Personal monthly income](fsdkenya_finhealth_files/figure-html/fig-trends_income_level-1.png){#fig-trends_income_level width=1152}
+:::
+:::
+
+
+
+# Trends in the financial health index
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Consistent indicators](fsdkenya_finhealth_files/figure-html/fig-mfhi_trends-1.png){#fig-mfhi_trends width=1152}
+:::
+:::
+
+
+## Subjective evaluations of changes to financial status 
+
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Subjective evaluations of financial status](fsdkenya_finhealth_files/figure-html/fig-finstatus-trends-1.png){#fig-finstatus-trends width=1152}
+:::
+:::
+
+
+## Goals
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Values](fsdkenya_finhealth_files/figure-html/fig-trends_goals-1.png){#fig-trends_goals width=1152}
+:::
+:::
+
+
+
+# The new multi-dimensional financial health index 
 
 ## Managing day-to-day
 
@@ -29,6 +93,23 @@
 ![Managing core non-food expenses](fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_nonfood-1.png){#fig-mfhi_m2d2_nonfood width=1152}
 :::
 :::
+
+
+### Managing school fees
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Managing school fees](fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_schoolfees-1.png){#fig-mfhi_m2d2_schoolfees width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Managing health care expenses](fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_healthexp-1.png){#fig-mfhi_m2d2_healthexp width=1152}
+:::
+:::
+
 
 
 ### MFHI Component indicator #2
@@ -70,6 +151,18 @@
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![Access to emergency funds](fsdkenya_finhealth_files/figure-html/fig-risk_ef-1.png){#fig-risk_ef width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Access to emergency funds, by source](fsdkenya_finhealth_files/figure-html/fig-risk_ef_bysource-1.png){#fig-risk_ef_bysource width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Access to emergency funds](fsdkenya_finhealth_files/figure-html/fig-risk_ef_3d-1.png){#fig-risk_ef_3d width=1152}
 :::
 :::
 
@@ -157,9 +250,24 @@
 :::
 
 
-### Correlation between financial health perceptions and financial health outcomes 
+# Drivers of financial lhealth
+
+### Financial health and income
 
 
 ::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Correlation between financial health outcomes and pereptions](fsdkenya_finhealth_files/figure-html/fig-mfhi_pfh_corr-1.png){#fig-mfhi_pfh_corr width=1152}
+:::
+:::
 
+
+### Predictors of financial health
+
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Predictors of digital technology adoption](fsdkenya_finhealth_files/figure-html/fig-reg_digtech_drivers-1.png){#fig-reg_digtech_drivers width=1152}
+:::
 :::

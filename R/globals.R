@@ -6,7 +6,8 @@
 
 select <- dplyr::select
 
-SOURCE <- c("Source: 2024 FinAccess survey")
+SOURCE <- "Source: Author's own calculations using the 2024 FinAccess survey."
+SOURCE_TS <- "Source: Author's own calculations using the 2016, 2019, 2021 and 2024 FinAccess survey."
 CAP_WRAP <- 145 
 TI_WRAP <- 70
 
@@ -30,6 +31,7 @@ INDICATORS <- c(
   "mfhi_f_p1mo_wwo_napp" = "Financial health outcomes/ Managing day-to-day: Food security: Number of times went without food in past 1 month due to lack of money: Not applicable", 
   
   "mfhi_f_secure" = "Financial health outcomes/ Managing day-to-day: Food security: Never went without food due to lack of money in past 12 months", 
+  "mfhi_1_3" = "Financial health outcomes/ Managing day-to-day: Food security: Never went without food due to lack of money in past 12 months", 
   
   "mfhi_nf_p1mo_cp_hou" = "Finanical health outcomes/ Managing day-to-day: Housing expenses: Able to pay in past 1 month: Yes", 
   "mfhi_nf_p1mo_np_hou" = "Finanical health outcomes/ Managing day-to-day: Housing expenses: Able to pay in past 1 month: No", 
@@ -47,10 +49,26 @@ INDICATORS <- c(
   "mfhi_nf_p1mo_np_trn" = "Financial health outcomes/ Managing day-to-day: Transportation expenses: Able to pay in past 1 month: No", 
   "mfhi_nf_p1mo_napp_trn" = "Financial health outcomes/ Managing day-to-day: Transportation expenses: Able to pay in past 1 month: Not applicable", 
   
+  "mfhi_nf_p12mos_cp_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: Yes", 
+  "mfhi_nf_p12mos_np_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: No", 
+  "mfhi_nf_p12mos_napp_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: Not applicable",
+  
   "mfhi_nf_tot_app" = "Financial health outcomes/ Managing day-to-day: Core non-food expenses: Total applicable (N)", 
   "mfhi_nf_tot_cp" = "Financial health outcomes/ Managing day-to-day: Core non-food expenses: Total expenses that respondent can pay (N)", 
   
   "mfhi_nf_secure" = "Financial health outcomes/ Managing day-to-day: Core non-food expenses: Can cover all applicable core non-food expenses in past 1 month", 
+  
+  "mfhi_sf_p12mos_sh_often" = "Financial health outcomes/ Managing day-to-day: School fees: Child sent home from school in past 12 months due to unpaid school fees: Often", 
+  "mfhi_sf_p12mos_sh_some" = "Financial health outcomes/ Managing day-to-day: School fees: Child sent home from school in past 12 months due to unpaid school fees: Sometimes", 
+  "mfhi_sf_p12mos_sh_nvr" = "Financial health outcomes/ Managing day-to-day: School fees: Child sent home from school in past 12 months due to unpaid school fees: Never", 
+  "mfhi_sf_p12mos_sh_napp" = "Financial health outcomes/ Managing day-to-day: School fees: Child sent home from school in past 12 months due to unpaid school fees: Not applicable", 
+  "mfhi_sf_p12mos_sh_dkr" = "Financial health outcomes/ Managing day-to-day: School fees: Child sent home from school in past 12 months due to unpaid school fees: Don't know/refused", 
+  
+  "mfhi_mc_p12mos_wwo_often" = "Financial health outcomes/Coping with risk: Medical expenses: Gone without medicine or medical treatment: Often", 
+  "mfhi_mc_p12mos_wwo_some" = "Financial health outcomes/Coping with risk: Medical expenses: Gone without medicine or medical treatment: Sometimes", 
+  "mfhi_mc_p12mos_wwo_nvr" = "Financial health outcomes/Coping with risk: Medical expenses: Gone without medicine or medical treatment: Never", 
+  "mfhi_mc_p12mos_wwo_napp" = "Financial health outcomes/Coping with risk: Medical expenses: Gone without medicine or medical treatment: Not applicable", 
+  "mfhi_mc_p12mos_wwo_dkr" = "Financial health outcomes/Coping with risk: Medical expenses: Gone without medicine or medical treatment: Don't know/refused", 
   
   "mfhi_d_p3mo_stress_yes" = "Financial health outcomes/ Managing day-to-day: Debt: Reduced food expenses to repay debt in past 3 months: Yes", 
   "mfhi_d_p3mo_stress_no" = "Financial health outcomes/ Managing day-to-day: Debt: Reduced food expenses to repay debt in past 3 months: No", 
@@ -68,6 +86,21 @@ INDICATORS <- c(
   "mfhi_ef_30d_srcany_dkr" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Don't know/refused", 
 
   "mfhi_ef_secure" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days without major difficulty", 
+  "mfhi_2_2" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1 month of typical expenditure in 3 days: Yes", 
+  "mfhi_2_3" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Keeps money aside for emergencies: Yes", 
+  
+  "mfhi_ef_30d_srcborr_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Borrowing",
+  "mfhi_ef_30d_srcsav_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Savings",
+  "mfhi_ef_30d_srcasst_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Selling assets",
+  "mfhi_ef_30d_srcff_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Assistance from social network",
+  "mfhi_ef_30d_srccut_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Cutting back expenses",
+  "mfhi_ef_30d_srcwrk_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Working more/additional jobs",
+  "mfhi_ef_30d_srcinc_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: From regular income",
+  "mfhi_ef_30d_srcoth_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Other",
+  
+  "mfhi_ef_3d_srcany_dkr" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: Don't know/refused", 
+  "mfhi_ef_3d_srcany_np"  = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: No", 
+  "mfhi_ef_3d_srcany_p" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: Yes", 
   
   "mfhi_i_pc_p12mos_lndhou" = "Financial health outcomes/ Capital investments: Physical assets: Purchased land, house or materials to improve house in past 12 months: Yes", 
   "mfhi_i_pc_p12mos_nonfarmliv" = "Financial health outcomes/ Capital investments: Physical assets: Purchased machinery, vehicles, equipment, tools for business or self-employment activity in past 12 months: Yes", 
@@ -83,9 +116,13 @@ INDICATORS <- c(
   
   "mfhi_i_p12mos_any" = "Financial health outcomes/ Capital investments: Capital investments: Purchased- or contributed to- assets that support production, productivity or long-term financial security", 
   
+  "mfhi_3_2" = "Financial health outcomes/ Capital investment: Investing for the future: Uses savings or credit to invest in long-term assets: Yes", 
+  
   "mfhi_score_md2d" = "Financial health outcomes/ Summary: MFHI (discrete): Managing day to day: Score (mean)", 
   "mfhi_score_risk" = "Financial health outcomes/ Summary: MFHI (discrete): Coping with risk: Score (mean)", 
   "mfhi_score_inv" = "Financial health outcomes/ Summary: MFHI (discrete): Investing in capital: Score (mean)", 
+  
+  "mfhi_score_overall" = "Financial health outcomes/ Summary: MFHI (discrete): Overall: Score (mean)", 
   
   "mfhi_score_md2d_c" = "Financial health outcomes/ Summary: MFHI (gradated): Managing day to day: Score (mean)", 
   "mfhi_score_risk_c" = "Financial health outcomes/ Summary: MFHI (gradated): Coping with risk: Score (mean)", 
@@ -98,6 +135,13 @@ INDICATORS <- c(
   "mfhi_score_hi_c" = "Financial health outcomes/ Summary: MFHI (gradated): Score category: High (0.6-1)", 
   "mfhi_score_med_c" = "Financial health outcomes/ Summary: MFHI (gradated): Score category: Medium (0.3-0.6)", 
   "mfhi_score_low_c" = "Financial health outcomes/ Summary: MFHI (gradated): Score category: Low (0-0.3)", 
+  
+  "mfhi_tc_0" = "Time consistent MFHI indicators: Total true indicators (of 5): None",                         
+  "mfhi_tc_any1" = "Time consistent MFHI indicators: Total true indicators (of 5): Any one",                          
+  "mfhi_tc_any2" = "Time consistent MFHI indicators: Total true indicators (of 5): Any two",                       
+  "mfhi_tc_any3" = "Time consistent MFHI indicators: Total true indicators (of 5): Any three",                       
+  "mfhi_tc_any4" = "Time consistent MFHI indicators: Total true indicators (of 5): Any four",                        
+  "mfhi_tc_all5"= "Time consistent MFHI indicators: Total true indicators (of 5): All five", 
   
   "pfh_dailyneeds_vw" = "Financial health perceptions: Managing day to day: Worry about paying daily expenses: Very worried", 
   "pfh_dailyneeds_sw" = "Financial health perceptions: Managing day to day: Worry about paying daily expenses: Somewhat worried", 
@@ -118,16 +162,54 @@ INDICATORS <- c(
   "pfh_finstatus_imp" = "Financial health perceptions: Change assessment: Change in financial status since last year: Improved", 
   "pfh_finstatus_sam" = "Financial health perceptions: Change assessment: Change in financial status since last year: Remained the same",  
   "pfh_finstatus_wor" = "Financial health perceptions: Change assessment: Change in financial status since last year: Worsened", 
-  "pfh_finstatus_dkr" = "Financial health perceptions: Change assessment: Change in financial status since last year: Don't know/refused"
+  "pfh_finstatus_dkr" = "Financial health perceptions: Change assessment: Change in financial status since last year: Don't know/refused",
+  
+  "fin_status_impr" = "Financial health perceptions: Change assessment: Change in financial status since last year: Improved", 
+  "fin_status_worse" = "Financial health perceptions: Change assessment: Change in financial status since last year: Worsened", 
+  
+  "hh_urbrur_Urban" = "Household characteristics: Location: Urban", 
+  "hh_size_all_c" = "Household characteristics: Size: Household size (mean centered)", 
+  "resp_gender_group_wmn" = "Respondent characteristics: Demographics: Women", 
+  "resp_age_yrs_c_5" = "Respondent characteristics: Demographics: Respondent age (mean centered, +5 years)", 
+  "resp_edu_group2_pri" = "Respondent characteristics: Educational attainment: Primary-level", 
+  "resp_edu_group2_sec" = "Respondent characteristics: Educational attainment: Secondary-level", 
+  "resp_edu_group2_trt" = "Respondent characteristics: Educational attainment: Tertiary-level", 
+
+  "resp_live_group_empl" = "Respondent characteristics: Economic: Primary income source: Employment", 
+  "resp_live_group_owbs" = "Respondent characteristics: Economic: Primary income source: Own business", 
+  "resp_live_group_farm" = "Respondent characteristics: Economic: Primary income source: Farming",  
+  "resp_live_group_cwrk" = "Respondent characteristics: Economic: Primary income source: Casual work", 
+  "resp_live_group_trns" = "Respondent characteristics: Economic: Primary income source: Transfers", 
+  "resp_live_group_othr" = "Respondent characteristics: Economic: Primary income source: Other",
+  
+  "resp_income" = "Respondent characteristics: Economic: Personal monthly income (KSh)", 
+  "resp_income_c_1000" = "Respondent characteristics: Economic: Personal monthly income [mean centered, +KSh 1,000]", 
+  "resp_income_c_5000" = "Respondent characteristics: Economic: Personal monthly income [mean centered, +KSh 5,000]", 
+  "resp_income_var" = "Respondent characteristics: Economic: Yearly variation in personal monthly income (%)",
+  "resp_live_trnsf_in" = "Respondent characteristics: Economic: Income source: Government cash transfer program or pension", 
+  "fb_financial_plan" = "Respondent characteristics: Financial behaviors: Has a spending plan", 
+  "mfhi_1_2" = "Respondent characteristics: Financial behaviors: Has a spending plan", 
+  "fb_gambling" = "Respondent characteristics: Financial behaviors: Has gambled in the past 12 months", 
+  "fb_emergency_savings" = "Respondent characteristics: Financial behaviors: Currently keeps money aside for emergencies", 
+  "fl_literacy_all" = "Respondent characteristics: Financial literacy: Understand interest, inflation and can understand SMS", 
+  "sc_ff_finhelp" = "Respondent characteristics: Social capital: Have people who can provide financial support if needed", 
+  
+  "goals_group_educ" = "Respondent characteristics: Personal values: Most important goal: Educating yourself or your family", 
+  "goals_group_food" = "Respondent characteristics: Personal values: Most important goal: Putting food on the table",   
+  "goals_group_live" = "Respondent characteristics: Personal values: Most important goal: Getting or advancing job, career, livelihood", 
+  "goals_group_other" = "Respondent characteristics: Personal values: Most important goal: Other"
   
 )
 
 GROUPS <- c("resp_all" = "National", 
-            "resp_gender" = "Gender", 
-            "resp_age_agg3_str" = "Age (categories)", 
+            "resp_gender_fct" = "Gender", 
+            "resp_age_group2_fct" = "Age (categories)", 
             "hh_urbrur" = "Household location", 
-            "resp_income_agg3_str" = "Income group")
+            "resp_edu_group3_fct" = "Educational attainment",
+            "resp_income_agg3_str" = "Income group", 
+            "resp_live_group_fct" = "Livelihood", 
+            "resp_age_group_fct" = "Age group")
 
-GROUPCAT_LEVELS <- c("All adults", "Men", "Women", "< 25 yrs", "25-64 yrs", "65+ yrs", "Urban", "Rural", "Poorest 40%", "Middle 40%","Richest 20%")
-
-
+GROUPCAT_LEVELS <- c("All adults", "Men", "Women", "< 25 yrs", "25-64 yrs", "65+ yrs", "Urban", "Rural", "Poorest 40%", "Middle 40%","Richest 20%", 
+                     "Employed", "Own business", "Agriculture", "Casual", "Transfers", "Other", "Less then complete primary", "Some or complete secondary", "Some or complete tertiary", 
+                     "[18-25)", "[25-45)", "[45-65)", "[25-65)", "[65+]")

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>The State of Financial Health in Kenya: Evidence from the 2024 FinAccess survey</title>
+<title>The State of Financial Health in Kenya: Evidence from FinAccess - Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -39,6 +39,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -76,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">The State of Financial Health in Kenya: Evidence from the 2024 FinAccess survey</span>
+    <span class="navbar-title">The State of Financial Health in Kenya: Evidence from FinAccess</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -104,11 +107,24 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#managing-day-to-day" id="toc-managing-day-to-day" class="nav-link active" data-scroll-target="#managing-day-to-day">Managing day-to-day</a>
+  <li><a href="#contextual-factors" id="toc-contextual-factors" class="nav-link active" data-scroll-target="#contextual-factors">Contextual factors</a>
+  <ul>
+  <li><a href="#main-income-source" id="toc-main-income-source" class="nav-link" data-scroll-target="#main-income-source">Main income source</a></li>
+  <li><a href="#personal-monthly-income-levels" id="toc-personal-monthly-income-levels" class="nav-link" data-scroll-target="#personal-monthly-income-levels">Personal monthly income levels</a></li>
+  </ul></li>
+  <li><a href="#trends-in-the-financial-health-index" id="toc-trends-in-the-financial-health-index" class="nav-link" data-scroll-target="#trends-in-the-financial-health-index">Trends in the financial health index</a>
+  <ul>
+  <li><a href="#subjective-evaluations-of-changes-to-financial-status" id="toc-subjective-evaluations-of-changes-to-financial-status" class="nav-link" data-scroll-target="#subjective-evaluations-of-changes-to-financial-status">Subjective evaluations of changes to financial status</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link" data-scroll-target="#goals">Goals</a></li>
+  </ul></li>
+  <li><a href="#the-new-multi-dimensional-financial-health-index" id="toc-the-new-multi-dimensional-financial-health-index" class="nav-link" data-scroll-target="#the-new-multi-dimensional-financial-health-index">The new multi-dimensional financial health index</a>
+  <ul>
+  <li><a href="#managing-day-to-day" id="toc-managing-day-to-day" class="nav-link" data-scroll-target="#managing-day-to-day">Managing day-to-day</a>
   <ul>
   <li><a href="#managing-food-expenses" id="toc-managing-food-expenses" class="nav-link" data-scroll-target="#managing-food-expenses">Managing food expenses</a></li>
   <li><a href="#mfhi-component-indicator-1" id="toc-mfhi-component-indicator-1" class="nav-link" data-scroll-target="#mfhi-component-indicator-1">MFHI Component indicator #1</a></li>
   <li><a href="#managing-core-non-food-expenses" id="toc-managing-core-non-food-expenses" class="nav-link" data-scroll-target="#managing-core-non-food-expenses">Managing core non-food expenses</a></li>
+  <li><a href="#managing-school-fees" id="toc-managing-school-fees" class="nav-link" data-scroll-target="#managing-school-fees">Managing school fees</a></li>
   <li><a href="#mfhi-component-indicator-2" id="toc-mfhi-component-indicator-2" class="nav-link" data-scroll-target="#mfhi-component-indicator-2">MFHI Component indicator #2</a></li>
   <li><a href="#managing-debt" id="toc-managing-debt" class="nav-link" data-scroll-target="#managing-debt">Managing debt</a></li>
   <li><a href="#mfhi-component-indicator-3" id="toc-mfhi-component-indicator-3" class="nav-link" data-scroll-target="#mfhi-component-indicator-3">MFHI Component indicator #3</a></li>
@@ -132,7 +148,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#perceptions-of-financial-health" id="toc-perceptions-of-financial-health" class="nav-link" data-scroll-target="#perceptions-of-financial-health">Perceptions of financial health</a>
   <ul>
   <li><a href="#worry-confidence-and-assessments-of-change-in-financial-status" id="toc-worry-confidence-and-assessments-of-change-in-financial-status" class="nav-link" data-scroll-target="#worry-confidence-and-assessments-of-change-in-financial-status">Worry, confidence and assessments of change in financial status</a></li>
-  <li><a href="#correlation-between-financial-health-perceptions-and-financial-health-outcomes" id="toc-correlation-between-financial-health-perceptions-and-financial-health-outcomes" class="nav-link" data-scroll-target="#correlation-between-financial-health-perceptions-and-financial-health-outcomes">Correlation between financial health perceptions and financial health outcomes</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#drivers-of-financial-lhealth" id="toc-drivers-of-financial-lhealth" class="nav-link" data-scroll-target="#drivers-of-financial-lhealth">Drivers of financial lhealth</a>
+  <ul>
+  <li><a href="#financial-health-and-income" id="toc-financial-health-and-income" class="nav-link" data-scroll-target="#financial-health-and-income">Financial health and income</a></li>
+  <li><a href="#predictors-of-financial-health" id="toc-predictors-of-financial-health" class="nav-link" data-scroll-target="#predictors-of-financial-health">Predictors of financial health</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -144,9 +165,115 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Analysis</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="contextual-factors" class="level1 page-columns page-full">
+<h1>Contextual factors</h1>
+<section id="main-income-source" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="main-income-source">Main income source</h2>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-trends_main_income" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-trends_main_income-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-trends_main_income-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="fsdkenya_finhealth_files/figure-html/fig-trends_main_income-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-trends_main_income-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Trends in livelihood
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="personal-monthly-income-levels" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="personal-monthly-income-levels">Personal monthly income levels</h2>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-trends_income_level" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-trends_income_level-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-trends_income_level-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="fsdkenya_finhealth_files/figure-html/fig-trends_income_level-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-trends_income_level-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Personal monthly income
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="trends-in-the-financial-health-index" class="level1 page-columns page-full">
+<h1>Trends in the financial health index</h1>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-mfhi_trends" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-mfhi_trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_trends-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_trends-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Consistent indicators
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="subjective-evaluations-of-changes-to-financial-status" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="subjective-evaluations-of-changes-to-financial-status">Subjective evaluations of changes to financial status</h2>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-finstatus-trends" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-finstatus-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-finstatus-trends-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="fsdkenya_finhealth_files/figure-html/fig-finstatus-trends-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-finstatus-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Subjective evaluations of financial status
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="goals" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-trends_goals" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-trends_goals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-trends_goals-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-5" data-gallery="quarto-lightbox-gallery-5"><img src="fsdkenya_finhealth_files/figure-html/fig-trends_goals-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-trends_goals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Values
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="the-new-multi-dimensional-financial-health-index" class="level1 page-columns page-full">
+<h1>The new multi-dimensional financial health index</h1>
 <section id="managing-day-to-day" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="managing-day-to-day">Managing day-to-day</h2>
 <section id="managing-food-expenses" class="level3 page-columns page-full">
@@ -156,10 +283,10 @@ ul.task-list li input[type="checkbox"] {
 <div id="fig-mfhi_m2d2_food" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_m2d2_food-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_food-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_food-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-6" data-gallery="quarto-lightbox-gallery-6"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_food-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_m2d2_food-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Managing food expenses
+Figure&nbsp;6: Managing food expenses
 </figcaption>
 </figure>
 </div>
@@ -173,10 +300,10 @@ Figure&nbsp;1: Managing food expenses
 <div id="fig-mfhi_m2d2_food_main" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_m2d2_food_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_food_main-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_food_main-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-7" data-gallery="quarto-lightbox-gallery-7"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_food_main-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_m2d2_food_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: MFHI #1: Managing food expenses
+Figure&nbsp;7: MFHI #1: Managing food expenses
 </figcaption>
 </figure>
 </div>
@@ -190,10 +317,41 @@ Figure&nbsp;2: MFHI #1: Managing food expenses
 <div id="fig-mfhi_m2d2_nonfood" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_m2d2_nonfood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_nonfood-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_nonfood-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-8" data-gallery="quarto-lightbox-gallery-8"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_nonfood-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_m2d2_nonfood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Managing core non-food expenses
+Figure&nbsp;8: Managing core non-food expenses
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="managing-school-fees" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="managing-school-fees">Managing school fees</h3>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-mfhi_m2d2_schoolfees" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-mfhi_m2d2_schoolfees-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_schoolfees-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-9" data-gallery="quarto-lightbox-gallery-9"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_schoolfees-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_m2d2_schoolfees-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Managing school fees
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-mfhi_m2d2_healthexp" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-mfhi_m2d2_healthexp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_healthexp-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-10" data-gallery="quarto-lightbox-gallery-10"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_healthexp-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_m2d2_healthexp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Managing health care expenses
 </figcaption>
 </figure>
 </div>
@@ -207,10 +365,10 @@ Figure&nbsp;3: Managing core non-food expenses
 <div id="fig-mfhi_m2d2_nonfood_main" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_m2d2_nonfood_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_nonfood_main-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_nonfood_main-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-11" data-gallery="quarto-lightbox-gallery-11"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_nonfood_main-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_m2d2_nonfood_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: MFHI #2: Managing core non-food expenses
+Figure&nbsp;11: MFHI #2: Managing core non-food expenses
 </figcaption>
 </figure>
 </div>
@@ -224,10 +382,10 @@ Figure&nbsp;4: MFHI #2: Managing core non-food expenses
 <div id="fig-md2d_debt" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-md2d_debt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-md2d_debt-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-md2d_debt-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-12" data-gallery="quarto-lightbox-gallery-12"><img src="fsdkenya_finhealth_files/figure-html/fig-md2d_debt-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-md2d_debt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: MSEs by sector of production
+Figure&nbsp;12: MSEs by sector of production
 </figcaption>
 </figure>
 </div>
@@ -241,10 +399,10 @@ Figure&nbsp;5: MSEs by sector of production
 <div id="fig-mfhi_md2d_debt_main" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_md2d_debt_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_md2d_debt_main-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_md2d_debt_main-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-13" data-gallery="quarto-lightbox-gallery-13"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_md2d_debt_main-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_md2d_debt_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: MFHI #3: Managing debt
+Figure&nbsp;13: MFHI #3: Managing debt
 </figcaption>
 </figure>
 </div>
@@ -261,10 +419,38 @@ Figure&nbsp;6: MFHI #3: Managing debt
 <div id="fig-risk_ef" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-risk_ef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-risk_ef-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-risk_ef-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-14" data-gallery="quarto-lightbox-gallery-14"><img src="fsdkenya_finhealth_files/figure-html/fig-risk_ef-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-risk_ef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Access to emergency funds
+Figure&nbsp;14: Access to emergency funds
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-risk_ef_bysource" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-risk_ef_bysource-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-risk_ef_bysource-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-15" data-gallery="quarto-lightbox-gallery-15"><img src="fsdkenya_finhealth_files/figure-html/fig-risk_ef_bysource-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-risk_ef_bysource-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Access to emergency funds, by source
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-risk_ef_3d" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-risk_ef_3d-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-risk_ef_3d-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-16" data-gallery="quarto-lightbox-gallery-16"><img src="fsdkenya_finhealth_files/figure-html/fig-risk_ef_3d-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-risk_ef_3d-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Access to emergency funds
 </figcaption>
 </figure>
 </div>
@@ -278,10 +464,10 @@ Figure&nbsp;7: Access to emergency funds
 <div id="fig-mfhi_risk_ef_main" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_risk_ef_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_risk_ef_main-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_risk_ef_main-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-17" data-gallery="quarto-lightbox-gallery-17"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_risk_ef_main-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_risk_ef_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: MFHI #4: Access to emergency funds
+Figure&nbsp;17: MFHI #4: Access to emergency funds
 </figcaption>
 </figure>
 </div>
@@ -298,10 +484,10 @@ Figure&nbsp;8: MFHI #4: Access to emergency funds
 <div id="fig-mfhi_inv_capital" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_inv_capital-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_capital-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_capital-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-18" data-gallery="quarto-lightbox-gallery-18"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_capital-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_inv_capital-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Capital investments
+Figure&nbsp;18: Capital investments
 </figcaption>
 </figure>
 </div>
@@ -315,10 +501,10 @@ Figure&nbsp;9: Capital investments
 <div id="fig-mfhi_inv_main" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_inv_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_main-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_main-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-19" data-gallery="quarto-lightbox-gallery-19"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_main-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_inv_main-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: MFHI #5: Investing in capital
+Figure&nbsp;19: MFHI #5: Investing in capital
 </figcaption>
 </figure>
 </div>
@@ -335,10 +521,10 @@ Figure&nbsp;10: MFHI #5: Investing in capital
 <div id="fig-mfhi_comp_indicators" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_comp_indicators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_comp_indicators-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_comp_indicators-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-20" data-gallery="quarto-lightbox-gallery-20"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_comp_indicators-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_comp_indicators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: MFHI component indicators
+Figure&nbsp;20: MFHI component indicators
 </figcaption>
 </figure>
 </div>
@@ -352,10 +538,10 @@ Figure&nbsp;11: MFHI component indicators
 <div id="fig-mfhi_score_hist" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_score_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_hist-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_hist-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-21" data-gallery="quarto-lightbox-gallery-21"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_hist-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_score_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;12: MFHI score distribution
+Figure&nbsp;21: MFHI score distribution
 </figcaption>
 </figure>
 </div>
@@ -366,10 +552,10 @@ Figure&nbsp;12: MFHI score distribution
 <div id="fig-mfhi_score_mean" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_score_mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_mean-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_mean-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-22" data-gallery="quarto-lightbox-gallery-22"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_mean-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_score_mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13: MFHI mean score
+Figure&nbsp;22: MFHI mean score
 </figcaption>
 </figure>
 </div>
@@ -383,10 +569,10 @@ Figure&nbsp;13: MFHI mean score
 <div id="fig-mfhi_score_cats" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-mfhi_score_cats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-23" data-gallery="quarto-lightbox-gallery-23"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_score_cats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14: MFHI score categories
+Figure&nbsp;23: MFHI score categories
 </figcaption>
 </figure>
 </div>
@@ -403,23 +589,83 @@ Figure&nbsp;14: MFHI score categories
 <div id="fig-pfh" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-pfh-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fsdkenya_finhealth_files/figure-html/fig-pfh-1.png" class="img-fluid figure-img" width="1152">
+<a href="fsdkenya_finhealth_files/figure-html/fig-pfh-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-24" data-gallery="quarto-lightbox-gallery-24"><img src="fsdkenya_finhealth_files/figure-html/fig-pfh-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-pfh-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15: Perceptions of financial health
+Figure&nbsp;24: Perceptions of financial health
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="correlation-between-financial-health-perceptions-and-financial-health-outcomes" class="level3">
-<h3 class="anchored" data-anchor-id="correlation-between-financial-health-perceptions-and-financial-health-outcomes">Correlation between financial health perceptions and financial health outcomes</h3>
-<div class="cell" data-cap-location="margin">
-
+</section>
+</section>
+<section id="drivers-of-financial-lhealth" class="level1 page-columns page-full">
+<h1>Drivers of financial lhealth</h1>
+<section id="financial-health-and-income" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="financial-health-and-income">Financial health and income</h3>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-mfhi_pfh_corr" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-mfhi_pfh_corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-mfhi_pfh_corr-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-25" data-gallery="quarto-lightbox-gallery-25"><img src="fsdkenya_finhealth_files/figure-html/fig-mfhi_pfh_corr-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mfhi_pfh_corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;25: Correlation between financial health outcomes and pereptions
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="predictors-of-financial-health" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="predictors-of-financial-health">Predictors of financial health</h3>
+<div class="cell page-columns page-full" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-reg_digtech_drivers" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-cap-location="margin">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-reg_digtech_drivers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="fsdkenya_finhealth_files/figure-html/fig-reg_digtech_drivers-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-26" data-gallery="quarto-lightbox-gallery-26"><img src="fsdkenya_finhealth_files/figure-html/fig-reg_digtech_drivers-1.png" class="img-fluid figure-img" width="1152"></a>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-reg_digtech_drivers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26: Predictors of digital technology adoption
+</figcaption>
+</figure>
+</div>
+</div>
 </div>
 
 
+<div class="hidden" aria-hidden="true">
+<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: Trends in livelihood</span>
+<span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: Personal monthly income</span>
+<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: Consistent indicators</span>
+<span class="glightbox-desc lightbox-desc-4">Figure&nbsp;4: Subjective evaluations of financial status</span>
+<span class="glightbox-desc lightbox-desc-5">Figure&nbsp;5: Values</span>
+<span class="glightbox-desc lightbox-desc-6">Figure&nbsp;6: Managing food expenses</span>
+<span class="glightbox-desc lightbox-desc-7">Figure&nbsp;7: MFHI #1: Managing food expenses</span>
+<span class="glightbox-desc lightbox-desc-8">Figure&nbsp;8: Managing core non-food expenses</span>
+<span class="glightbox-desc lightbox-desc-9">Figure&nbsp;9: Managing school fees</span>
+<span class="glightbox-desc lightbox-desc-10">Figure&nbsp;10: Managing health care expenses</span>
+<span class="glightbox-desc lightbox-desc-11">Figure&nbsp;11: MFHI #2: Managing core non-food expenses</span>
+<span class="glightbox-desc lightbox-desc-12">Figure&nbsp;12: MSEs by sector of production</span>
+<span class="glightbox-desc lightbox-desc-13">Figure&nbsp;13: MFHI #3: Managing debt</span>
+<span class="glightbox-desc lightbox-desc-14">Figure&nbsp;14: Access to emergency funds</span>
+<span class="glightbox-desc lightbox-desc-15">Figure&nbsp;15: Access to emergency funds, by source</span>
+<span class="glightbox-desc lightbox-desc-16">Figure&nbsp;16: Access to emergency funds</span>
+<span class="glightbox-desc lightbox-desc-17">Figure&nbsp;17: MFHI #4: Access to emergency funds</span>
+<span class="glightbox-desc lightbox-desc-18">Figure&nbsp;18: Capital investments</span>
+<span class="glightbox-desc lightbox-desc-19">Figure&nbsp;19: MFHI #5: Investing in capital</span>
+<span class="glightbox-desc lightbox-desc-20">Figure&nbsp;20: MFHI component indicators</span>
+<span class="glightbox-desc lightbox-desc-21">Figure&nbsp;21: MFHI score distribution</span>
+<span class="glightbox-desc lightbox-desc-22">Figure&nbsp;22: MFHI mean score</span>
+<span class="glightbox-desc lightbox-desc-23">Figure&nbsp;23: MFHI score categories</span>
+<span class="glightbox-desc lightbox-desc-24">Figure&nbsp;24: Perceptions of financial health</span>
+<span class="glightbox-desc lightbox-desc-25">Figure&nbsp;25: Correlation between financial health outcomes and pereptions</span>
+<span class="glightbox-desc lightbox-desc-26">Figure&nbsp;26: Predictors of digital technology adoption</span>
+</div>
 </section>
 </section>
 
@@ -834,6 +1080,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"closeEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 
