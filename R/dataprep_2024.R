@@ -95,8 +95,8 @@ prep_2024 <- function(data) {
     "other" = "Other"
   )
   
-  sav_uses <- c(3:7, 9:10)
-  crd_uses <- c(2, 4:8, 10:12, 17:23, 26)
+  sav_uses <- c(3:7, 9)
+  crd_uses <- c(2:3, 5:9, 11:13)
   
   data <- data %>% 
     mutate(
@@ -213,6 +213,8 @@ prep_2024 <- function(data) {
         B3B %in% c(98, 99) ~ NA
       ),
       resp_live_group2_fct = factor(live_levels2[resp_live_group2], levels = live_levels2, ordered = TRUE),
+      
+      resp_live_employment_str = ifelse(B3B == 2, "Employment", "Other source"), 
       
       # Income from any source
       resp_live_agri = ifelse(B3A__1 == 1, 1, 0),
@@ -371,7 +373,8 @@ prep_2024 <- function(data) {
       mfhi_nf_p12mos_np_sf = ifelse(B1F2 %in% c(1,2), 1, 0), 
       mfhi_nf_p12mos_cp_sf = ifelse(B1F2 == 3, 1, 0),
       mfhi_nf_p12mos_napp_sf = ifelse(B1F2 == 4, 1, 0),
-      mfhi_nf_p12mos_yapp_sf = ifelse(B1F2 %in% c(5,6,9), 1, 0), 
+      mfhi_nf_p12mos_dkr_sf = ifelse(B1F2 %in% c(5,6,9), 1, 0), 
+      mfhi_nf_p12mos_yapp_sf = ifelse(B1F2 %in% c(1,2,3), 1, 0), 
       
       mfhi_nf_tot_yapp = mfhi_nf_p1mo_yapp_hou +  mfhi_nf_p1mo_yapp_enr +  mfhi_nf_p1mo_yapp_wtr +  mfhi_nf_p1mo_yapp_trn + mfhi_nf_p12mos_yapp_sf,
       # Note: 350 observations where expenditures do not apply 
@@ -423,6 +426,7 @@ prep_2024 <- function(data) {
       mfhi_d_p3mo_stress_dkr = ifelse(B1G %in% c(98,99, 9), 1, 0),
       
       mfhi_d_secure = mfhi_d_p3mo_stress_no, 
+      mfhi_d_secure = ifelse(mfhi_d_p3mo_stress_napp == 1, 1, mfhi_d_secure), 
       
       # Access to emergency funds -------------
       # ef = emergencyfunds
@@ -445,7 +449,7 @@ prep_2024 <- function(data) {
       mfhi_ef_30d_srcany_p_difsmeornot = ifelse(B1H %in% c(1, 2, 3, 4, 5, 6, 7, 8) &  B1Ii %in% c(2,3), 1, 0),
       mfhi_ef_30d_srcany_p_difsmeornot = ifelse(mfhi_ef_30d_srcany_dkr == 1, NA, mfhi_ef_30d_srcany_p_difsmeornot),
       
-      mfhi_ef_secure = mfhi_ef_30d_srcany_p_difsmeornot, 
+      mfhi_ef_secure = mfhi_ef_30d_srcany_p_difnot, 
       
       mfhi_ef_secure_c = case_when(
         mfhi_ef_30d_srcany_np == 1 ~ 0, 
@@ -453,6 +457,7 @@ prep_2024 <- function(data) {
         mfhi_ef_30d_srcany_p_difsme == 1 ~ 2/3, 
         mfhi_ef_30d_srcany_p_difnot == 1 ~ 3/3
       ), 
+      mfhi_ef_secure_c = ifelse(mfhi_ef_30d_srcany_dkr == 1, NA, mfhi_ef_secure_c), 
       
       # Source of funds
       mfhi_ef_30d_srcborr_p_difany = ifelse(B1H == 1, 1, 0), 
@@ -489,6 +494,8 @@ prep_2024 <- function(data) {
       
       mfhi_i_pc_p12mos_lndhou = ifelse(B1L__1 == 1 |  B1L__2 == 1 |  B1L__3 == 1, 1, 0),
       mfhi_i_pc_p12mos_nonfarmliv = ifelse(B1L__4 == 1, 1, 0),
+      mfhi_i_pc_p12mos_farm = ifelse(B1L__5 == 1, 1, 0),
+      mfhi_i_pc_p12mos_liv = ifelse(B1L__6 == 1, 1, 0),
       mfhi_i_pc_p12mos_farmliv = ifelse(B1L__5 == 1 | B1L__6 == 1, 1, 0),
       
       mfhi_i_pc_p12mos_allmiss = ifelse(is.na(B1L__1) & is.na(B1L__2) & is.na(B1L__3) & is.na(B1L__4) & is.na(B1L__5) & is.na(B1L__6), 1, 0), 
@@ -509,6 +516,10 @@ prep_2024 <- function(data) {
       mfhi_i_fc_p12mos_any = ifelse(is.na(mfhi_i_fc_p12mos_any), 0, mfhi_i_fc_p12mos_any), 
       mfhi_i_fc_p12mos_any = ifelse(mfhi_i_fc_p12mos_allmiss == 1, NA, mfhi_i_fc_p12mos_any), 
       
+      # Investing in financial or physical capital 
+      mfhi_i_pcfc_p12mos_any = ifelse(mfhi_i_fc_p12mos_any == 1 | mfhi_i_pc_p12mos_any == 1, 1, 0), 
+      mfhi_i_pcfc_p12mos_any = ifelse(mfhi_i_pc_p12mos_allmiss == 1 & mfhi_i_fc_p12mos_allmiss == 1, NA, mfhi_i_pcfc_p12mos_any),
+      
       # Human capital
       
       mfhi_i_hc_p12mos_any = ifelse(B1M__4 == 1, 1, 0),
@@ -518,12 +529,13 @@ prep_2024 <- function(data) {
       mfhi_i_hc_p12mos_any = ifelse(mfhi_i_hc_p12mos_allmiss == 1, NA, mfhi_i_hc_p12mos_any),
       
       # Any investments in physical, financial or human capital
-      mfhi_i_p12mos_any = ifelse(mfhi_i_pc_p12mos_any == 1 | mfhi_i_fc_p12mos_any == 1 | mfhi_i_fc_p12mos_any == 1, 1, 0),
+      mfhi_i_p12mos_any = ifelse(mfhi_i_pc_p12mos_any == 1 | mfhi_i_fc_p12mos_any == 1 | mfhi_i_hc_p12mos_any == 1, 1, 0),
       mfhi_i_p12mos_any = ifelse(is.na(mfhi_i_p12mos_any), 0, mfhi_i_p12mos_any),
       mfhi_i_p12mos_any = ifelse(mfhi_i_pc_p12mos_allmiss == 1 & mfhi_i_fc_p12mos_allmiss == 1 & mfhi_i_hc_p12mos_allmiss == 1 , NA, mfhi_i_p12mos_any),
       
-      mfhi_i_p12mos_c = (mfhi_i_pc_p12mos_any + mfhi_i_fc_p12mos_any + mfhi_i_fc_p12mos_any)/3,
-      mfhi_i_p12mos_c = ifelse(mfhi_i_pc_p12mos_allmiss == 1 & mfhi_i_fc_p12mos_allmiss == 1 & mfhi_i_hc_p12mos_allmiss == 1 , NA, mfhi_i_p12mos_c),
+      # Graduated version 
+      mfhi_i_p12mos_any_c = (mfhi_i_pc_p12mos_any + mfhi_i_fc_p12mos_any + mfhi_i_hc_p12mos_any)/3,
+      mfhi_i_p12mos_any_c = ifelse(mfhi_i_pc_p12mos_allmiss == 1 & mfhi_i_fc_p12mos_allmiss == 1 & mfhi_i_hc_p12mos_allmiss == 1 , NA, mfhi_i_p12mos_any_c),
 
       
       # Aggregation: Multidimensional financial health index -------------
@@ -534,12 +546,15 @@ prep_2024 <- function(data) {
       mfhi_d_secure_notmiss = ifelse(!is.na(mfhi_d_secure), 1, 0), 
       mfhi_ef_secure_notmiss = ifelse(!is.na(mfhi_ef_secure), 1, 0), 
       mfhi_i_p12mos_any_notmiss = ifelse(!is.na(mfhi_i_p12mos_any), 1, 0), 
+      mfhi_i_pcfc_p12mos_any_notmiss = ifelse(!is.na(mfhi_i_pcfc_p12mos_any), 1, 0), 
+      mfhi_i_hc_p12mos_any_notmiss = ifelse(!is.na(mfhi_i_hc_p12mos_any), 1, 0), 
       
       mfhi_md2d_notmiss = mfhi_f_secure_notmiss + mfhi_nf_secure_notmiss + mfhi_d_secure_notmiss, 
       mfhi_risk_notmiss = mfhi_ef_secure_notmiss, 
-      mfhi_inv_notmiss = mfhi_i_p12mos_any_notmiss, 
-      mfhi_all_N_notmiss = mfhi_f_secure_notmiss + mfhi_nf_secure_notmiss + mfhi_d_secure_notmiss + mfhi_ef_secure_notmiss + mfhi_i_p12mos_any_notmiss, 
-      mfhi_all_N_miss = 5 - mfhi_all_N_notmiss, 
+      #mfhi_inv_notmiss = mfhi_i_p12mos_any_notmiss, 
+      mfhi_inv_notmiss = mfhi_i_pcfc_p12mos_any_notmiss + mfhi_i_hc_p12mos_any_notmiss,
+      mfhi_all_N_notmiss = mfhi_f_secure_notmiss + mfhi_nf_secure_notmiss + mfhi_d_secure_notmiss + mfhi_ef_secure_notmiss + mfhi_i_pcfc_p12mos_any_notmiss + mfhi_i_hc_p12mos_any_notmiss, 
+      mfhi_all_N_miss = 6 - mfhi_all_N_notmiss, 
       
       # Dimension and indicator weights
       
@@ -572,11 +587,13 @@ prep_2024 <- function(data) {
       mutate(
         mfhi_score_md2d = w_md2d_adj*sum(mfhi_f_secure, mfhi_nf_secure, mfhi_d_secure, na.rm = TRUE),
         mfhi_score_risk = w_risk_adj*sum(mfhi_ef_secure, na.rm = TRUE), 
-        mfhi_score_inv = w_inv_adj*sum(mfhi_i_p12mos_any, na.rm = TRUE), 
+        #mfhi_score_inv = w_inv_adj*sum(mfhi_i_p12mos_any, na.rm = TRUE), 
+        mfhi_score_inv = w_inv_adj*sum(mfhi_i_pcfc_p12mos_any, mfhi_i_hc_p12mos_any, na.rm = TRUE), 
         
         mfhi_score_md2d_c = w_md2d_adj*sum(mfhi_f_secure_c, mfhi_nf_secure_c, mfhi_d_secure, na.rm = TRUE),
         mfhi_score_risk_c = w_risk_adj*sum(mfhi_ef_secure_c, na.rm = TRUE), 
-        mfhi_score_inv_c = w_inv_adj*sum(mfhi_i_p12mos_c, na.rm = TRUE)
+        mfhi_score_inv_c = w_inv_adj*sum(mfhi_i_pcfc_p12mos_any, mfhi_i_hc_p12mos_any, na.rm = TRUE)
+       # mfhi_score_inv_c = w_inv_adj*sum(mfhi_i_p12mos_any_c, na.rm = TRUE)
         
       ) %>% 
     
@@ -594,9 +611,9 @@ prep_2024 <- function(data) {
       mfhi_score_med = ifelse(mfhi_score_overall > 0.3 & mfhi_score_overall <= 0.6, 1, 0),
       mfhi_score_low = ifelse(mfhi_score_overall <= 0.3, 1, 0),
     
-      mfhi_score_hi_c = ifelse(mfhi_score_overall > 0.6, 1, 0),
-      mfhi_score_med_c = ifelse(mfhi_score_overall > 0.3 & mfhi_score_overall <= 0.6, 1, 0),
-      mfhi_score_low_c = ifelse(mfhi_score_overall <= 0.3, 1, 0),
+      mfhi_score_hi_c = ifelse(mfhi_score_overall_c > 0.6, 1, 0),
+      mfhi_score_med_c = ifelse(mfhi_score_overall_c > 0.3 & mfhi_score_overall_c <= 0.6, 1, 0),
+      mfhi_score_low_c = ifelse(mfhi_score_overall_c <= 0.3, 1, 0),
       
       # Perception of financial health (pfh) ---------
       
@@ -727,15 +744,37 @@ prep_2024 <- function(data) {
       sc_ff_finhelp = ifelse(B1C1 == 1, 1, 0),
       sc_ff_finhelp = ifelse(B1C1 %in% c(5, 9), NA, sc_ff_finhelp),
       
+      # Usage of financial services
+      
+      # currently uses different types of registered transaction device
+      
+      fin_reg_mobilemoney = ifelse(C1_10 == 1, 1, 0), 
+      fin_reg_mobilemoney = ifelse(C1_10 == 9, NA, fin_reg_mobilemoney), 
+      
+      fin_reg_mobilebanking = ifelse(C1_11 == 1, 1, 0), 
+      fin_reg_mobilebanking = ifelse(C1_11 == 9, NA, fin_reg_mobilebanking), 
+      
+      fin_reg_bankmfb = ifelse(C1_11 == 1, 1, 0), 
+      fin_reg_bankmfb = ifelse(C1_11 == 9, NA, fin_reg_bankmfb), 
+      
+      fin_reg_bankmfb = ifelse(C1_12 == 1, 1, 0), 
+      fin_reg_bankmfb = ifelse(C1_12 == 9, NA, fin_reg_bankmfb), 
+      
+      fin_reg_sacco = ifelse(C1_12a == 1, 1, 0), 
+      fin_reg_sacco = ifelse(C1_12a == 9, NA, fin_reg_sacco), 
+      
+      fin_reg_chama = ifelse(C1_12b == 1, 1, 0), 
+      fin_reg_chama = ifelse(C1_12b == 9, NA, fin_reg_chama)
+
     ) %>%
     
     # -- Uses savings or credit for mainly for productive purposes/ long-term assets
 
-    mutate_at(vars(matches("F1i[a-zA-Z0-9]")), ~ ifelse(. %in% sav_uses, 1, 0)) %>%
-    mutate(mfhi_3_2_sav = ifelse(rowSums(.[grepl("F1i[a-zA-Z0-9]", names(.))]) > 0, 1, 0)) %>%
+    mutate_at(vars(matches("F1i[A-Z]$")), ~ ifelse(. %in% sav_uses, 1, 0)) %>%
+    mutate(mfhi_3_2_sav = ifelse(rowSums(.[grepl("F1i[A-Z]$", names(.))]) > 0, 1, 0)) %>%
     
-    mutate_at(vars(matches("E1iii[a-zA-Z0-9]")), ~ ifelse(. %in% crd_uses, 1, 0)) %>%
-    mutate(mfhi_3_2_crd = ifelse(rowSums(.[grepl("E1iii[a-zA-Z0-9]", names(.))]) > 0, 1, 0)) %>%
+    mutate_at(vars(matches("E1iii[A-Z]$")), ~ ifelse(. %in% crd_uses, 1, 0)) %>%
+    mutate(mfhi_3_2_crd = ifelse(rowSums(.[grepl("E1iii[A-Z]$", names(.))]) > 0, 1, 0)) %>%
     
     mutate(mfhi_3_2 = ifelse(mfhi_3_2_sav == 1 | mfhi_3_2_crd == 1, 1, 0)) %>%
     
@@ -758,7 +797,7 @@ prep_2024 <- function(data) {
     
     dummy_cols(select_columns = c("hh_urbrur", "hh_geo", "hh_geo_3", "resp_age_group2", "resp_gender_group", "resp_age_group", "resp_edu_group", "resp_edu_group2", "resp_live_group", "resp_live_group2", "resp_inc_group", "goals_group")) %>%
     
-    select(starts_with(c("year", "sample_", "resp_", "hh_", "mfhi_", "fin_", "pfh_", "fb_", "fl_", "sc_", "goals_", "B1", "n_", "w_")))
+    select(starts_with(c("year", "sample_", "resp_", "hh_", "mfhi_", "fin_", "pfh_", "fb_", "fl_", "sc_", "goals_", "fin_", "B1", "n_", "w_")))
   
   return(data)
   

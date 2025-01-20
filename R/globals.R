@@ -33,25 +33,26 @@ INDICATORS <- c(
   "mfhi_f_secure" = "Financial health outcomes/ Managing day-to-day: Food security: Never went without food due to lack of money in past 12 months", 
   "mfhi_1_3" = "Financial health outcomes/ Managing day-to-day: Food security: Never went without food due to lack of money in past 12 months", 
   
-  "mfhi_nf_p1mo_cp_hou" = "Finanical health outcomes/ Managing day-to-day: Housing expenses: Able to pay in past 1 month: Yes", 
-  "mfhi_nf_p1mo_np_hou" = "Finanical health outcomes/ Managing day-to-day: Housing expenses: Able to pay in past 1 month: No", 
+  "mfhi_nf_p1mo_cp_hou" = "Finanical health outcomes/ Managing day-to-day: Housing expenses: Able to pay in past 1 month: Yes (can pay)", 
+  "mfhi_nf_p1mo_np_hou" = "Finanical health outcomes/ Managing day-to-day: Housing expenses: Able to pay in past 1 month: No (unable to pay)", 
   "mfhi_nf_p1mo_napp_hou" = "Finanical health outcomes/ Managing day-to-day: Housing expenses: Able to pay in past 1 month: Not applicable", 
   
-  "mfhi_nf_p1mo_cp_enr" = "Finanical health outcomes/ Managing day-to-day: Energy expenses: Able to pay in past 1 month: Yes", 
-  "mfhi_nf_p1mo_np_enr" = "Finanical health outcomes/ Managing day-to-day: Energy expenses: Able to pay in past 1 month: No", 
+  "mfhi_nf_p1mo_cp_enr" = "Finanical health outcomes/ Managing day-to-day: Energy expenses: Able to pay in past 1 month: Yes (can pay)", 
+  "mfhi_nf_p1mo_np_enr" = "Finanical health outcomes/ Managing day-to-day: Energy expenses: Able to pay in past 1 month: No (unable to pay)", 
   "mfhi_nf_p1mo_napp_enr" = "Finanical health outcomes/ Managing day-to-day: Energy expenses: Able to pay in past 1 month: Not applicable", 
   
-  "mfhi_nf_p1mo_cp_wtr" = "Financial health outcomes/ Managing day-to-day: Water expenses: Able to pay in past 1 month: Yes", 
-  "mfhi_nf_p1mo_np_wtr" = "Financial health outcomes/ Managing day-to-day: Water expenses: Able to pay in past 1 month: No", 
+  "mfhi_nf_p1mo_cp_wtr" = "Financial health outcomes/ Managing day-to-day: Water expenses: Able to pay in past 1 month: Yes (can pay)", 
+  "mfhi_nf_p1mo_np_wtr" = "Financial health outcomes/ Managing day-to-day: Water expenses: Able to pay in past 1 month: No (unable to pay)", 
   "mfhi_nf_p1mo_napp_wtr" = "Financial health outcomes/ Managing day-to-day: Water expenses: Able to pay in past 1 month: Not applicable", 
   
-  "mfhi_nf_p1mo_cp_trn" = "Financial health outcomes/ Managing day-to-day: Transportation expenses: Able to pay in past 1 month: Yes", 
-  "mfhi_nf_p1mo_np_trn" = "Financial health outcomes/ Managing day-to-day: Transportation expenses: Able to pay in past 1 month: No", 
+  "mfhi_nf_p1mo_cp_trn" = "Financial health outcomes/ Managing day-to-day: Transportation expenses: Able to pay in past 1 month: Yes (can pay)", 
+  "mfhi_nf_p1mo_np_trn" = "Financial health outcomes/ Managing day-to-day: Transportation expenses: Able to pay in past 1 month: No (unable to pay)", 
   "mfhi_nf_p1mo_napp_trn" = "Financial health outcomes/ Managing day-to-day: Transportation expenses: Able to pay in past 1 month: Not applicable", 
   
-  "mfhi_nf_p12mos_cp_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: Yes", 
-  "mfhi_nf_p12mos_np_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: No", 
+  "mfhi_nf_p12mos_cp_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: Yes (can pay)", 
+  "mfhi_nf_p12mos_np_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: No (unable to pay)", 
   "mfhi_nf_p12mos_napp_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: Not applicable",
+  "mfhi_nf_p12mos_dkr_sf" = "Financial health outcomes/ Managing day-to-day: School fees: Able to pay in past 12 months: Don't know/refused",
   
   "mfhi_nf_tot_app" = "Financial health outcomes/ Managing day-to-day: Core non-food expenses: Total applicable (N)", 
   "mfhi_nf_tot_cp" = "Financial health outcomes/ Managing day-to-day: Core non-food expenses: Total expenses that respondent can pay (N)", 
@@ -85,7 +86,7 @@ INDICATORS <- c(
   "mfhi_ef_30d_srcany_p_difsmeornot" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Yes, somewhat difficult or not at all difficult", 
   "mfhi_ef_30d_srcany_dkr" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Don't know/refused", 
 
-  "mfhi_ef_secure" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days without major difficulty", 
+  "mfhi_ef_secure" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days without any difficulty", 
   "mfhi_2_2" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1 month of typical expenditure in 3 days: Yes", 
   "mfhi_2_3" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Keeps money aside for emergencies: Yes", 
   
@@ -102,15 +103,19 @@ INDICATORS <- c(
   "mfhi_ef_3d_srcany_np"  = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: No", 
   "mfhi_ef_3d_srcany_p" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: Yes", 
   
-  "mfhi_i_pc_p12mos_lndhou" = "Financial health outcomes/ Capital investments: Physical assets: Purchased land, house or materials to improve house in past 12 months: Yes", 
-  "mfhi_i_pc_p12mos_nonfarmliv" = "Financial health outcomes/ Capital investments: Physical assets: Purchased machinery, vehicles, equipment, tools for business or self-employment activity in past 12 months: Yes", 
-  "mfhi_i_pc_p12mos_farmliv" = "Financial health outcomes/ Capital investments: Physical assets: Purchased machinery, vehicles, equipment or tools for farming or raising livestock in past 12 months: Yes", 
-  "mfhi_i_pc_p12mos_any" = "Financial health outcomes/ Capital investments: Physical assets: Purchased any physical asset that supports production, productivity or long-term security in past 12 months: Yes",  
+  "mfhi_i_pc_p12mos_lndhou" = "Financial health outcomes/ Capital investments: Physical assets: Purchased land, house or materials to improve house: Yes", 
+  "mfhi_i_pc_p12mos_nonfarmliv" = "Financial health outcomes/ Capital investments: Physical assets: Purchased machinery, vehicles, equipment, tools for business or self-employment activity: Yes",
+  "mfhi_i_pc_p12mos_farm" = "Financial health outcomes/ Capital investments: Physical assets: Purchased machinery, vehicles, equipment or tools for farming or raising livestock: Yes", 
+  "mfhi_i_pc_p12mos_liv" = "Financial health outcomes/ Capital investments: Physical assets: Purchased livestock: Yes", 
+  "mfhi_i_pc_p12mos_farmliv" = "Financial health outcomes/ Capital investments: Physical assets: Purchased machinery, vehicles, equipment, tools or livestock for farming or raising livestock: Yes", 
+  "mfhi_i_pc_p12mos_any" = "Financial health outcomes/ Capital investments: Physical assets: Purchased any of the above physical assets: Yes",  
   
   "mfhi_i_fc_p12mos_pen" = "Financial health outcomes/ Capital investments: Financial assets: Contributed to a pension or individual retirement account: Yes", 
   "mfhi_i_fc_p12mos_lts" = "Financial health outcomes/ Capital investments: Financial assets: Contributed to long-term savings accounts: Yes", 
   "mfhi_i_fc_p12mos_sec" = "Financial health outcomes/ Capital investments: Financial assets: Purchased securities (stocks or bonds): Yes", 
-  "mfhi_i_fc_p12mos_any" = "Financial health outcomes/ Capital investments: Financial assets: Contributed to- or purchased- any financial asset that support long-term security: Yes", 
+  "mfhi_i_fc_p12mos_any" = "Financial health outcomes/ Capital investments: Financial assets: Contributed to- or purchased- any of the above financial assets: Yes", 
+   
+  "mfhi_i_pcfc_p12mos_any" = "Financial health outcomes/ Capital investments: Capital investments: Purchased- or contributed to- physical or financial assets that support production, productivity or long-term financial security", 
   
   "mfhi_i_hc_p12mos_any" = "Financial health outcomes/ Capital investments: Human capital: Paid for tuition for education or training for yourself or any family member: Yes",
   
@@ -127,6 +132,8 @@ INDICATORS <- c(
   "mfhi_score_md2d_c" = "Financial health outcomes/ Summary: MFHI (gradated): Managing day to day: Score (mean)", 
   "mfhi_score_risk_c" = "Financial health outcomes/ Summary: MFHI (gradated): Coping with risk: Score (mean)", 
   "mfhi_score_inv_c" = "Financial health outcomes/ Summary: MFHI (gradated): Investing in capital: Score (mean)",
+  
+  "mfhi_score_overall_c" =  "Financial health outcomes/ Summary: MFHI (gradated): Overall: Score (mean)", 
   
   "mfhi_score_hi" = "Financial health outcomes/ Summary: MFHI (discrete): Score category: High (0.6-1)", 
   "mfhi_score_med" = "Financial health outcomes/ Summary: MFHI (discrete): Score category: Medium (0.3-0.6)", 
@@ -167,26 +174,30 @@ INDICATORS <- c(
   "fin_status_impr" = "Financial health perceptions: Change assessment: Change in financial status since last year: Improved", 
   "fin_status_worse" = "Financial health perceptions: Change assessment: Change in financial status since last year: Worsened", 
   
-  "hh_urbrur_Urban" = "Household characteristics: Location: Urban", 
-  "hh_size_all_c" = "Household characteristics: Size: Household size (mean centered)", 
+  "pfh_score_overall" = "Financial health perceptions: Overall score: Score [Min = 0, Max = 1]", 
+  
+  "hh_urbrur_Urban" = "Household characteristics: HH location: Urban", 
+  "hh_size_all_c" = "Household characteristics: HH size: Household size (mean centered)", 
   "resp_gender_group_wmn" = "Respondent characteristics: Demographics: Women", 
   "resp_age_yrs_c_5" = "Respondent characteristics: Demographics: Respondent age (mean centered, +5 years)", 
   "resp_edu_group2_pri" = "Respondent characteristics: Educational attainment: Primary-level", 
   "resp_edu_group2_sec" = "Respondent characteristics: Educational attainment: Secondary-level", 
   "resp_edu_group2_trt" = "Respondent characteristics: Educational attainment: Tertiary-level", 
 
-  "resp_live_group_empl" = "Respondent characteristics: Economic: Primary income source: Employment", 
-  "resp_live_group_owbs" = "Respondent characteristics: Economic: Primary income source: Own business", 
-  "resp_live_group_farm" = "Respondent characteristics: Economic: Primary income source: Farming",  
-  "resp_live_group_cwrk" = "Respondent characteristics: Economic: Primary income source: Casual work", 
-  "resp_live_group_trns" = "Respondent characteristics: Economic: Primary income source: Transfers", 
-  "resp_live_group_othr" = "Respondent characteristics: Economic: Primary income source: Other",
+  "resp_live_group_empl" = "Respondent characteristics: Economic: Primary income source, Employment", 
+  "resp_live_group_owbs" = "Respondent characteristics: Economic: Primary income source, Own business", 
+  "resp_live_group_farm" = "Respondent characteristics: Economic: Primary income source, Farming",  
+  "resp_live_group_cwrk" = "Respondent characteristics: Economic: Primary income source, Casual work", 
+  "resp_live_group_trns" = "Respondent characteristics: Economic: Primary income source, Transfers", 
+  "resp_live_group_othr" = "Respondent characteristics: Economic: Primary income source, Other",
+  
+  "resp_live_employment_str" = "Respondent characteristics: Economic: Primary income from employment or other", 
   
   "resp_income" = "Respondent characteristics: Economic: Personal monthly income (KSh)", 
   "resp_income_c_1000" = "Respondent characteristics: Economic: Personal monthly income [mean centered, +KSh 1,000]", 
   "resp_income_c_5000" = "Respondent characteristics: Economic: Personal monthly income [mean centered, +KSh 5,000]", 
   "resp_income_var" = "Respondent characteristics: Economic: Yearly variation in personal monthly income (%)",
-  "resp_live_trnsf_in" = "Respondent characteristics: Economic: Income source: Government cash transfer program or pension", 
+  "resp_live_trnsf_in" = "Respondent characteristics: Economic: Income source, Government cash transfer program or pension", 
   "fb_financial_plan" = "Respondent characteristics: Financial behaviors: Has a spending plan", 
   "mfhi_1_2" = "Respondent characteristics: Financial behaviors: Has a spending plan", 
   "fb_gambling" = "Respondent characteristics: Financial behaviors: Has gambled in the past 12 months", 
@@ -197,8 +208,13 @@ INDICATORS <- c(
   "goals_group_educ" = "Respondent characteristics: Personal values: Most important goal: Educating yourself or your family", 
   "goals_group_food" = "Respondent characteristics: Personal values: Most important goal: Putting food on the table",   
   "goals_group_live" = "Respondent characteristics: Personal values: Most important goal: Getting or advancing job, career, livelihood", 
-  "goals_group_other" = "Respondent characteristics: Personal values: Most important goal: Other"
+  "goals_group_other" = "Respondent characteristics: Personal values: Most important goal: Other", 
   
+  "fin_reg_mobilemoney" = "Financial Access/Usage: Transaction devices: Registered account/member: Mobile money", 
+  "fin_reg_mobilebanking" = "Financial Access/Usage: Transaction devices: Registered account/member: Mobile banking", 
+  "fin_reg_bankmfb" = "Financial Access/Usage: Transaction devices: Registered account/member: Bank or microfinance bank", 
+  "fin_reg_sacco" = "Financial Access/Usage: Transaction devices: Registered account/member: SACCO", 
+  "fin_reg_chama" = "Financial Access/Usage: Transaction devices: Registered account/member: Chama"
 )
 
 GROUPS <- c("resp_all" = "National", 

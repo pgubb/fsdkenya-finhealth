@@ -93,8 +93,8 @@ data <- data %>% mutate(
     
   ) %>%
   
-  mutate_at(vars(matches("E1iii[a-zA-Z0-9]")), ~ ifelse(. %in% crd_uses, 1, 0)) %>%
-  mutate(mfhi_3_2_crd = ifelse(rowSums(.[grepl("E1iii[a-zA-Z0-9]", names(.))]) > 0, 1, 0)) %>%
+  mutate_at(vars(matches("E1iii[A-Z]$")), ~ ifelse(. %in% crd_uses, 1, 0)) %>%
+  mutate(mfhi_3_2_crd = ifelse(rowSums(.[grepl("E1iii[A-Z]$", names(.))]) > 0, 1, 0)) %>%
   
   mutate(mfhi_3_2 = ifelse(mfhi_3_2_sav == 1 | mfhi_3_2_crd == 1, 1, 0)) %>%
   

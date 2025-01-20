@@ -193,7 +193,16 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![MFHI #5: Investing in capital](fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_main-1.png){#fig-mfhi_inv_main width=1152}
+![MFHI #5: Investing in capital](fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_main_c1-1.png){#fig-mfhi_inv_main_c1 width=1152}
+:::
+:::
+
+
+### MFHI Component indicator #6
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![MFHI #6: Investing in human capital](fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_main_c2-1.png){#fig-mfhi_inv_main_c2 width=1152}
 :::
 :::
 
@@ -210,6 +219,38 @@ lightbox: true
 :::
 :::
 
+
+
+### MFHI component indicators 
+
+
+::: {.cell .caption-margin}
+::: {.cell-output .cell-output-stdout}
+
+```
+# A tibble: 33 × 20
+   indicator indicator_domain indicator_category indicator_stem indicator_branch
+   <chr>     <chr>            <chr>              <chr>          <chr>           
+ 1 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
+ 2 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    
+ 3 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    
+ 4 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
+ 5 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
+ 6 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    
+ 7 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    
+ 8 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    
+ 9 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    
+10 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
+# ℹ 23 more rows
+# ℹ 15 more variables: group <chr>, group_name <chr>, group_cat_val <chr>,
+#   nobs <int>, total <dbl>, total_low <dbl>, total_upp <dbl>, mean <dbl>,
+#   mean_low <dbl>, mean_upp <dbl>, median <dbl>, median_low <dbl>,
+#   median_upp <dbl>, indicator_name <chr>, indicator_group <chr>
+```
+
+
+:::
+:::
 
 
 ### MFHI score
@@ -249,6 +290,18 @@ lightbox: true
 :::
 :::
 
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Correlation between the financial health outcomes and perceptions](fsdkenya_finhealth_files/figure-html/fig-mfhi_pfh_corr-1.png){#fig-mfhi_pfh_corr width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_pfhscorehi_drivers-1.png){#fig-reg_pfhscorehi_drivers width=1152}
+:::
+:::
+
 
 # Drivers of financial lhealth
 
@@ -257,7 +310,7 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![Correlation between financial health outcomes and pereptions](fsdkenya_finhealth_files/figure-html/fig-mfhi_pfh_corr-1.png){#fig-mfhi_pfh_corr width=1152}
+![Correlation between the financial health score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_inc_corr-1.png){#fig-mfhi_inc_corr width=1152}
 :::
 :::
 
@@ -268,6 +321,12 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![Predictors of digital technology adoption](fsdkenya_finhealth_files/figure-html/fig-reg_digtech_drivers-1.png){#fig-reg_digtech_drivers width=1152}
+![Predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_fhscorehi_drivers-1.png){#fig-reg_fhscorehi_drivers width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_fhscorehi_drivers2-1.png){#fig-reg_fhscorehi_drivers2 width=1152}
 :::
 :::

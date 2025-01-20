@@ -53,20 +53,20 @@
     "href": "fsdkenya_finhealth.html#investing-for-the-future",
     "title": "Analysis",
     "section": "Investing for the future",
-    "text": "Investing for the future\n\nInvesting in long-term capital\n\n\n\n\n\n\n\n\nFigure 18: Capital investments\n\n\n\n\n\n\n\nMFHI Component indicator #5\n\n\n\n\n\n\n\n\nFigure 19: MFHI #5: Investing in capital"
+    "text": "Investing for the future\n\nInvesting in long-term capital\n\n\n\n\n\n\n\n\nFigure 18: Capital investments\n\n\n\n\n\n\n\nMFHI Component indicator #5\n\n\n\n\n\n\n\n\nFigure 19: MFHI #5: Investing in capital\n\n\n\n\n\n\n\nMFHI Component indicator #6\n\n\n\n\n\n\n\n\nFigure 20: MFHI #6: Investing in human capital"
   },
   {
     "objectID": "fsdkenya_finhealth.html#multi-dimensional-financial-health-index",
     "href": "fsdkenya_finhealth.html#multi-dimensional-financial-health-index",
     "title": "Analysis",
     "section": "Multi-dimensional financial health index",
-    "text": "Multi-dimensional financial health index\n\nMFHI component indicators\n\n\n\n\n\n\n\n\nFigure 20: MFHI component indicators\n\n\n\n\n\n\n\nMFHI score\n\n\n\n\n\n\n\n\nFigure 21: MFHI score distribution\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 22: MFHI mean score\n\n\n\n\n\n\n\nMFHI Score categories\n\n\n\n\n\n\n\n\nFigure 23: MFHI score categories"
+    "text": "Multi-dimensional financial health index\n\nMFHI component indicators\n\n\n\n\n\n\n\n\nFigure 21: MFHI component indicators\n\n\n\n\n\n\n\nMFHI component indicators\n\n\n# A tibble: 33 × 20\n   indicator indicator_domain indicator_category indicator_stem indicator_branch\n   &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;              &lt;chr&gt;          &lt;chr&gt;           \n 1 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n 2 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    \n 3 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    \n 4 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n 5 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n 6 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    \n 7 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    \n 8 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    \n 9 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    \n10 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n# ℹ 23 more rows\n# ℹ 15 more variables: group &lt;chr&gt;, group_name &lt;chr&gt;, group_cat_val &lt;chr&gt;,\n#   nobs &lt;int&gt;, total &lt;dbl&gt;, total_low &lt;dbl&gt;, total_upp &lt;dbl&gt;, mean &lt;dbl&gt;,\n#   mean_low &lt;dbl&gt;, mean_upp &lt;dbl&gt;, median &lt;dbl&gt;, median_low &lt;dbl&gt;,\n#   median_upp &lt;dbl&gt;, indicator_name &lt;chr&gt;, indicator_group &lt;chr&gt;\n\n\n\n\nMFHI score\n\n\n\n\n\n\n\n\nFigure 22: MFHI score distribution\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 23: MFHI mean score\n\n\n\n\n\n\n\nMFHI Score categories\n\n\n\n\n\n\n\n\nFigure 24: MFHI score categories"
   },
   {
     "objectID": "fsdkenya_finhealth.html#perceptions-of-financial-health",
     "href": "fsdkenya_finhealth.html#perceptions-of-financial-health",
     "title": "Analysis",
     "section": "Perceptions of financial health",
-    "text": "Perceptions of financial health\n\nWorry, confidence and assessments of change in financial status\n\n\n\n\n\n\n\n\nFigure 24: Perceptions of financial health"
+    "text": "Perceptions of financial health\n\nWorry, confidence and assessments of change in financial status\n\n\n\n\n\n\n\n\nFigure 25: Perceptions of financial health\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 26: Correlation between the financial health outcomes and perceptions\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 27: Predictors of financial health"
   }
 ]
