@@ -184,12 +184,12 @@ INDICATORS <- c(
   "resp_edu_group2_sec" = "Respondent characteristics: Educational attainment: Secondary-level", 
   "resp_edu_group2_trt" = "Respondent characteristics: Educational attainment: Tertiary-level", 
 
-  "resp_live_group_empl" = "Respondent characteristics: Economic: Primary income source, Employment", 
-  "resp_live_group_owbs" = "Respondent characteristics: Economic: Primary income source, Own business", 
-  "resp_live_group_farm" = "Respondent characteristics: Economic: Primary income source, Farming",  
-  "resp_live_group_cwrk" = "Respondent characteristics: Economic: Primary income source, Casual work", 
-  "resp_live_group_trns" = "Respondent characteristics: Economic: Primary income source, Transfers", 
-  "resp_live_group_othr" = "Respondent characteristics: Economic: Primary income source, Other",
+  "resp_live_group_empl" = "Respondent characteristics: Economic: Primary income source: Employment", 
+  "resp_live_group_owbs" = "Respondent characteristics: Economic: Primary income source: Own business", 
+  "resp_live_group_farm" = "Respondent characteristics: Economic: Primary income source: Farming",  
+  "resp_live_group_cwrk" = "Respondent characteristics: Economic: Primary income source: Casual work", 
+  "resp_live_group_trns" = "Respondent characteristics: Economic: Primary income source: Transfers", 
+  "resp_live_group_othr" = "Respondent characteristics: Economic: Primary income source: Other",
   
   "resp_live_employment_str" = "Respondent characteristics: Economic: Primary income from employment or other", 
   

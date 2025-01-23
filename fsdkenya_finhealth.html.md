@@ -217,37 +217,6 @@ lightbox: true
 :::
 
 
-### MFHI component indicators
-
-
-::: {.cell .caption-margin}
-::: {.cell-output .cell-output-stdout}
-
-```
-# A tibble: 33 × 20
-   indicator indicator_domain indicator_category indicator_stem indicator_branch
-   <chr>     <chr>            <chr>              <chr>          <chr>           
- 1 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
- 2 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    
- 3 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    
- 4 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
- 5 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
- 6 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    
- 7 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    
- 8 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    
- 9 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    
-10 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    
-# ℹ 23 more rows
-# ℹ 15 more variables: group <chr>, group_name <chr>, group_cat_val <chr>,
-#   nobs <int>, total <dbl>, total_low <dbl>, total_upp <dbl>, mean <dbl>,
-#   mean_low <dbl>, mean_upp <dbl>, median <dbl>, median_low <dbl>,
-#   median_upp <dbl>, indicator_name <chr>, indicator_group <chr>
-```
-
-
-:::
-:::
-
 
 ### MFHI score
 
@@ -276,13 +245,7 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![MFHI score categories, by livelihood](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bylive-1.png){#fig-mfhi_score_cats_bylive width=1152}
-:::
-:::
-
-::: {.cell .caption-margin}
-::: {.cell-output-display}
-![MFHI score categories, by county](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bycounty-1.png){#fig-mfhi_score_cats_bycounty width=1152}
+![MFHI score categories, by county](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bycounty-1.png){#fig-mfhi_score_cats_bycounty width=768}
 :::
 :::
 
@@ -311,9 +274,9 @@ lightbox: true
 :::
 
 
-# Drivers of financial lhealth
+# Drivers of financial health
 
-### Financial health and income
+## Financial health and income
 
 
 ::: {.cell .caption-margin}
@@ -329,7 +292,7 @@ lightbox: true
 :::
 
 
-### Outcomes
+## Outcomes
 
 
 ::: {.cell .caption-margin}
@@ -345,7 +308,7 @@ lightbox: true
 :::
 
 
-### Perceptions
+## Perceptions
 
 
 ::: {.cell .caption-margin}
@@ -361,9 +324,7 @@ lightbox: true
 :::
 
 
-
-
-### Financial services 
+## Financial services 
 
 
 ::: {.cell .caption-margin}

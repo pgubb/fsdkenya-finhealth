@@ -60,13 +60,41 @@
     "href": "fsdkenya_finhealth.html#multi-dimensional-financial-health-index",
     "title": "Analysis",
     "section": "Multi-dimensional financial health index",
-    "text": "Multi-dimensional financial health index\n\nMFHI component indicators\n\n\n\n\n\n\n\n\nFigure 21: MFHI component indicators\n\n\n\n\n\n\n\nMFHI component indicators\n\n\n# A tibble: 33 × 20\n   indicator indicator_domain indicator_category indicator_stem indicator_branch\n   &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;              &lt;chr&gt;          &lt;chr&gt;           \n 1 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n 2 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    \n 3 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    \n 4 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n 5 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n 6 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    \n 7 mfhi_sco… Financial healt… MFHI (gradated)    Coping with r… Score (mean)    \n 8 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    \n 9 mfhi_sco… Financial healt… MFHI (gradated)    Investing in … Score (mean)    \n10 mfhi_sco… Financial healt… MFHI (gradated)    Managing day … Score (mean)    \n# ℹ 23 more rows\n# ℹ 15 more variables: group &lt;chr&gt;, group_name &lt;chr&gt;, group_cat_val &lt;chr&gt;,\n#   nobs &lt;int&gt;, total &lt;dbl&gt;, total_low &lt;dbl&gt;, total_upp &lt;dbl&gt;, mean &lt;dbl&gt;,\n#   mean_low &lt;dbl&gt;, mean_upp &lt;dbl&gt;, median &lt;dbl&gt;, median_low &lt;dbl&gt;,\n#   median_upp &lt;dbl&gt;, indicator_name &lt;chr&gt;, indicator_group &lt;chr&gt;\n\n\n\n\nMFHI score\n\n\n\n\n\n\n\n\nFigure 22: MFHI score distribution\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 23: MFHI mean score\n\n\n\n\n\n\n\nMFHI Score categories\n\n\n\n\n\n\n\n\nFigure 24: MFHI score categories\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 25: MFHI score categories, by livelihood\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 26: MFHI score categories, by county"
+    "text": "Multi-dimensional financial health index\n\nMFHI component indicators\n\n\n\n\n\n\n\n\nFigure 21: MFHI component indicators\n\n\n\n\n\n\n\nMFHI score\n\n\n\n\n\n\n\n\nFigure 22: MFHI score distribution\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 23: MFHI mean score\n\n\n\n\n\n\n\nMFHI Score categories\n\n\n\n\n\n\n\n\nFigure 24: MFHI score categories\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 25: MFHI score categories, by county"
   },
   {
     "objectID": "fsdkenya_finhealth.html#perceptions-of-financial-health",
     "href": "fsdkenya_finhealth.html#perceptions-of-financial-health",
     "title": "Analysis",
     "section": "Perceptions of financial health",
-    "text": "Perceptions of financial health\n\nWorry, confidence and assessments of change in financial status\n\n\n\n\n\n\n\n\nFigure 27: Perceptions of financial health\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 28: Correlation between the perceptions and financial health outcomes\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 29: Predictors of financial health"
+    "text": "Perceptions of financial health\n\nWorry, confidence and assessments of change in financial status\n\n\n\n\n\n\n\n\nFigure 26: Perceptions of financial health\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 27: Correlation between the perceptions and financial health outcomes\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 28: Predictors of financial health"
+  },
+  {
+    "objectID": "fsdkenya_finhealth.html#financial-health-and-income",
+    "href": "fsdkenya_finhealth.html#financial-health-and-income",
+    "title": "Analysis",
+    "section": "Financial health and income",
+    "text": "Financial health and income\n\n\n\n\n\n\n\n\nFigure 29: Correlation between the MFHI score and income\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 30: Correlation between perceptions of financial health and income"
+  },
+  {
+    "objectID": "fsdkenya_finhealth.html#outcomes",
+    "href": "fsdkenya_finhealth.html#outcomes",
+    "title": "Analysis",
+    "section": "Outcomes",
+    "text": "Outcomes\n\n\n\n\n\n\n\n\nFigure 31: Predictors of financial health outcomes\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 32: Predictors of financial health outcomes, by dimension"
+  },
+  {
+    "objectID": "fsdkenya_finhealth.html#perceptions",
+    "href": "fsdkenya_finhealth.html#perceptions",
+    "title": "Analysis",
+    "section": "Perceptions",
+    "text": "Perceptions\n\n\n\n\n\n\n\n\nFigure 33: Predictors of financial health perceptions\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 34: Predictors of financial health perceptions"
+  },
+  {
+    "objectID": "fsdkenya_finhealth.html#financial-services",
+    "href": "fsdkenya_finhealth.html#financial-services",
+    "title": "Analysis",
+    "section": "Financial services",
+    "text": "Financial services\n\n\n\n\n\n\n\n\nFigure 35: Financial service predictors of financial health outcomes\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 36: Financial service predictors of financial health outcomes\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 37: Financial service predictors of financial health\n\n\n\n\n\n\n\n\nFigure 1: Trends in livelihood\nFigure 2: Personal monthly income\nFigure 3: Consistent indicators\nFigure 4: Subjective evaluations of financial status\nFigure 5: Values\nFigure 6: Managing food expenses\nFigure 7: MFHI #1: Managing food expenses\nFigure 8: Managing core non-food expenses\nFigure 9: Managing school fees\nFigure 10: Managing health care expenses\nFigure 11: MFHI #2: Managing core non-food expenses\nFigure 12: MSEs by sector of production\nFigure 13: MFHI #3: Managing debt\nFigure 14: Access to emergency funds\nFigure 15: Access to emergency funds, by source\nFigure 16: Access to emergency funds\nFigure 17: MFHI #4: Access to emergency funds\nFigure 18: Capital investments\nFigure 19: MFHI #5: Investing in capital\nFigure 20: MFHI #6: Investing in human capital\nFigure 21: MFHI component indicators\nFigure 22: MFHI score distribution\nFigure 23: MFHI mean score\nFigure 24: MFHI score categories\nFigure 25: MFHI score categories, by county\nFigure 26: Perceptions of financial health\nFigure 27: Correlation between the perceptions and financial health outcomes\nFigure 28: Predictors of financial health\nFigure 29: Correlation between the MFHI score and income\nFigure 30: Correlation between perceptions of financial health and income\nFigure 31: Predictors of financial health outcomes\nFigure 32: Predictors of financial health outcomes, by dimension\nFigure 33: Predictors of financial health perceptions\nFigure 34: Predictors of financial health perceptions\nFigure 35: Financial service predictors of financial health outcomes\nFigure 36: Financial service predictors of financial health outcomes\nFigure 37: Financial service predictors of financial health"
   }
 ]

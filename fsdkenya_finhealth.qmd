@@ -1716,24 +1716,6 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 
 ```
 
-### MFHI component indicators
-
-```{r, fig.width = 12, fig.asp = 0.55}
-#| label: fig-mfhi_comp_indicators_missing
-#| echo: false
-#| warning: false
-#| fig-cap: "MFHI component indicators"
-#| cap-location: margin
-
-indicators <- c("mfhi_f_secure", "mfhi_nf_secure", "mfhi_d_secure", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any", "mfhi_score_overall_c", "mfhi_score_hi_c")
-
-indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_score_md2d_c|mfhi_score_risk_c|mfhi_score_inv_c")]
-
-ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL) 
-
-ests
-
-```
 
 ### MFHI score
 
@@ -1864,8 +1846,9 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 fig_notes <- ""
 
 indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_score_hi_c|mfhi_score_med_c|mfhi_score_low_c")]
+groups_custom <- c(groups, GROUPS["resp_live_group_fct"])
 
-ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+ests <- compute_summary_mainlevel_1g(indicators, groups_custom, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
 
 factor_params <- list(
   wrap_sizes = list(indicator_category = 60, indicator_stem = 25, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
@@ -1930,83 +1913,7 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 
 
 
-```{r, fig.width = 12, fig.asp = 0.55}
-#| label: fig-mfhi_score_cats_bylive
-#| echo: false
-#| warning: false
-#| fig-cap: "MFHI score categories, by livelihood"
-#| cap-location: margin
-
-fig_notes <- ""
-
-indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_score_hi_c|mfhi_score_med_c|mfhi_score_low_c")]
-groups_custom <- GROUPS[c("resp_live_group_fct")]
-  
-ests <- compute_summary_mainlevel_1g(indicators, groups_custom, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
-
-factor_params <- list(
-  wrap_sizes = list(indicator_category = 60, indicator_stem = 25, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
-  reverse_order = list(indicator_category = FALSE, indicator_stem = TRUE, indicator_branch = FALSE, group_name = FALSE, group_cat_val = FALSE), 
-  order_vars = list(indicator_category = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
-)
-
-fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.05) 
-
-labels <- list(
-  title = "Multi-dimensional financial health index score categories, by main source of income",
-  subtitle =  "Adults (% 18+)",
-  yax_ti = NULL,
-  xax_ti = NULL,
-  caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
-)
-
-figparams <- list(
-  geom_type = "bar", # One of "bar" or "tile"
-  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = FALSE), 
-  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3.25),
-  catlabels = list(show = FALSE), 
-  errorbars = list(show = FALSE)
-)
-
-palette <- c("#41BBD9", "#FF9F1C",  "#DB504A")
-names(palette) <- c("High (0.6-1)", "Medium (0.3-0.6)", "Low (0-0.3)")
-
-scales <- list(
-  fillcolor = list(palette = palette), 
-  yaxis = list(limits = c(0, 1.0001), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
-)
-
-legend <- list(
-  show = TRUE, 
-  title = NULL, 
-  nrows = 1, 
-  ncols = 1, 
-  reverse = TRUE
-)
-
-vars <- list(
-  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
-)
-
-facets <- list(
-  type = "grid", 
-  rows = "group_name", 
-  cols = "indicator_category",
-  nrows = 1, 
-  ncols = 1,
-  scales = "free", 
-  space = "free",
-  drop_row_label = FALSE, 
-  drop_col_label = FALSE, 
-  add_dividers = FALSE
-)
-
-fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
-
-```
-
-
-```{r, fig.width = 12, fig.asp = 0.75}
+```{r, fig.width = 8, fig.asp = 0.8}
 #| label: fig-mfhi_score_cats_bycounty
 #| echo: false
 #| warning: false
@@ -2296,9 +2203,9 @@ fig_regests(fig_data, labels, facets = facets, barparams, scales, effect_desc = 
 
 ```
 
-# Drivers of financial lhealth
+# Drivers of financial health
 
-### Financial health and income
+## Financial health and income
 
 ```{r, fig.width = 12, fig.asp = 0.55}
 #| label: fig-mfhi_inc_corr
@@ -2368,7 +2275,7 @@ ggplot(data = FA2024 %>% filter(resp_age_group2_fct == "[25-65)"),
 
 ```
 
-### Outcomes
+## Outcomes
 
 ```{r, fig.width = 12, fig.asp = 0.55}
 #| label: fig-reg_mfhiscore_drivers
@@ -2501,7 +2408,7 @@ fig_regests(fig_data, labels, facets = facets, barparams, scales, effect_desc = 
 
 ```
 
-### Perceptions
+## Perceptions
 
 ```{r, fig.width = 12, fig.asp = 0.55}
 #| label: fig-reg_pfhscore_drivers
@@ -2634,9 +2541,7 @@ fig_regests(fig_data, labels, facets = facets, barparams, scales, effect_desc = 
 
 ```
 
-
-
-### Financial services 
+## Financial services 
 
 ```{r, fig.width = 12, fig.asp = 0.45}
 #| label: fig-reg_mfhiscore_findrivers
