@@ -31,6 +31,12 @@ prep_fig_data <- function(ests, factor_params, include_valuelabel = TRUE, valuel
   order_vars <- factor_params[["order_vars"]]
   reverse_order <- factor_params[["reverse_order"]]
   
+  if ("hh_county" %in% unique(ests$group)) { 
+    groupcat_levels <- unique(ests$group_cat_val)
+  } else { 
+    groupcat_levels <- GROUPCAT_LEVELS
+    }
+  
   ests %>%
     mutate(
       indicator_category = style_factors(indicator_category, wrap_sizes[["indicator_category"]], reverse_order[["indicator_category"]], order_vars[["indicator_category"]]), 
@@ -47,7 +53,7 @@ prep_fig_data <- function(ests, factor_params, include_valuelabel = TRUE, valuel
     group_by(group_name) %>% 
     mutate(
       group_cat_val = style_factors(group_cat_val, wrap_sizes[["group_cat_val"]], reverse_order[["group_cat_val"]], order_vars[["group_cat_val"]]), 
-      group_cat_val = factor(group_cat_val, levels = str_wrap(GROUPCAT_LEVELS, wrap_sizes[["group_cat_val"]]), ordered = TRUE)
+      group_cat_val = factor(group_cat_val, levels = str_wrap(groupcat_levels, wrap_sizes[["group_cat_val"]]), ordered = TRUE)
     ) %>% 
     ungroup() %>%
     filter(!is.na(group_cat_val)) %>% 

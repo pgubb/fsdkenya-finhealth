@@ -108,6 +108,7 @@ prep_2024 <- function(data) {
       
       # Household characteristics ----------------
       
+      hh_county = str_to_title(A01), 
       hh_urbrur = ifelse(A08 == 1, "Rural", "Urban"), 
       
       hh_geo = case_when(
@@ -764,9 +765,86 @@ prep_2024 <- function(data) {
       fin_reg_sacco = ifelse(C1_12a == 9, NA, fin_reg_sacco), 
       
       fin_reg_chama = ifelse(C1_12b == 1, 1, 0), 
-      fin_reg_chama = ifelse(C1_12b == 9, NA, fin_reg_chama)
-
+      fin_reg_chama = ifelse(C1_12b == 9, NA, fin_reg_chama),
+      
+      # Current usage of savings
+      
+      fin_sav_bankmfb = binarize_1else0(C1_1a), 
+      
+      fin_sav_mfi = binarize_1else0(C1_1b), 
+      
+      fin_sav_mobilebanking = binarize_1else0(C1_2), 
+      
+      fin_sav_mobilemoney = binarize_1else0(C1_3), 
+      
+      fin_sav_sacco = binarize_1else0(C1_4), 
+      
+      fin_sav_chama = binarize_1else0(C1_5), 
+      
+      fin_sav_ff = binarize_1else0(C1_6), 
+      
+      fin_sav_secret = binarize_1else0(C1_7), 
+      
+      fin_sav_digapp = binarize_1else0(C1_8),
+      
+      # Current usage of loans
+      
+      fin_loan_bank = binarize_1else0(C1_13a), 
+      
+      fin_loan_mfb = binarize_1else0(C1_13b), 
+      
+      fin_loan_overdraft = binarize_1else0(C1_13c), 
+      
+      fin_loan_creditcard = binarize_1else0(C1_14), 
+      
+      fin_loan_mobilebanking = binarize_1else0(C1_15), 
+      
+      fin_loan_mobilemoney = binarize_1else0(C1_16), 
+      
+      fin_loan_sacco = binarize_1else0(C1_17), 
+      
+      fin_laon_mfi = binarize_1else0(C1_18), 
+      
+      fin_laon_digapp = binarize_1else0(C1_19), 
+      
+      fin_loan_shylocks = binarize_1else0(C1_20), 
+      
+      fin_loan_chama = binarize_1else0(C1_21), 
+      
+      fin_loan_gov = binarize_1else0(C1_22), 
+      
+      fin_loan_hustler = binarize_1else0(C1_23), 
+      
+      fin_laon_employer = binarize_1else0(C1_24), 
+      
+      fin_loan_ff = binarize_1else0(C1_25), 
+      
+      fin_loan_shopkeepercash = binarize_1else0(C1_26), 
+      
+      fin_loan_shopkeepergoods = binarize_1else0(C1_27), 
+      
+      fin_loan_buyer = binarize_1else0(C1_28), 
+      
+      fin_loan_hirepurchase = binarize_1else0(C1_29), 
+      
+      fin_loan_insurance = binarize_1else0(C1_30), 
+      
+      fin_loan_mortgage = binarize_1else0(C1_31),
+      
+      # Aggregate categories: 
+      
+      fin_sav_agg4_formal_trd = ifelse(fin_sav_bankmfb == 1 | fin_sav_sacco == 1 | fin_sav_mfi == 1, 1, 0), 
+      fin_sav_agg4_formal_dig = ifelse(fin_sav_mobilebanking == 1 | fin_sav_mobilemoney == 1 | fin_sav_digapp == 1, 1, 0), 
+      fin_sav_agg4_informal = ifelse(fin_sav_chama == 1 | fin_sav_ff == 1, 1, 0), 
+      fin_sav_agg4_cash = fin_sav_secret,
+      
+      fin_loan_agg4_formal_trd = ifelse(fin_loan_bank == 1 | fin_loan_mfb == 1 | fin_loan_overdraft == 1 | fin_loan_creditcard == 1 | fin_loan_sacco == 1 | fin_laon_mfi == 1 | fin_loan_mortgage == 1, 1, 0), 
+      fin_loan_agg4_formal_dig = ifelse(fin_loan_mobilebanking == 1 | fin_loan_mobilemoney == 1 | fin_laon_digapp == 1, 1, 0), 
+      fin_loan_agg4_informal = ifelse(fin_loan_shylocks == 1 | fin_loan_chama == 1 | fin_loan_ff == 1 | fin_loan_shopkeepercash == 1 | fin_loan_shopkeepergoods == 1, 1, 0), 
+      fin_loan_agg4_other = ifelse(fin_loan_hirepurchase == 1 | fin_loan_insurance == 1 | fin_loan_buyer == 1, 1, 0)
+      
     ) %>%
+    
     
     # -- Uses savings or credit for mainly for productive purposes/ long-term assets
 

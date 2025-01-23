@@ -144,6 +144,12 @@ scale_values_2 <- function(x, min, max){
 }
 
 
+binarize_1else0 <- function(x, NAvals = c(9)) { 
+  x <- ifelse(x == 1, 1, 0)
+  x <- ifelse(x %in% c(NAvals), NA, x)
+  return(x)
+}
+
 # ++++++++++++++++++++++++++++
 # flattenCorrMatrix
 # ++++++++++++++++++++++++++++

@@ -7,8 +7,7 @@ lightbox: true
 
 
 
-
-# Contextual factors 
+# Contextual factors
 
 ## Main income source
 
@@ -20,7 +19,7 @@ lightbox: true
 :::
 
 
-## Personal monthly income levels 
+## Personal monthly income levels
 
 
 ::: {.cell .caption-margin}
@@ -28,7 +27,6 @@ lightbox: true
 ![Personal monthly income](fsdkenya_finhealth_files/figure-html/fig-trends_income_level-1.png){#fig-trends_income_level width=1152}
 :::
 :::
-
 
 
 # Trends in the financial health index
@@ -41,8 +39,7 @@ lightbox: true
 :::
 
 
-## Subjective evaluations of changes to financial status 
-
+## Subjective evaluations of changes to financial status
 
 
 ::: {.cell .caption-margin}
@@ -62,8 +59,7 @@ lightbox: true
 :::
 
 
-
-# The new multi-dimensional financial health index 
+# The new multi-dimensional financial health index
 
 ## Managing day-to-day
 
@@ -79,6 +75,7 @@ lightbox: true
 
 ### MFHI Component indicator #1
 
+
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![MFHI #1: Managing food expenses](fsdkenya_finhealth_files/figure-html/fig-mfhi_m2d2_food_main-1.png){#fig-mfhi_m2d2_food_main width=1152}
@@ -87,6 +84,7 @@ lightbox: true
 
 
 ### Managing core non-food expenses
+
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
@@ -111,7 +109,6 @@ lightbox: true
 :::
 
 
-
 ### MFHI Component indicator #2
 
 
@@ -133,7 +130,6 @@ lightbox: true
 
 
 ### MFHI Component indicator #3
-
 
 
 ::: {.cell .caption-margin}
@@ -181,6 +177,7 @@ lightbox: true
 
 ### Investing in long-term capital
 
+
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![Capital investments](fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_capital-1.png){#fig-mfhi_inv_capital width=1152}
@@ -188,8 +185,8 @@ lightbox: true
 :::
 
 
-
 ### MFHI Component indicator #5
+
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
@@ -200,6 +197,7 @@ lightbox: true
 
 ### MFHI Component indicator #6
 
+
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![MFHI #6: Investing in human capital](fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_main_c2-1.png){#fig-mfhi_inv_main_c2 width=1152}
@@ -209,8 +207,7 @@ lightbox: true
 
 ## Multi-dimensional financial health index
 
-
-### MFHI component indicators 
+### MFHI component indicators
 
 
 ::: {.cell .caption-margin}
@@ -220,8 +217,7 @@ lightbox: true
 :::
 
 
-
-### MFHI component indicators 
+### MFHI component indicators
 
 
 ::: {.cell .caption-margin}
@@ -269,7 +265,6 @@ lightbox: true
 :::
 
 
-
 ### MFHI Score categories
 
 
@@ -279,10 +274,23 @@ lightbox: true
 :::
 :::
 
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![MFHI score categories, by livelihood](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bylive-1.png){#fig-mfhi_score_cats_bylive width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![MFHI score categories, by county](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bycounty-1.png){#fig-mfhi_score_cats_bycounty width=1152}
+:::
+:::
+
 
 ## Perceptions of financial health
 
 ### Worry, confidence and assessments of change in financial status
+
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
@@ -292,7 +300,7 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![Correlation between the financial health outcomes and perceptions](fsdkenya_finhealth_files/figure-html/fig-mfhi_pfh_corr-1.png){#fig-mfhi_pfh_corr width=1152}
+![Correlation between the perceptions and financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-mfhi_pfh_corr-1.png){#fig-mfhi_pfh_corr width=1152}
 :::
 :::
 
@@ -310,23 +318,68 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![Correlation between the financial health score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_inc_corr-1.png){#fig-mfhi_inc_corr width=1152}
-:::
-:::
-
-
-### Predictors of financial health
-
-
-
-::: {.cell .caption-margin}
-::: {.cell-output-display}
-![Predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_fhscorehi_drivers-1.png){#fig-reg_fhscorehi_drivers width=1152}
+![Correlation between the MFHI score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_inc_corr-1.png){#fig-mfhi_inc_corr width=1152}
 :::
 :::
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![Predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_fhscorehi_drivers2-1.png){#fig-reg_fhscorehi_drivers2 width=1152}
+![Correlation between perceptions of financial health and income](fsdkenya_finhealth_files/figure-html/fig-pfh_inc_corr-1.png){#fig-pfh_inc_corr width=1152}
+:::
+:::
+
+
+### Outcomes
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_drivers-1.png){#fig-reg_mfhiscore_drivers width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Predictors of financial health outcomes, by dimension](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_dim_drivers-1.png){#fig-reg_mfhiscore_dim_drivers width=1152}
+:::
+:::
+
+
+### Perceptions
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Predictors of financial health perceptions](fsdkenya_finhealth_files/figure-html/fig-reg_pfhscore_drivers-1.png){#fig-reg_pfhscore_drivers width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Predictors of financial health perceptions](fsdkenya_finhealth_files/figure-html/fig-reg_mfhipfhscorehi_drivers-1.png){#fig-reg_mfhipfhscorehi_drivers width=1152}
+:::
+:::
+
+
+
+
+### Financial services 
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers-1.png){#fig-reg_mfhiscore_findrivers width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers2-1.png){#fig-reg_mfhiscore_findrivers2 width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers3-1.png){#fig-reg_mfhiscore_findrivers3 width=1152}
 :::
 :::
