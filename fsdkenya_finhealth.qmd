@@ -1913,7 +1913,7 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 
 
 
-```{r, fig.width = 8, fig.asp = 0.8}
+```{r, fig.width = 11, fig.asp = 0.8}
 #| label: fig-mfhi_score_cats_bycounty
 #| echo: false
 #| warning: false

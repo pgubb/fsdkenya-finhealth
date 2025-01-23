@@ -245,7 +245,7 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![MFHI score categories, by county](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bycounty-1.png){#fig-mfhi_score_cats_bycounty width=768}
+![MFHI score categories, by county](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bycounty-1.png){#fig-mfhi_score_cats_bycounty width=1056}
 :::
 :::
 
