@@ -158,7 +158,7 @@ capture_terms_clse <- function(depvar, maineffects, confounds, data) {
     flag <- 0
   }
   
-  lm_fit <- feols(f, cluster = ~ sample_psu, data = data)
+  lm_fit <- feols(f, cluster = ~ sample_psu, data = data, weights = ~ sample_weights)
   rsq <- glance(lm_fit)$adj.r.squared
   tidy(lm_fit) %>%
     mutate(adj_rsquared = rsq, depvar = depvar, confounds_flag = flag) %>%

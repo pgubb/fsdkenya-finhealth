@@ -99,6 +99,18 @@ INDICATORS <- c(
   "mfhi_ef_30d_srcinc_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: From regular income",
   "mfhi_ef_30d_srcoth_p_difany" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise 1/20 of GNI per capita in 30 days: Other",
   
+  "mfhi_ef_30d_srcborr_p_bnk" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Bank or MFB",
+  "mfhi_ef_30d_srcborr_p_mb" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Mobile banking", 
+  "mfhi_ef_30d_srcborr_p_mm" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Mobile money provider",
+  "mfhi_ef_30d_srcborr_p_nbfi" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: SACCO/MFI",
+  "mfhi_ef_30d_srcborr_p_ml" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Private moneylender", 
+  "mfhi_ef_30d_srcborr_p_sg" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Chama",  
+  "mfhi_ef_30d_srcborr_p_gov"  = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Government", 
+  "mfhi_ef_30d_srcborr_p_sn" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Friends or family", 
+  "mfhi_ef_30d_srcborr_p_dig" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Digital app loan",  
+  "mfhi_ef_30d_srcborr_p_shp"= "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Shopkeeper", 
+  "mfhi_ef_30d_srcborr_p_oth" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Source of credit: Other",
+  
   "mfhi_ef_3d_srcany_dkr" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: Don't know/refused", 
   "mfhi_ef_3d_srcany_np"  = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: No", 
   "mfhi_ef_3d_srcany_p" = "Financial health outcomes/ Coping with risk: Access to emergency funds: Can raise KSH 3,500 (Rural) or KSH 6,000 (Urban) in 3 days: Yes", 
@@ -133,7 +145,14 @@ INDICATORS <- c(
   "mfhi_score_risk_c" = "Financial health outcomes/ Summary: MFHI (gradated): Coping with risk: Score (mean)", 
   "mfhi_score_inv_c" = "Financial health outcomes/ Summary: MFHI (gradated): Investing in capital: Score (mean)",
   
+  "mfhi_score_md2d_c_aw" = "Financial health outcomes/ Summary: MFHI (gradated & age weighted): Managing day to day: Score (mean)", 
+  "mfhi_score_risk_c_aw" = "Financial health outcomes/ Summary: MFHI (gradated & age weighted): Coping with risk: Score (mean)", 
+  "mfhi_score_inv_c_aw" = "Financial health outcomes/ Summary: MFHI (gradated & age weighted): Investing in capital: Score (mean)",
+  
+  
   "mfhi_score_overall_c" =  "Financial health outcomes/ Summary: MFHI (gradated): Overall: Score (mean)", 
+  "mfhi_score_overall_c_aw"= "Financial health outcomes/ Summary: MFHI (gradated & age-weighted): Overall: Score (mean)", 
+
   
   "mfhi_score_hi" = "Financial health outcomes/ Summary: MFHI (discrete): Score category: High (0.6-1)", 
   "mfhi_score_med" = "Financial health outcomes/ Summary: MFHI (discrete): Score category: Medium (0.3-0.6)", 
@@ -142,6 +161,10 @@ INDICATORS <- c(
   "mfhi_score_hi_c" = "Financial health outcomes/ Summary: MFHI (gradated): Score category: High (0.6-1)", 
   "mfhi_score_med_c" = "Financial health outcomes/ Summary: MFHI (gradated): Score category: Medium (0.3-0.6)", 
   "mfhi_score_low_c" = "Financial health outcomes/ Summary: MFHI (gradated): Score category: Low (0-0.3)", 
+  
+  "mfhi_score_hi_c_aw" = "Financial health outcomes/ Summary: MFHI (gradated & age-weighted): Score category: High (0.6-1)", 
+  "mfhi_score_med_c_aw" = "Financial health outcomes/ Summary: MFHI (gradated & age-weighted): Score category: Medium (0.3-0.6)", 
+  "mfhi_score_low_c_aw"= "Financial health outcomes/ Summary: MFHI (gradated & age-weighted): Score category: Low (0-0.3)", 
   
   "mfhi_tc_0" = "Time consistent MFHI indicators: Total true indicators (of 5): None",                         
   "mfhi_tc_any1" = "Time consistent MFHI indicators: Total true indicators (of 5): Any one",                          
@@ -178,8 +201,12 @@ INDICATORS <- c(
   
   "hh_urbrur_Urban" = "Household characteristics: HH location: Urban", 
   "hh_size_all_c" = "Household characteristics: HH size: Household size (mean centered)", 
+  "hh_chronicdisease" = "Household characteristics: Health: Someone in household has a chronic disease", 
+  "resp_disability" = "Respondent characteristics: Health: Has disability", 
+  
   "resp_gender_group_wmn" = "Respondent characteristics: Demographics: Women", 
   "resp_age_yrs_c_5" = "Respondent characteristics: Demographics: Respondent age (mean centered, +5 years)", 
+  "resp_age_yrs_c_5_sq" = "Respondent characteristics: Demographics: Respondent age (mean centered, +5 years) squared", 
   "resp_edu_group2_pri" = "Respondent characteristics: Educational attainment: Primary-level", 
   "resp_edu_group2_sec" = "Respondent characteristics: Educational attainment: Secondary-level", 
   "resp_edu_group2_trt" = "Respondent characteristics: Educational attainment: Tertiary-level", 
@@ -196,11 +223,18 @@ INDICATORS <- c(
   "resp_income" = "Respondent characteristics: Economic: Personal monthly income (KSh)", 
   "resp_income_c_1000" = "Respondent characteristics: Economic: Personal monthly income [mean centered, +KSh 1,000]", 
   "resp_income_c_5000" = "Respondent characteristics: Economic: Personal monthly income [mean centered, +KSh 5,000]", 
+  "resp_income_c_5000_2" = "Respondent characteristics: Economic: Personal monthly income [mean centered, +KSh 5,000] squared",
   "resp_income_var" = "Respondent characteristics: Economic: Yearly variation in personal monthly income (%)",
+  "resp_income_var_c" = "Respondent characteristics: Economic: Yearly variation in personal monthly income (%) [mean centered]",
+  "resp_wlth_any" = "Respondent characteristics: Economic: Holds or keeps land, livestock, jewellery or other assets to get money in the future",
   "resp_live_trnsf_in" = "Respondent characteristics: Economic: Income source, Government cash transfer program or pension", 
   "fb_financial_plan" = "Respondent characteristics: Financial behaviors: Has a spending plan", 
   "mfhi_1_2" = "Respondent characteristics: Financial behaviors: Has a spending plan", 
+  
+  "fb_decisions" = "Respondent characteristics: Financial behaviors: Involved in financial decision-making",
   "fb_gambling" = "Respondent characteristics: Financial behaviors: Has gambled in the past 12 months", 
+  "fb_gambling_spend" = "Respondent characteristics: Financial behaviors: Avg. monthly spending on gambling (KSh)",
+  "fb_gambling_spend_inc" = "Respondent characteristics: Financial behaviors: Avg. monthly spending on gambling as a share of income (%)", 
   "fb_emergency_savings" = "Respondent characteristics: Financial behaviors: Currently keeps money aside for emergencies", 
   "fl_literacy_all" = "Respondent characteristics: Financial literacy: Understand interest, inflation and can understand SMS", 
   "sc_ff_finhelp" = "Respondent characteristics: Social capital: Have people who can provide financial support if needed", 
@@ -210,20 +244,34 @@ INDICATORS <- c(
   "goals_group_live" = "Respondent characteristics: Personal values: Most important goal: Getting or advancing job, career, livelihood", 
   "goals_group_other" = "Respondent characteristics: Personal values: Most important goal: Other", 
   
+  "fin_debt_total" = "Financial Access/Usage: Debt: Total outstanding debt across all loans (KSh)", 
+  "fin_debt_any" = "Financial Access/Usage: Debt: Has outstanding debt from any source", 
+  "fin_debt_inc" = "Financial Access/Usage: Debt: Total outstanding debt as a share of monthly income (%)", 
+  "fin_debt_high" = "Financial Access/Usage: Debt: Total outstanding debt is greater than 50% of monthly income ", 
+  "fin_debtservice_spend" = "Financial Access/Usage: Debt: Total debt service payments made in last month (KSh)", 
+  "fin_debtservice_inc" = "Financial Access/Usage: Debt: Total debt service as a share of monthly income (%)", 
+  "fin_debtservice_high" = "Financial Access/Usage: Debt: Total debt service is greater than 50% of monthly income", 
+  "fin_debt_defaulted_dnp" = "Financial Access/Usage: Debt: In past 12 months did not pay back a loan at all", 
+  "fin_debt_defaulted_any" = "Financial Access/Usage: Debt: In past 12 months did not pay back a loan, missed payment or paid late", 
+  
   "fin_reg_mobilemoney" = "Financial Access/Usage: Transaction devices: Registered account/member: Mobile money", 
   "fin_reg_mobilebanking" = "Financial Access/Usage: Transaction devices: Registered account/member: Mobile banking", 
   "fin_reg_bankmfb" = "Financial Access/Usage: Transaction devices: Registered account/member: Bank or microfinance bank", 
   "fin_reg_sacco" = "Financial Access/Usage: Transaction devices: Registered account/member: SACCO", 
   "fin_reg_chama" = "Financial Access/Usage: Transaction devices: Registered account/member: Chama", 
+  "fin_reg_ff" = "Financial Access/Usage: Transaction devices: Registered account/member: Friends or family", 
+  "fin_reg_insurance" = "Financial Access/Usage: Transaction devices: Registered account/member: Insurance", 
   
   "fin_sav_agg4_formal_trd" = "Financial Access/Usage: Savings: Any formal, traditional account: Currently uses", 
   "fin_sav_agg4_formal_dig" =  "Financial Access/Usage: Savings: Any formal, digital account: Currently uses",           
-  "fin_sav_agg4_informal" = "Financial Access/Usage: Savings: Any informal strategy: Currently uses",             
+  "fin_sav_agg4_informal" = "Financial Access/Usage: Savings: Any informal strategy: Currently uses",  
+  "fin_sav_agg4_informal_exchama" = "Financial Access/Usage: Savings: Any informal strategy (excluding Chamas): Currently uses",   
   "fin_sav_agg4_cash" =  "Financial Access/Usage: Savings: Secret place: Currently uses", 
   
   "fin_loan_agg4_formal_trd" = "Financial Access/Usage: Credit: Any formal traditional loan: Currently uses",        
   "fin_loan_agg4_formal_dig"  = "Financial Access/Usage: Credit: Any formal digital loan: Currently uses",        
-  "fin_loan_agg4_informal"  = "Financial Access/Usage: Credit: Any informal loan: Currently uses",          
+  "fin_loan_agg4_informal"  = "Financial Access/Usage: Credit: Any informal loan: Currently uses", 
+  "fin_loan_agg4_informal_exchama" = "Financial Access/Usage: Credit: Any informal loan (excluding Chamas): Currently uses", 
   "fin_loan_agg4_other"  = "Financial Access/Usage: Credit: Other loan: Currently uses", 
   
   "fin_sav_bankmfb" = "Financial Access/Usage: Savings: Bank or microfinance bank: Currently uses",         
@@ -263,6 +311,7 @@ GROUPS <- c("resp_all" = "National",
             "hh_urbrur" = "Household location", 
             "resp_edu_group3_fct" = "Educational attainment",
             "resp_income_agg3_str" = "Income group", 
+            "resp_wealth_agg3_str" = "Wealth group", 
             "resp_live_group_fct" = "Livelihood", 
             "resp_age_group_fct" = "Age group")
 

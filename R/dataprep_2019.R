@@ -656,7 +656,7 @@ data <- data %>%
     fin_debt_any = ifelse(fin_debt_total > 0, 1, 0),
     fin_debt_inc = fin_debt_total/(ifelse(resp_income == 0, 1, resp_income)),
     fin_debt_high = ifelse(fin_debt_inc > 0.5, 1, 0),
-    
+      
     fin_debt_repaystress = ifelse(e2b1 == 1 | e2b3 == 1 | e2b4 == 1, 1, 0),
     fin_debt_repaystress_noborr = ifelse(e2b3 == 1 | e2b4 == 1, 1, 0),
     fin_debt_repaystress_sellassets = ifelse(e2b3 == 1, 1, 0),

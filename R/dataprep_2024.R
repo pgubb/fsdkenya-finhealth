@@ -1,4 +1,10 @@
 
+# Age weight adjustment parameters
+
+# Parameters
+ALPHA = 0.01 # scaling parameter
+BETA = 1.75 # Dertermines how quickly the declien accelerates at older ages
+A_0 = 60 # Reference age where decline starts
 
 prep_2024 <- function(data) { 
   
@@ -111,6 +117,9 @@ prep_2024 <- function(data) {
       hh_county = str_to_title(A01), 
       hh_urbrur = ifelse(A08 == 1, "Rural", "Urban"), 
       
+      hh_chronicdisease = ifelse(A23 == 1, 1, 0),
+      hh_chronicdisease = ifelse(A23 == 99, NA, hh_chronicdisease), 
+      
       hh_geo = case_when(
         hh_urbrur == "Rural" & (county %in% ASAL_counties_FA) ~ "rur_asal",
         county == 47 ~ "urb_nbo",
@@ -137,12 +146,15 @@ prep_2024 <- function(data) {
       
       resp_all = "All adults",
       
+      resp_disability = ifelse(A24i %in% c(3,4) | A24ii %in% c(3,4) | A24iii %in% c(3,4) | A24iv %in% c(3,4) | A24v %in% c(3,4) | A24vi %in% c(3,4), 1, 0), 
+      
       resp_gender_group = ifelse(A13 == 1, "men", "wmn"),
       resp_gender_fct = factor(gender_levels[resp_gender_group], gender_levels, ordered = TRUE),
       
       resp_age_yrs = A18, 
       resp_age_yrs_c = resp_age_yrs - mean(resp_age_yrs, na.rm = TRUE), 
       resp_age_yrs_c_5 = resp_age_yrs_c/5,
+      resp_age_yrs_c_5_sq = resp_age_yrs_c_5^2,
         
       resp_age_group = case_when(
         resp_age_yrs < 25 ~ "age_18_25",
@@ -265,12 +277,21 @@ prep_2024 <- function(data) {
       resp_income_min = ifelse(is.na(resp_income_min) & resp_income == resp_income_max, resp_income_max, resp_income_min), 
       resp_income_max = ifelse(is.na(resp_income_max) & resp_income == resp_income_min, resp_income_min, resp_income_max), 
       
-      resp_income_var = (resp_income_max - resp_income_min)/resp_income,
+      x = resp_income_max, 
+      y = resp_income_min, 
+      
+      resp_income_max = ifelse(y > x, resp_income_min, resp_income_max), 
+      resp_income_min = ifelse(y > x, x, y),
+      
+      resp_income_var = abs(resp_income_max - resp_income_min)/resp_income_min,
+      resp_income_var_c = resp_income_var - mean(resp_income_var, na.rm = TRUE),
       
       resp_income_c = resp_income - mean(resp_income, na.rm = TRUE), 
       resp_income_c_1000 = resp_income_c/1000, 
       resp_income_c_5000 = resp_income_c/5000, 
+      resp_income_c_5000_2 = resp_income_c_5000^2, 
       resp_income_log = log(resp_income),  
+      resp_income_c_log = log(resp_income_c),  
       
       resp_inc_group = case_when(
         resp_income < 2500 ~ "inc_1",
@@ -297,7 +318,12 @@ prep_2024 <- function(data) {
         resp_income_quintile %in% c("Richest 20%") ~ "Richest 20%", 
         ), 
       
- 
+      resp_wealth_quintile = Quintiles, 
+      resp_wealth_agg3_str = case_when(
+        resp_wealth_quintile %in% c(1, 2) ~ "Poorest 40%", 
+        resp_wealth_quintile %in% c(3, 4) ~ "Middle 40%", 
+        resp_wealth_quintile %in% c(5) ~ "Richest 20%", 
+      ), 
       
       # FINANCIAL HEALTH OBJECTIVE OUTCOMES ---------
       
@@ -473,16 +499,27 @@ prep_2024 <- function(data) {
       # Source of loans
       
       mfhi_ef_30d_srcborr_p_bnk = ifelse(B1Hi == 1, 1, 0), 
+      mfhi_ef_30d_srcborr_p_bnk = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_bnk),
       mfhi_ef_30d_srcborr_p_mb = ifelse(B1Hi == 2, 1, 0), 
+      mfhi_ef_30d_srcborr_p_mb = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_mb),
       mfhi_ef_30d_srcborr_p_mm = ifelse(B1Hi == 3, 1, 0), 
+      mfhi_ef_30d_srcborr_p_mm = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_mm),
       mfhi_ef_30d_srcborr_p_nbfi = ifelse(B1Hi %in% c(4,5), 1, 0), 
+      mfhi_ef_30d_srcborr_p_nbfi = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_nbfi),
       mfhi_ef_30d_srcborr_p_ml = ifelse(B1Hi == 6, 1, 0), 
+      mfhi_ef_30d_srcborr_p_ml = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_ml),
       mfhi_ef_30d_srcborr_p_sg = ifelse(B1Hi == 7, 1, 0), 
+      mfhi_ef_30d_srcborr_p_sg = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_sg),
       mfhi_ef_30d_srcborr_p_gov = ifelse(B1Hi %in% c(8,9), 1, 0), 
+      mfhi_ef_30d_srcborr_p_gov = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_gov),
       mfhi_ef_30d_srcborr_p_sn = ifelse(B1Hi %in% c(10,11), 1, 0), 
+      mfhi_ef_30d_srcborr_p_sn = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_sn),
       mfhi_ef_30d_srcborr_p_dig = ifelse(B1Hi %in% c(12), 1, 0), 
+      mfhi_ef_30d_srcborr_p_dig = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_dig),
       mfhi_ef_30d_srcborr_p_shp = ifelse(B1Hi == 13, 1, 0), 
+      mfhi_ef_30d_srcborr_p_shp = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_shp),
       mfhi_ef_30d_srcborr_p_oth = ifelse(B1Hi %in% c(14, 15), 1, 0), 
+      mfhi_ef_30d_srcborr_p_oth = ifelse(mfhi_ef_30d_srcborr_p_difany == 0, NA, mfhi_ef_30d_srcborr_p_oth),
       
       # Capital investments -------------
       # i = investing for the future
@@ -579,7 +616,26 @@ prep_2024 <- function(data) {
       w_md2d_adj = w_md2d/w_total, 
       w_risk_adj = w_risk/w_total, 
       w_inv_adj = w_inv/w_total, 
-      w_total_adj = w_md2d_adj*n_md2d + w_risk_adj*n_risk + w_inv_adj*n_inv
+      w_total_adj = w_md2d_adj*n_md2d + w_risk_adj*n_risk + w_inv_adj*n_inv, 
+      
+      # Age adjusted weights
+      
+      aw = ifelse(resp_age_yrs < A_0, 1, exp(-ALPHA*(resp_age_yrs - A_0)^BETA)), 
+      w_dim_inv_aw = w_dim*aw, 
+      w_inv_aw = w_dim_inv_aw*(1/n_inv), 
+      w_inv_aw = ifelse(n_inv == 0, 0, w_inv_aw), 
+      w_dim_oth_aw = (1-w_dim_inv_aw)/2, 
+      w_risk_aw = w_dim_oth_aw*(1/n_risk), 
+      w_risk_aw = ifelse(n_risk == 0, 0, w_risk_aw),
+      w_md2d_aw = w_dim_oth_aw*(1/n_md2d), 
+      w_md2d_aw = ifelse(n_md2d == 0, 0, w_md2d_aw), 
+      
+      # Restandardizing weights to account for cases where all indicators in a domain are missing
+      w_total_aw = w_md2d_aw*n_md2d + w_risk_aw*n_risk + w_inv_aw*n_inv, 
+      w_md2d_adj_aw = w_md2d_aw/w_total_aw, 
+      w_risk_adj_aw = w_risk_aw/w_total_aw, 
+      w_inv_adj_aw = w_inv_aw/w_total_aw, 
+      w_total_adj_aw = w_md2d_adj_aw*n_md2d + w_risk_adj_aw*n_risk + w_inv_adj_aw*n_inv, 
       
     ) %>% 
         
@@ -593,9 +649,13 @@ prep_2024 <- function(data) {
         
         mfhi_score_md2d_c = w_md2d_adj*sum(mfhi_f_secure_c, mfhi_nf_secure_c, mfhi_d_secure, na.rm = TRUE),
         mfhi_score_risk_c = w_risk_adj*sum(mfhi_ef_secure_c, na.rm = TRUE), 
-        mfhi_score_inv_c = w_inv_adj*sum(mfhi_i_pcfc_p12mos_any, mfhi_i_hc_p12mos_any, na.rm = TRUE)
+        mfhi_score_inv_c = w_inv_adj*sum(mfhi_i_pcfc_p12mos_any, mfhi_i_hc_p12mos_any, na.rm = TRUE), 
        # mfhi_score_inv_c = w_inv_adj*sum(mfhi_i_p12mos_any_c, na.rm = TRUE)
         
+       mfhi_score_md2d_c_aw = w_md2d_adj_aw*sum(mfhi_f_secure_c, mfhi_nf_secure_c, mfhi_d_secure, na.rm = TRUE),
+       mfhi_score_risk_c_aw = w_risk_adj_aw*sum(mfhi_ef_secure_c, na.rm = TRUE), 
+       mfhi_score_inv_c_aw = w_inv_adj_aw*sum(mfhi_i_pcfc_p12mos_any, mfhi_i_hc_p12mos_any, na.rm = TRUE), 
+       
       ) %>% 
     
       ungroup() %>% 
@@ -605,16 +665,24 @@ prep_2024 <- function(data) {
       # Weighted sum of all component indicators
       mfhi_score_overall = mfhi_score_md2d + mfhi_score_risk + mfhi_score_inv,
       mfhi_score_overall_c = mfhi_score_md2d_c + mfhi_score_risk_c + mfhi_score_inv_c,
-      
+      mfhi_score_overall_c_aw = mfhi_score_md2d_c_aw + mfhi_score_risk_c_aw + mfhi_score_inv_c_aw,
+        
       # Headcount ratios to calculate % of population with high, medium and low financial health scores
       
+      # Discrete
       mfhi_score_hi = ifelse(mfhi_score_overall > 0.6, 1, 0),
       mfhi_score_med = ifelse(mfhi_score_overall > 0.3 & mfhi_score_overall <= 0.6, 1, 0),
       mfhi_score_low = ifelse(mfhi_score_overall <= 0.3, 1, 0),
     
+      # Gradated
       mfhi_score_hi_c = ifelse(mfhi_score_overall_c > 0.6, 1, 0),
       mfhi_score_med_c = ifelse(mfhi_score_overall_c > 0.3 & mfhi_score_overall_c <= 0.6, 1, 0),
       mfhi_score_low_c = ifelse(mfhi_score_overall_c <= 0.3, 1, 0),
+      
+      # Gradated, Age weighted 
+      mfhi_score_hi_c_aw = ifelse(mfhi_score_overall_c_aw > 0.6, 1, 0),
+      mfhi_score_med_c_aw = ifelse(mfhi_score_overall_c_aw > 0.3 & mfhi_score_overall_c_aw <= 0.6, 1, 0),
+      mfhi_score_low_c_aw = ifelse(mfhi_score_overall_c_aw <= 0.3, 1, 0),
       
       # Perception of financial health (pfh) ---------
       
@@ -723,10 +791,15 @@ prep_2024 <- function(data) {
       
       # Financial behaviors & social capital  -----------
       
+      fb_decisions = ifelse(B1Bi %in% c(1, 3, 4) | B1Bii %in% c(1, 3, 4), 1, 0), 
       fb_financial_plan = mfhi_1_2,
       fb_emergency_savings = mfhi_2_3, 
+      
       fb_gambling = ifelse(B2B == 1, 1, 0), 
       fb_gambling = ifelse(B2B %in% c(98,99), NA, fb_gambling), 
+      
+      fb_gambling_spend = ifelse(fb_gambling == 1, B2Ci, 0),  
+      fb_gambling_spend_inc = fb_gambling_spend/ifelse(resp_income == 0, 1, resp_income), 
       
       # Financial literacy --------------
       
@@ -745,7 +818,32 @@ prep_2024 <- function(data) {
       sc_ff_finhelp = ifelse(B1C1 == 1, 1, 0),
       sc_ff_finhelp = ifelse(B1C1 %in% c(5, 9), NA, sc_ff_finhelp),
       
-      # Usage of financial services
+      # Wealth (assets)
+      
+      resp_wlth_any = ifelse(F1_1 == 1 | F1__2 == 1 | F1__3 == 1 | F1__4 == 1 | F1__5 == 1 | F1__96 == 1, 1, 0), 
+      resp_wlth_any = ifelse(is.na(F1_1) & is.na(F1__2) & is.na(F1__3) & is.na(F1__4) & is.na(F1__5) & is.na(F1__96), NA, resp_wlth_any),
+      
+      # Debt 
+      
+      fin_debt_total = rowSums(.[grepl("E1xi[A-Z]$", names(.))], na.rm = T),
+      fin_debt_any = ifelse(fin_debt_total > 0, 1, 0),
+      fin_debt_inc = fin_debt_total/(ifelse(resp_income == 0, 1, resp_income)),
+      fin_debt_high = ifelse(fin_debt_inc > 0.5, 1, 0),
+      
+      fin_debtservice_spend = E2A, 
+      fin_debtservice_spend = ifelse(E2A %in% c(98,99), NA, fin_debtservice_spend),
+      fin_debtservice_spend = ifelse(fin_debt_any == 0 & is.na(fin_debtservice_spend), 0, fin_debtservice_spend), 
+      fin_debtservice_inc = fin_debtservice_spend/(ifelse(resp_income == 0, 100, resp_income)),
+      fin_debtservice_inc = ifelse(fin_debtservice_spend == 0 & is.na(resp_income), 0, fin_debtservice_inc), 
+      fin_debtservice_high = ifelse(fin_debtservice_inc > 0.5, 1, 0), 
+      
+      fin_debt_defaulted_dnp = ifelse(E2E == 1, 1, 0), 
+      fin_debt_defaulted_dnp = ifelse(E2E %in% c(98,99), NA, fin_debt_defaulted_dnp), 
+      
+      fin_debt_defaulted_any = ifelse(E2E %in% c(1, 2), 1, 0), 
+      fin_debt_defaulted_any = ifelse(E2E %in% c(98,99), NA, fin_debt_defaulted_dnp), 
+      
+      # Usage of financial services -----------
       
       # currently uses different types of registered transaction device
       
@@ -766,6 +864,9 @@ prep_2024 <- function(data) {
       
       fin_reg_chama = ifelse(C1_12b == 1, 1, 0), 
       fin_reg_chama = ifelse(C1_12b == 9, NA, fin_reg_chama),
+      
+      fin_reg_insurance = ifelse(C1_36 == 1 | C1_37 == 1 | C1_38 == 1 | C1_39 == 1, 1, 0), 
+      fin_reg_insurance = ifelse(C1_36 == 9 &  C1_37 == 9 & C1_38 == 9 & C1_39 == 9, NA, fin_reg_insurance), 
       
       # Current usage of savings
       
@@ -831,17 +932,22 @@ prep_2024 <- function(data) {
       
       fin_loan_mortgage = binarize_1else0(C1_31),
       
+      fin_reg_ff = ifelse(fin_loan_ff == 1 | fin_sav_ff == 1, 1, 0), 
+      
       # Aggregate categories: 
       
       fin_sav_agg4_formal_trd = ifelse(fin_sav_bankmfb == 1 | fin_sav_sacco == 1 | fin_sav_mfi == 1, 1, 0), 
       fin_sav_agg4_formal_dig = ifelse(fin_sav_mobilebanking == 1 | fin_sav_mobilemoney == 1 | fin_sav_digapp == 1, 1, 0), 
       fin_sav_agg4_informal = ifelse(fin_sav_chama == 1 | fin_sav_ff == 1, 1, 0), 
+      fin_sav_agg4_informal_exchama = ifelse(fin_sav_secret == 1 | fin_sav_ff == 1, 1, 0), 
       fin_sav_agg4_cash = fin_sav_secret,
       
       fin_loan_agg4_formal_trd = ifelse(fin_loan_bank == 1 | fin_loan_mfb == 1 | fin_loan_overdraft == 1 | fin_loan_creditcard == 1 | fin_loan_sacco == 1 | fin_laon_mfi == 1 | fin_loan_mortgage == 1, 1, 0), 
       fin_loan_agg4_formal_dig = ifelse(fin_loan_mobilebanking == 1 | fin_loan_mobilemoney == 1 | fin_laon_digapp == 1, 1, 0), 
       fin_loan_agg4_informal = ifelse(fin_loan_shylocks == 1 | fin_loan_chama == 1 | fin_loan_ff == 1 | fin_loan_shopkeepercash == 1 | fin_loan_shopkeepergoods == 1, 1, 0), 
-      fin_loan_agg4_other = ifelse(fin_loan_hirepurchase == 1 | fin_loan_insurance == 1 | fin_loan_buyer == 1, 1, 0)
+      fin_loan_agg4_other = ifelse(fin_loan_hirepurchase == 1 | fin_loan_insurance == 1 | fin_loan_buyer == 1, 1, 0), 
+      
+      fin_loan_agg4_informal_exchama = ifelse(fin_loan_shylocks == 1 | fin_loan_ff == 1 | fin_loan_shopkeepercash == 1 | fin_loan_shopkeepergoods == 1, 1, 0), 
       
     ) %>%
     
@@ -875,7 +981,7 @@ prep_2024 <- function(data) {
     
     dummy_cols(select_columns = c("hh_urbrur", "hh_geo", "hh_geo_3", "resp_age_group2", "resp_gender_group", "resp_age_group", "resp_edu_group", "resp_edu_group2", "resp_live_group", "resp_live_group2", "resp_inc_group", "goals_group")) %>%
     
-    select(starts_with(c("year", "sample_", "resp_", "hh_", "mfhi_", "fin_", "pfh_", "fb_", "fl_", "sc_", "goals_", "fin_", "B1", "n_", "w_")))
+    select(starts_with(c("year", "sample_", "resp_", "hh_", "mfhi_", "fin_", "pfh_", "fb_", "fl_", "sc_", "goals_", "fin_", "B1", "n_", "aw", "w_")))
   
   return(data)
   

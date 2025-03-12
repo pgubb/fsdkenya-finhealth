@@ -156,6 +156,15 @@ lightbox: true
 :::
 :::
 
+
+### Source of credit
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Source of credit for emergency funds](fsdkenya_finhealth_files/figure-html/fig-risk_ef_borrowing-1.png){#fig-risk_ef_borrowing width=1152}
+:::
+:::
+
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![Access to emergency funds](fsdkenya_finhealth_files/figure-html/fig-risk_ef_3d-1.png){#fig-risk_ef_3d width=1152}
@@ -181,6 +190,12 @@ lightbox: true
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![Capital investments](fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_capital-1.png){#fig-mfhi_inv_capital width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Capital investments](fsdkenya_finhealth_files/figure-html/fig-mfhi_inv_capital_bylive-1.png){#fig-mfhi_inv_capital_bylive width=1152}
 :::
 :::
 
@@ -216,6 +231,11 @@ lightbox: true
 :::
 :::
 
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![MFHI age-weighted aggregates - comparison](fsdkenya_finhealth_files/figure-html/fig-mfhi_comp_indicators_aw-1.png){#fig-mfhi_comp_indicators_aw width=1152}
+:::
+:::
 
 
 ### MFHI score
@@ -233,6 +253,12 @@ lightbox: true
 :::
 :::
 
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![MFHI mean score (age weighted)](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_mean_aw-1.png){#fig-mfhi_score_mean_aw width=1152}
+:::
+:::
+
 
 ### MFHI Score categories
 
@@ -245,7 +271,7 @@ lightbox: true
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![MFHI score categories, by county](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bycounty-1.png){#fig-mfhi_score_cats_bycounty width=1056}
+![MFHI score categories, by county](fsdkenya_finhealth_files/figure-html/fig-mfhi_score_cats_bycounty-1.png){#fig-mfhi_score_cats_bycounty width=1152}
 :::
 :::
 
@@ -285,11 +311,25 @@ lightbox: true
 :::
 :::
 
+
+### Select marginal effects
+
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
-![Correlation between perceptions of financial health and income](fsdkenya_finhealth_files/figure-html/fig-pfh_inc_corr-1.png){#fig-pfh_inc_corr width=1152}
+![Select marginal effects](fsdkenya_finhealth_files/figure-html/fig-mfhi_mfx-1.png){#fig-mfhi_mfx width=1152}
 :::
 :::
+
+
+
+### Select marginal effects - Financial services
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Select marginal effects - Financial services](fsdkenya_finhealth_files/figure-html/fig-mfhi_mfx_fs-1.png){#fig-mfhi_mfx_fs width=1152}
+:::
+:::
+
 
 
 ## Outcomes
@@ -326,10 +366,55 @@ lightbox: true
 
 ## Financial services 
 
+### Overall
+
 
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![Financial service predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers-1.png){#fig-reg_mfhiscore_findrivers width=1152}
+:::
+:::
+
+
+### Credit, overall
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health outcomes - Credit](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers_intout_credit-1.png){#fig-reg_mfhiscore_findrivers_intout_credit width=1152}
+:::
+:::
+
+
+### Credit, by gender
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers_intout_credit_bygender-1.png){#fig-reg_mfhiscore_findrivers_intout_credit_bygender width=1152}
+:::
+:::
+
+
+### Savings, overall
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers_intout_savings-1.png){#fig-reg_mfhiscore_findrivers_intout_savings width=1152}
+:::
+:::
+
+
+### Savings, by gender
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers_intout_savings_bygender-1.png){#fig-reg_mfhiscore_findrivers_intout_savings_bygender width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health outcomes](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers_bygender-1.png){#fig-reg_mfhiscore_findrivers_bygender width=1152}
 :::
 :::
 
@@ -342,5 +427,62 @@ lightbox: true
 ::: {.cell .caption-margin}
 ::: {.cell-output-display}
 ![Financial service predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers3-1.png){#fig-reg_mfhiscore_findrivers3 width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health](fsdkenya_finhealth_files/figure-html/fig-reg_mfhiscore_findrivers4-1.png){#fig-reg_mfhiscore_findrivers4 width=1152}
+:::
+:::
+
+
+
+
+### Perceptions
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Financial service predictors of financial health perceptions](fsdkenya_finhealth_files/figure-html/fig-reg_perceptions_findrivers-1.png){#fig-reg_perceptions_findrivers width=1152}
+:::
+:::
+
+
+
+
+# Annex
+
+
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Correlation between the MFHI score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_dim_inc_corr-1.png){#fig-mfhi_dim_inc_corr-1 width=1152}
+:::
+
+::: {.cell-output-display}
+![Correlation between the MFHI score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_dim_inc_corr-2.png){#fig-mfhi_dim_inc_corr-2 width=1152}
+:::
+
+::: {.cell-output-display}
+![Correlation between the MFHI score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_dim_inc_corr-3.png){#fig-mfhi_dim_inc_corr-3 width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Correlation between the MFHI score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_inc_corr_gender-1.png){#fig-mfhi_inc_corr_gender width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Correlation between the MFHI score and income](fsdkenya_finhealth_files/figure-html/fig-mfhi_inc_corr_savings-1.png){#fig-mfhi_inc_corr_savings width=1152}
+:::
+:::
+
+::: {.cell .caption-margin}
+::: {.cell-output-display}
+![Correlation between perceptions of financial health and income](fsdkenya_finhealth_files/figure-html/fig-pfh_inc_corr-1.png){#fig-pfh_inc_corr width=1152}
 :::
 :::

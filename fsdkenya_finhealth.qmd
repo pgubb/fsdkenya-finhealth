@@ -599,6 +599,7 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 fig_notes <- "Notes: This indicator categorizes individuals as food secure those in households that have not had to go without food to eat due to lack of money at any time in the past 1 year."
 
 indicators <- c("mfhi_f_secure")
+#groups_custom <- GROUPS[c("resp_all", "resp_wealth_agg3_str", "resp_income_agg3_str")]
 
 ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
 
@@ -1191,6 +1192,7 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 
 ```
 
+
 ```{r, fig.width = 12, fig.asp = 0.55}
 #| label: fig-risk_ef_bysource
 #| echo: false
@@ -1201,7 +1203,7 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 fig_notes <- "Notes: The results in this figue are based on the following question:	Imagine that you have an emergency, and you need to pay KSHs 13,000 (1/20th of GNI per capita). What would be the MAIN source of money that you would use to come up with KSHs 13,000 within the NEXT 30 DAYS?"
 
 indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_ef_30d_src")]
-indicators <- indicators[!str_detect(indicators, "notmiss|difsmeornot|srcany_p")]
+indicators <- indicators[!str_detect(indicators, "notmiss|difsmeornot|srcany_p|srcborr")]
 
 ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL) %>% filter(!is.na(indicator_domain))
 
@@ -1234,6 +1236,86 @@ figparams <- list(
 palette <- c("#31AFD4", "#CEE5F2", "#A2C3A4", "#C4F1BE", "#FAA275", "#DB504A", "#985277", "#CE6A85", "grey90", "#DD99BB")
 
 names(palette) <- c("Savings", "Borrowing", "From regular income", "Working more/additional jobs", "Assistance from social network", "Cutting back expenses", "Selling assets", "Other", "Not possible", "Don't know/refused")
+
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, 1.0001), nbreaks = 5, type = "percent", expand = NULL, droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 2, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_branch"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_stem",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+### Source of credit
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-risk_ef_borrowing
+#| echo: false
+#| warning: false
+#| fig-cap: "Source of credit for emergency funds"
+#| cap-location: margin
+
+fig_notes <- "Notes: The results in this figue are based on the following question:	Imagine that you have an emergency, and you need to pay KSHs 13,000 (1/20th of GNI per capita). What would be the MAIN source of money that you would use to come up with KSHs 13,000 within the NEXT 30 DAYS?"
+
+indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_ef_30d_srcborr")]
+indicators <- indicators[!str_detect(indicators, "difany")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+branch_levels <- c("Bank or MFB", "Mobile banking", "Mobile money provider", "SACCO/MFI", "Private moneylender", "Chama",  "Government", "Friends or family", "Digital app loan", "Shopkeeper", "Other")
+
+factor_params <- list(
+  wrap_sizes = list(indicator_category = 40, indicator_stem = 50, indicator_branch = 40, group_name = 15, group_cat_val = 80), 
+  order_vars = list(indicator_category = NULL, indicator_stem = NULL, indicator_branch = branch_levels, group_name = NULL, group_cat_val = NULL), 
+    reverse_order = list(indicator_category = FALSE, indicator_stem = TRUE, indicator_branch = TRUE, group_name = FALSE, group_cat_val = TRUE)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.05) 
+
+labels <- list(
+  title = "Access to emergency funds",
+  subtitle =  "Adults (% 18+)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = FALSE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+palette <- c("#31AFD4", "#CEE5F2", "#A2C3A4", "#C4F1BE", "#FAA275", "#DB504A", "#985277", "#CE6A85", "green", "#DD99BB", "grey90")
+
+names(palette) <- c("Bank or MFB", "Mobile banking", "Mobile money provider", "SACCO/MFI", "Private moneylender", "Chama",  "Government", "Friends or family", "Digital app loan", "Shopkeeper", "Other")
 
 
 scales <- list(
@@ -1496,6 +1578,85 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 
 ```
 
+
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-mfhi_inv_capital_bylive
+#| echo: false
+#| warning: false
+#| fig-cap: "Capital investments"
+#| cap-location: margin
+
+# Groups to use for disaggregation
+groups_custom <- GROUPS[c("resp_all", "resp_live_group_fct")]
+
+fig_notes <- ""
+
+indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_i_pc|mfhi_i_fc|mfhi_i_hc")]
+indicators <- indicators[!str_detect(indicators, "allmiss")]
+indicators <- indicators[!str_detect(indicators, "mfhi_i_pc_p12mos_farmliv")]
+indicators <- indicators[!str_detect(indicators, "notmiss")]
+
+ests <- compute_summary_mainlevel_1g(indicators, groups_custom, data = FA2024 %>% filter(resp_age_group2_age_25_65 == 1), weights = "sample_weights", psu = "sample_psu", keep = NULL) %>% filter(group_cat_val %not_in% c("Transfers", "Other"))
+
+factor_params <- list(
+  wrap_sizes = list(indicator_category = 10, indicator_stem = 50, indicator_branch = 40, group_name = 15, group_cat_val = 8), 
+  reverse_order = list(indicator_category = FALSE, indicator_stem = TRUE, indicator_branch = FALSE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_category = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_tile_data(prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0))
+
+labels <- list(
+  title = "Investments in physical, financial and human capital in past 12 months",
+  subtitle =  "Adults (% 25-64)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "tile", # One of "bar" or "tile"
+  tiles = list(color = "white"), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_face = "plain", lab_size = 3.5, colortext = TRUE),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+scales <- list(
+  fillcolor = list(palette = "identity", direction = NULL), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = TRUE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "indicator_stem", yvar = "group_cat_val", fillvar = "fillcolor"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "indicator_category", 
+  cols = "group_name",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE) + geom_vline(xintercept = 1.5, color = "white", size = 1.5)
+
+
+```
+
 ### MFHI Component indicator #5
 
 ```{r, fig.width = 12, fig.asp = 0.5}
@@ -1655,6 +1816,8 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 
 indicators <- c("mfhi_f_secure", "mfhi_nf_secure", "mfhi_d_secure", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any", "mfhi_score_overall_c", "mfhi_score_hi_c")
 
+#groups_custom <- GROUPS[c("resp_all", "resp_wealth_agg3_str", "resp_income_agg3_str")]
+
 ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL) %>% 
     mutate(indicator_stem = ifelse(indicator %in% c("mfhi_score_overall_c", "mfhi_score_hi_c", "mfhi_score_med_c", "mfhi_score_low_c"), paste0(indicator_stem, ": ", indicator_branch), indicator_stem))
 
@@ -1717,6 +1880,76 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 ```
 
 
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-mfhi_comp_indicators_aw
+#| echo: false
+#| warning: false
+#| fig-cap: "MFHI age-weighted aggregates - comparison"
+#| cap-location: margin
+
+indicators <- c("mfhi_score_overall_c_aw", "mfhi_score_hi_c_aw", "mfhi_score_overall_c", "mfhi_score_hi_c")
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL) %>% 
+    mutate(indicator_stem = ifelse(indicator %in% c("mfhi_score_overall_c", "mfhi_score_hi_c", "mfhi_score_med_c", "mfhi_score_low_c", "mfhi_score_overall_c_aw", "mfhi_score_hi_c_aw", "mfhi_score_med_c_aw", "mfhi_score_low_c_aw"), paste0(indicator_stem, ": ", indicator_branch), indicator_stem))
+
+factor_params <- list(
+  wrap_sizes = list(indicator_category = 15, indicator_stem = 40, indicator_branch = 40, group_name = 15, group_cat_val = 8), 
+  reverse_order = list(indicator_category = FALSE, indicator_stem = TRUE, indicator_branch = TRUE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_category = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_tile_data(prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_thresh = 0.01)) 
+
+labels <- list(
+  title = str_wrap("MFHI Component indicators", TI_WRAP),
+  subtitle =  "Adults (% 18+)",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, ""), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "tile", # One of "bar" or "tile"
+  tiles = list(color = "white"), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_face = "plain", lab_size = 3.5, colortext = TRUE),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+scales <- list(
+  fillcolor = list(palette = "identity", direction = NULL), 
+  yaxis = list(limits = c(0, 1), nbreaks = 5, type = "percent", expand = NULL, droplines = TRUE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "indicator_stem", yvar = "group_cat_val", fillvar = "fillcolor"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "indicator_category", 
+  cols = "group_name",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
 ### MFHI score
 
 ```{r, fig.width = 12, fig.asp = 0.4}
@@ -1761,7 +1994,89 @@ p2
 
 fig_notes <- "Notes: The financial health score can be interpreted as the percentage of the weighted indicators that are satisfied, with 0 (0%) being the minimum and 1 (100%) being the maximum."
   
-indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_score_md2d_c|mfhi_score_risk_c|mfhi_score_inv_c")]
+indicators <- c("mfhi_score_md2d_c", "mfhi_score_risk_c", "mfhi_score_inv_c")
+
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+
+factor_params <- list(
+  wrap_sizes = list(indicator_category = 60, indicator_stem = 25, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
+  reverse_order = list(indicator_category = FALSE, indicator_stem = TRUE, indicator_branch = FALSE, group_name = FALSE, group_cat_val = TRUE), 
+  order_vars = list(indicator_category = NULL, indicator_stem = NULL, indicator_branch = NULL, group_name = NULL, group_cat_val = NULL)
+)
+
+fig_data <- prep_fig_data(ests, factor_params, include_valuelabel = TRUE, valuelabel_type = "number", valuelabel_round = 2) %>% 
+  group_by(indicator_category, group_cat_val) %>%
+  mutate(
+      total = sum(mean), 
+      barlabel = ifelse(indicator_stem == "Investing in capital", numclean(total, 2), NA),
+      barlabelpos = ifelse(indicator_stem == "Investing in capital", total, NA), 
+    ) 
+
+labels <- list(
+  title = "Multi-dimensional financial health index scores by dimension",
+  subtitle =  "Mean score",
+  yax_ti = NULL,
+  xax_ti = NULL,
+  caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
+)
+
+figparams <- list(
+  geom_type = "bar", # One of "bar" or "tile"
+  bars = list(width = 0.9, position = "stack", color = "white", labeltotal = TRUE, labeltotal_ndgy = TRUE, labeltotal_extendmax = TRUE), 
+  valuelabels = list(show = TRUE, lab_hjust = 0.5, lab_vjust = 0.5, lab_face = "plain", lab_size = 3.25),
+  catlabels = list(show = FALSE), 
+  errorbars = list(show = FALSE)
+)
+
+palette <- c("#41BBD9", "#DB504A",  "#A2C3A4")
+names(palette) <- c("Managing day to day", "Coping with risk", "Investing in capital")
+
+maxy <- roundupN(max(fig_data$mean, na.rm = TRUE), 20)
+
+scales <- list(
+  fillcolor = list(palette = palette), 
+  yaxis = list(limits = c(0, maxy), nbreaks = 5, type = "number", expand = c(0,0), droplines = FALSE)
+)
+
+legend <- list(
+  show = TRUE, 
+  title = NULL, 
+  nrows = 1, 
+  ncols = 1, 
+  reverse = TRUE
+)
+
+vars <- list(
+  xvar = "group_cat_val", yvar = "mean", fillvar = "indicator_stem"
+)
+
+facets <- list(
+  type = "grid", 
+  rows = "group_name", 
+  cols = "indicator_category",
+  nrows = 1, 
+  ncols = 1,
+  scales = "free", 
+  space = "free",
+  drop_row_label = FALSE, 
+  drop_col_label = FALSE, 
+  add_dividers = FALSE
+)
+
+fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coord_flip = TRUE)
+
+```
+
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-mfhi_score_mean_aw
+#| echo: false
+#| warning: false
+#| fig-cap: "MFHI mean score (age weighted)"
+#| cap-location: margin
+
+fig_notes <- "Notes: The financial health score can be interpreted as the percentage of the weighted indicators that are satisfied, with 0 (0%) being the minimum and 1 (100%) being the maximum."
+  
+indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_score_md2d_c_aw|mfhi_score_risk_c_aw|mfhi_score_inv_c_aw")]
 
 ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
 
@@ -1846,9 +2161,9 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 fig_notes <- ""
 
 indicators <- names(FA2024)[str_detect(names(FA2024), "mfhi_score_hi_c|mfhi_score_med_c|mfhi_score_low_c")]
-groups_custom <- c(groups, GROUPS["resp_live_group_fct"])
+#groups_custom <- c(groups, GROUPS["resp_live_group_fct"])
 
-ests <- compute_summary_mainlevel_1g(indicators, groups_custom, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
+ests <- compute_summary_mainlevel_1g(indicators, groups, data = FA2024, weights = "sample_weights", psu = "sample_psu", keep = NULL)
 
 factor_params <- list(
   wrap_sizes = list(indicator_category = 60, indicator_stem = 25, indicator_branch = 40, group_name = 25, group_cat_val = 80), 
@@ -1913,7 +2228,7 @@ fig_flex(fig_data, vars, facets = facets, figparams, scales, legend, labels, coo
 
 
 
-```{r, fig.width = 11, fig.asp = 0.8}
+```{r, fig.width = 12, fig.asp = 0.8}
 #| label: fig-mfhi_score_cats_bycounty
 #| echo: false
 #| warning: false
@@ -2102,12 +2417,14 @@ scale_f <- 1.2
 
 ```
 
-```{r, fig.width = 12, fig.asp = 0.55}
+```{r, fig.width = 12, fig.asp = 0.6}
 #| label: fig-mfhi_pfh_corr
 #| echo: false
 #| warning: false
 #| fig-cap: "Correlation between the perceptions and financial health outcomes"
 #| cap-location: margin
+
+fig_notes <- c("Notes: The perceptions score (y-axis) is a measure that is created based on responses to four subjective questions relating to worry about paying daily expenses, worry about paying existing debts, confidence meeting long term goals and change in financial status in the past year. Responses to each question are assigned scores such that low values correspond to low states of financial wellbeing and high valeus to higher state of perceived financial well being. For example saying you are 'very worried' about paying exisitng debts receives a score of 0, 'somewhat worried' a score of 1 and 'not worried at all' a score of 2. A total score is computed by adding the scores for each individual question and then normalized so that the overall score ranges from 0 to 1, with values close to 0 indicating more negative feelings about one's financial situation and 1 indicating more positive feelings.")
 
 model <- lm(pfh_score_overall ~ mfhi_score_overall_c, data = FA2024)
 
@@ -2117,15 +2434,15 @@ ggplot(data = FA2024,
            color = resp_age_group_fct)) + 
   geom_jitter(size = 0.15) + 
   geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
-  geom_smooth(method = "lm", se = FALSE) + 
+  geom_smooth(aes(color =resp_age_group_fct),  method = "lm", se = FALSE) + 
   #facet_wrap(~hh_urbrur, nrow = 1) + 
   labs(
     y = "Perceptions of financial health status (overall score)", 
     x = "MFHI score", 
     title = "Relationship between financial health outcomes and perceptions", 
-    caption = str_wrap("Source: Author's calculations based on 2024 FinAccess survey.", CAP_WRAP)
+    caption = str_wrap(paste0("Source: Author's calculations based on 2024 FinAccess survey.", fig_notes), CAP_WRAP)
   ) + 
-  #guides(color = guide_legend(title = "Gender:")) + 
+  guides(color = guide_legend(title = "Age group:")) + 
   #scale_color_manual(values = c("Men" = "orange", "Women" = "grey75")) +
   theme_custom() 
 
@@ -2139,7 +2456,7 @@ ggplot(data = FA2024,
 #| fig-cap: "Predictors of financial health"
 #| cap-location: margin
 
-fig_notes <- "Notes: The results in this figure are based on a linear regression model that measures the influence of the size component indicators of the MFHI on how adults perceive different aspects of their financial lives. The figures show the effect of each outcome on the probability of a positive perception of their financial situation (in percentage points). "
+fig_notes <- "Notes: The results in this figure are based on a linear regression model that measures the influence of each MFHI component indicator on how adults perceive different aspects of their financial lives, controlling for personal monthly income. The figure shows the effect of each outcome on the probability of a positive perception of their financial situation (in percentage points)."
   
 # Defining regressions
   #depvars <- c("pfh_dailyneeds_nw", "pfh_debt_nw", "pfh_goals_vc", "pfh_finstatus_imp","pfh_score_overall")
@@ -2163,7 +2480,7 @@ ests <- bind_rows(
 
 # Preparing figure data
 factor_params <- list(
-  wrap_sizes = list(depvar_label = 20, effect_label = 50, model_type = 25), 
+  wrap_sizes = list(depvar_label = 15, effect_label = 50, model_type = 25), 
   reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
   order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
 )
@@ -2175,7 +2492,7 @@ fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelab
       subtitle = NULL,
       y = "Predicted probability",
       x = NULL,
-      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.1)
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
     )
  
  barparams <- list(
@@ -2193,7 +2510,7 @@ if (miny > 0) { miny <- 0 }
 maxy <- maxy + buffer*4
 
 scales <- list(
-  y = list(limits = c(miny,maxy), position = "left", nbreaks = 5), 
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
   x = list(txtwrap = 50, position = "bottom")
 )
 
@@ -2207,109 +2524,577 @@ fig_regests(fig_data, labels, facets = facets, barparams, scales, effect_desc = 
 
 ## Financial health and income
 
-```{r, fig.width = 12, fig.asp = 0.55}
+```{r, fig.width = 12, fig.asp = 0.52}
 #| label: fig-mfhi_inc_corr
 #| echo: false
 #| warning: false
 #| fig-cap: "Correlation between the MFHI score and income"
 #| cap-location: margin
 
+model_data <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)") %>% select(mfhi_score_overall_c, mfhi_score_hi_c, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var, resp_income_var_c)
+model_data <- model_data[complete.cases(model_data), ]
 
-model <- lm(mfhi_score_hi_c ~ resp_income_c_5000 + resp_income_var + resp_live_group_empl + resp_edu_group2_sec + resp_edu_group2_trt, data = FA2024 %>% filter(resp_age_group2_fct == "[25-65)"))
+lm <- lm(mfhi_score_overall_c ~ resp_income_c_5000 + resp_income_var_c, data = model_data)
+lm <- lm(mfhi_score_overall_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data)
+glm <- glm(mfhi_score_hi_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data, family = binomial(link = "logit"),  weights = model_data$sample_weights)
 
-ggplot(data = FA2024 %>% filter(resp_age_group2_fct == "[25-65)"), 
+predict_data_0 <- model_data %>% mutate(resp_income_var_c = min(resp_income_var_c))
+predict_data_p25 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.25)))
+predict_data_p50 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.5)))
+predict_data_p75 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.75)))
+
+predict_data <- predict_data_0 %>% select(-resp_income_var_c, -resp_income_var) %>% 
+  mutate(phat_incvar_p0 = predict(glm, newdata = predict_data_0, type = "response")) %>% 
+  mutate(phat_incvar_p25 = predict(glm, newdata = predict_data_p25, type = "response")) %>% 
+  mutate(phat_incvar_p50 = predict(glm, newdata = predict_data_p50, type = "response")) %>% 
+  mutate(phat_incvar_p75 = predict(glm, newdata = predict_data_p75, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_incvar"), 
+    names_to = "income_volatility_level", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    income_volatility_level = case_when(
+      income_volatility_level == "phat_incvar_p0" ~ "+ 0% (stable income)", 
+      income_volatility_level == "phat_incvar_p25" ~ "+ 20% (25th percentile)", 
+      income_volatility_level == "phat_incvar_p50" ~ "+ 75% (50th percentile)", 
+      income_volatility_level == "phat_incvar_p75" ~ "+ 200% (75th percentile)", 
+    )
+  )
+  
+p1 <- ggplot(data = predict_data %>% filter(income_volatility_level == "+ 75% (50th percentile)"), 
        aes(x = resp_income, 
-           y = mfhi_score_overall_c, 
-           color = resp_live_employment_str)) + 
+           y = phat)) + 
   geom_point(size = 0.15) + 
-  geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_line(size = 0.125) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = 0.5, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  geom_vline(xintercept = 24e3, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=45e3, y= 0.54, label = "-->", hjust = 0, angle = 90, fontface = "plain") + 
+   annotate("text", x=45e3, y= 0.68, label = "More likely than not\nto have a high\nfinancial health score", hjust = 0, angle = 0, fontface = "plain", size = 3.5) + 
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of high financial health score", 
+    subtitle = "B) Probaility of high-level of financial health, overall...", 
+    title = NULL, 
+    caption = NULL,
+  ) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 75e3))
+
+  
+p2 <- ggplot(data = predict_data %>% filter(income_volatility_level %in% c("+ 0% (stable income)", "+ 200% (75th percentile)")), 
+       aes(x = resp_income, 
+           y = phat, 
+           color = income_volatility_level)) + 
+  geom_point(size = 0.15) + 
+  geom_line(size = 0.1) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = 0.5, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  #geom_vline(xintercept = 26e3, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of high financial health score vs. income...", 
+    title = NULL, 
+    caption = NULL
+  ) + 
+  guides(color = guide_legend(title = "Income volatility:")) + 
+  scale_color_manual(values = c("+/- 0% (stable income)" = "orange", "+/- 200% (75th percentile)" = "grey50")) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 75e3))
+
+
+model_data <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)") %>% select(mfhi_score_hi_c, resp_income,  resp_income_c_5000_2, resp_income_c_5000, resp_income_var_c, resp_live_group_empl)
+model_data <- model_data[complete.cases(model_data), ]
+
+glm <- glm(mfhi_score_hi_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c + resp_live_group_empl, data = model_data, family = binomial(link = "logit"), weights = model_data$sample_weights)
+
+predict_data_emp0 <- model_data %>% mutate(resp_live_group_empl = 0, resp_income_var_c = median(resp_income_var_c))
+predict_data_emp1 <- model_data %>% mutate(resp_live_group_empl = 1, resp_income_var_c = median(resp_income_var_c))
+
+predict_data <- predict_data_emp0 %>% select(-resp_live_group_empl) %>% 
+  mutate(phat_emp0 = predict(glm, newdata = predict_data_emp0, type = "response")) %>% 
+  mutate(phat_emp1 = predict(glm, newdata = predict_data_emp1, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_emp"), 
+    names_to = "employment_status", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    employment_status = case_when(
+      employment_status == "phat_emp0" ~ "Other livelihood", 
+      employment_status == "phat_emp1" ~ "Employed", 
+    )
+  )
+  
+p3 <- ggplot(data = predict_data, 
+       aes(x = resp_income, 
+           y = phat, 
+           color = employment_status)) + 
+  geom_point(size = 0.15) + 
+  geom_line(size = 0.125) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = c(0.17, 0.29), color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  geom_vline(xintercept = c(6e3), color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=7e3, y= 0.35, label = "Median income level (Ksh 6,000)", hjust = 0, vjust = 1, angle = 90, fontface = "plain", size = 3.5) +
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of high financial health score", 
+    title = NULL, 
+    subtitle = "C) ...by employment status",
+    caption = NULL
+  ) + 
+    scale_color_manual(values = c("Employed" = "orange", "Other livelihood" = "grey50")) +
+   guides(color = guide_legend(title = "Employment status:")) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 20e3))
+
+
+model <- lm(mfhi_score_overall_c ~ resp_income_c_5000 + resp_income_var_c + resp_live_group_empl + resp_edu_group2_sec + resp_edu_group2_trt, data = FA2024 %>% filter(resp_age_group2_fct == "[25-65)"))
+
+p4 <- ggplot(data = FA2024 %>% filter(resp_age_group2_fct == "[25-65)"), 
+       aes(x = resp_income, 
+           y = mfhi_score_overall_c)) + 
+  geom_point(size = 0.1, color = "grey90") + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
   geom_smooth(se = FALSE) + 
-  geom_hline(yintercept = 0.6, color = "blue", linewidth = 0.3, linetype = "dashed") + 
-  annotate("text", x=100, y= 0.65, label = "High-level of financial health\n cut-off (0.6)", hjust = 0, fontface = "bold") + 
+  geom_hline(yintercept = 0.6, color = "grey30", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=40e3, y= 0.65, label = "High-level of financial\nhealth cut-off (0.6)", hjust = 0, fontface = "plain", size = 3.75) + 
   #facet_wrap(~hh_urbrur, nrow = 1) + 
   labs(
     x = "Personal monthly income", 
     y = "Financial health (MFHI) score", 
-    title = "Relationship between income and financial health", 
-    caption = str_wrap(paste(SOURCE, "Notes: X-axis is truncated at Ksh 75,000, predicttions take into account all data points"), CAP_WRAP)
+    title = "Relationship between income, employment and financial health", 
+    subtitle = "A) Financial health score", 
+    caption =  str_wrap(paste(SOURCE, "Notes: Panel A shows a fitted non-linear relationship between, personal monthly income and the MFHI score, the x-axis is truncated at Ksh 75,000, but predictions take into account all data points. Panel B and C show how the predicted probability of having a high level of financial health varies with personal income, using the regression parameters estimated from a logistic regression model fitted among the prime working age population (Ages 25-64). Predicted probabilities are computed at the median level of income volatility."), CAP_WRAP)
   ) + 
   guides(color = guide_legend(title = "Primary income source:")) + 
-  scale_color_manual(values = c("Employment" = "orange", "Other source" = "grey75")) +
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 8), labels = scales::label_currency(prefix = "KSh ")) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
   theme_custom() + 
   coord_cartesian(xlim = c(0, 75e3))
 
+p4 + p1 + p3 + plot_layout(axes = "collect") 
 
 ```
 
-
-```{r, fig.width = 12, fig.asp = 0.55}
-#| label: fig-pfh_inc_corr
+### Select marginal effects
+```{r, fig.width = 12, fig.asp = 0.45}
+#| label: fig-mfhi_mfx
 #| echo: false
 #| warning: false
-#| fig-cap: "Correlation between perceptions of financial health and income"
+#| fig-cap: "Select marginal effects"
 #| cap-location: margin
 
-ggplot(data = FA2024 %>% filter(resp_age_group2_fct == "[25-65)"), 
-       aes(x = resp_income, 
-           y = pfh_score_overall, 
-           color = resp_live_employment_str)) + 
-  geom_point(size = 0.15) + 
-  geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
-  geom_smooth(se = FALSE) + 
-  #geom_hline(yintercept = 0.6, color = "blue", linewidth = 0.3, linetype = "dashed") + 
-  #annotate("text", x=100, y= 0.65, label = "High-level of financial health\n cut-off (0.6)", hjust = 0, fontface = "bold") + 
-  #facet_wrap(~hh_urbrur, nrow = 1) + 
-  labs(
-    x = "Personal monthly income", 
-    y = "Perceptions of financial health score", 
-    title = "Relationship between income and perceptions of financial health", 
-    caption = str_wrap(paste(SOURCE), CAP_WRAP)
-  ) + 
-  guides(color = guide_legend(title = "Primary income source:")) + 
-  scale_color_manual(values = c("Employment" = "orange", "Other source" = "grey75")) +
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 8), labels = scales::label_currency(prefix = "KSh ")) +
-  theme_custom() + 
-  coord_cartesian(xlim = c(0, 75e3))
 
+fig_notes <- "Notes: The results in this figure are based on a logistic regression which models the probability of a high MFHI score (> 0.6) using a series of socio-economic, demographic and behvioral factors (shown in Figure 21). Predicted probabilities are computed to show the 'marginal' effect of each of the selected factors, holding fixed the values of all other regression predictors."
+
+model_data <- FA2024 %>% select(mfhi_score_overall_c, mfhi_score_hi_c, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var_c, resp_live_group_empl, resp_edu_group2_pri,  resp_edu_group2_trt,  resp_gender_group_wmn, resp_age_yrs_c_5, resp_age_yrs_c_5_sq, fb_financial_plan, fb_emergency_savings, fl_literacy_all, sc_ff_finhelp, hh_urbrur_Urban, hh_size_all_c)
+model_data <- model_data[complete.cases(model_data), ]
+
+glm <- glm(mfhi_score_hi_c ~ hh_urbrur_Urban + hh_size_all_c + resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c + resp_live_group_empl + resp_gender_group_wmn + resp_age_yrs_c_5 + resp_age_yrs_c_5_sq + fb_financial_plan + fb_emergency_savings + fl_literacy_all + sc_ff_finhelp, data = model_data, family = binomial(link = "logit"), weights = model_data$sample_weights)
+
+# Income
+predict_data_income <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+results_inc <- predict_data_income %>%
+  mutate(phat = predict(glm, newdata = predict_data_income, type = "response")) %>%
+  mutate(
+    margin = "Income"
+  ) %>% 
+  filter(resp_income %in% c(6e3, 11e3, 16e3)) %>% 
+group_by(resp_income) %>% 
+filter(row_number()==1) %>% 
+  mutate(
+    margin_category = case_when(
+      resp_income == 6e3 ~ "KSh 6,000",
+      resp_income == 11e3 ~ "+ KSh 5,000", 
+      resp_income == 16e3 ~ "+ KSh 10,000"
+      )
+  ) %>% ungroup() %>% select(margin, margin_category, phat)
+
+# Employment
+predict_data_other <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0, resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+predict_data_employmet <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 1, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+results_emp <- predict_data_other %>% select(-resp_live_group_empl) %>% 
+  mutate(phat_other = predict(glm, newdata = predict_data_other, type = "response")) %>% 
+  mutate(phat_employed = predict(glm, newdata = predict_data_employmet, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "employment", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Employment", 
+    margin_category = case_when(
+      employment == "phat_employed" ~ "Employed", 
+      employment == "phat_other" ~ "Other livelihood", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+# Gender
+predict_data_men <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0, resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+predict_data_women <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 1,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+results_gender <- predict_data_men %>% select(-resp_gender_group_wmn) %>% 
+  mutate(phat_men = predict(glm, newdata = predict_data_men, type = "response")) %>% 
+  mutate(phat_women = predict(glm, newdata = predict_data_women, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "gender", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Gender", 
+    margin_category = case_when(
+      gender == "phat_women" ~ "Women", 
+      gender == "phat_men" ~ "Men", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+# Emergency savings
+
+predict_data_nosavings <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = 0, fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+predict_data_savings <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = 1, fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+results_savings <- predict_data_nosavings %>% select(-fb_emergency_savings) %>% 
+  mutate(phat_nosavings = predict(glm, newdata = predict_data_nosavings, type = "response")) %>% 
+  mutate(phat_savings = predict(glm, newdata = predict_data_savings, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "savings", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Emergency savings", 
+    margin_category = case_when(
+      savings == "phat_savings" ~ "Yes", 
+      savings == "phat_nosavings" ~ "No", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+
+# Social capital
+
+predict_data_nosocap <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = 0)
+
+predict_data_socap <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = 1)
+
+results_socap <- predict_data_nosocap %>% select(-sc_ff_finhelp) %>% 
+  mutate(phat_nosocap = predict(glm, newdata = predict_data_nosocap, type = "response")) %>% 
+  mutate(phat_socap = predict(glm, newdata = predict_data_socap, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "socap", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Social capital", 
+    margin_category = case_when(
+      socap == "phat_socap" ~ "Yes", 
+      socap == "phat_nosocap" ~ "No", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+# Urban
+
+predict_data_urban <- model_data %>% mutate(hh_urbrur_Urban = 1, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+predict_data_rural <- model_data %>% mutate(hh_urbrur_Urban = 0, hh_size_all_c = mean(hh_size_all_c), resp_gender_group_wmn = 0,resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = mean(fb_emergency_savings), fl_literacy_all = mean(fl_literacy_all), fb_financial_plan = mean(fb_financial_plan), sc_ff_finhelp = mean(sc_ff_finhelp))
+
+results_urban <- predict_data_urban %>% select(-hh_urbrur_Urban) %>% 
+  mutate(phat_urban = predict(glm, newdata = predict_data_urban, type = "response")) %>% 
+  mutate(phat_rural = predict(glm, newdata = predict_data_rural, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "urbrur", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "HH residence", 
+    margin_category = case_when(
+      urbrur == "phat_urban" ~ "Urban", 
+      urbrur == "phat_rural" ~ "Rural", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+margin_levels <- c("Income", "Employment", "Gender", "HH residence", "Emergency savings", "Social capital")
+margin_cat_levels <- c("KSh 6,000", "+ KSh 5,000", "+ KSh 10,000", "Other livelihood", "Employed", "Men", "Women", "Rural", "Urban", "No", "Yes")
+
+results <- bind_rows(results_inc, results_emp, results_gender, results_savings, results_socap, results_urban) %>% 
+  mutate(margin = factor(margin, margin_levels, ordered = TRUE), 
+         margin_category = factor(str_wrap(margin_category, 10), str_wrap(margin_cat_levels, 10), ordered = TRUE)
+  ) %>% 
+  arrange(margin, margin_category) %>% 
+  group_by(margin) %>% 
+  mutate(
+    baseline = ifelse(row_number() ==1, 1, 0), 
+    baseline_val = max(ifelse(baseline == 1, phat, NA), na.rm = TRUE), 
+    diff = phat - baseline_val, 
+    startarrow = baseline_val, 
+    startarrow = ifelse(baseline == 1, NA, startarrow),
+    endarrow = phat, 
+    endarrow = ifelse(baseline == 1, NA, endarrow), 
+    color_dir = ifelse(diff < 0, "-", "+"), 
+    valuelabel = numclean(diff*100, n = 1),
+    valuelabel = ifelse(baseline == 1, NA, valuelabel),
+    valuelabel_pos = ifelse(color_dir == "+", (endarrow - startarrow)/2 + startarrow, (startarrow - endarrow)/2 + endarrow),
+  )
+
+ggplot(data = results, 
+       aes(
+         x = margin_category,
+         y = phat
+       )) +
+  facet_wrap(~margin, nrow = 1, scales = "free_x") + 
+  geom_col(fill = "grey90", width = 0.75) + 
+  geom_segment(aes(y = startarrow, yend = endarrow, color = color_dir), arrow = arrow(length=unit(.2, 'cm'), type = "closed"), size = 1.5) +
+  geom_point(aes(y = startarrow, color = color_dir), shape = 21, fill = "white", size = 2.5, stroke = 1.5) + 
+  geom_text(aes(label = valuelabel, y = valuelabel_pos), color = "black", hjust = -0.25) + 
+  labs(
+    title = "Marginal effects: Select socio-economic and behavioral factors with a significant influence\non the probability of a high financial health score", 
+    y = "Predicted probability of a\nhigh financial health score (> 0.6)", 
+    x = NULL, 
+     caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
+  ) + 
+  guides(
+    color = guide_legend(title = "Direction of effect")
+  ) + 
+  scale_color_manual(values = c("+" = "#31D522", "-" = "red"), guide = "legend") +
+  scale_y_continuous(labels = scales::label_percent()) + 
+  theme_custom()
 
 ```
+
+
+### Select marginal effects - Financial services
+```{r, fig.width = 12, fig.asp = 0.45}
+#| label: fig-mfhi_mfx_fs
+#| echo: false
+#| warning: false
+#| fig-cap: "Select marginal effects - Financial services"
+#| cap-location: margin
+
+
+fig_notes <- "Notes: The results in this figure are based on a logistic regression which models the probability of a high MFHI score (> 0.6) using a series of socio-economic, demographic, financial factors (shown in Figure 21). Predicted probabilities are computed to show the 'marginal' effect of each of financial institution/service, holding fixed age, personal monthly income, income volatility, education and social capital."
+  
+model_data <- FA2024 %>% select(mfhi_score_overall_c, mfhi_score_hi_c, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var_c, resp_live_group_empl, resp_edu_group2_pri, resp_edu_group2_trt, resp_age_yrs_c_5, resp_age_yrs_c_5_sq, sc_ff_finhelp, fin_reg_mobilemoney, fin_reg_mobilebanking, fin_reg_bankmfb, fin_reg_sacco, fin_reg_chama)
+model_data <- model_data[complete.cases(model_data), ]
+
+glm <- glm(mfhi_score_hi_c ~  resp_age_yrs_c_5 + resp_age_yrs_c_5_sq + resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c + resp_live_group_empl + resp_edu_group2_pri + resp_edu_group2_trt + sc_ff_finhelp + fin_reg_mobilemoney +  fin_reg_mobilebanking + fin_reg_bankmfb + fin_reg_sacco + fin_reg_chama, data = model_data, family = binomial(link = "logit"), weights = model_data$sample_weights)
+
+# Mobile money
+predict_data_treat <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 1, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+predict_data_control <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+results_mm <- predict_data_control %>% select(-fin_reg_mobilemoney) %>% 
+  mutate(phat_control = predict(glm, newdata = predict_data_control, type = "response")) %>% 
+  mutate(phat_treat = predict(glm, newdata = predict_data_treat, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "treat", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Mobile money", 
+    margin_category = case_when(
+      treat == "phat_treat" ~ "Account", 
+      treat == "phat_control" ~ "No account", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+
+# Mobile banking
+predict_data_treat <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 1, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+predict_data_control <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+results_mb <- predict_data_control %>% select(-fin_reg_mobilebanking) %>% 
+  mutate(phat_control = predict(glm, newdata = predict_data_control, type = "response")) %>% 
+  mutate(phat_treat = predict(glm, newdata = predict_data_treat, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "treat", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Mobile banking", 
+    margin_category = case_when(
+      treat == "phat_treat" ~ "Account", 
+      treat == "phat_control" ~ "No account", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+# Traditional banking
+predict_data_treat <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 1, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+predict_data_control <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+results_b <- predict_data_control %>% select(-fin_reg_bankmfb) %>% 
+  mutate(phat_control = predict(glm, newdata = predict_data_control, type = "response")) %>% 
+  mutate(phat_treat = predict(glm, newdata = predict_data_treat, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "treat", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Bank or microfinance bank", 
+    margin_category = case_when(
+      treat == "phat_treat" ~ "Account", 
+      treat == "phat_control" ~ "No account", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+
+# SACCO
+predict_data_treat <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 1, fin_reg_chama = 0)
+
+predict_data_control <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+results_sacco <- predict_data_control %>% select(-fin_reg_sacco) %>% 
+  mutate(phat_control = predict(glm, newdata = predict_data_control, type = "response")) %>% 
+  mutate(phat_treat = predict(glm, newdata = predict_data_treat, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "treat", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "SACCO", 
+    margin_category = case_when(
+      treat == "phat_treat" ~ "Member", 
+      treat == "phat_control" ~ "Not a member", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+
+# Chama
+predict_data_treat <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 1)
+
+predict_data_control <- model_data %>% mutate(resp_age_yrs_c_5 = 0, resp_age_yrs_c_5_sq = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0,  sc_ff_finhelp = mean(sc_ff_finhelp), fin_reg_mobilemoney = 0, fin_reg_mobilebanking = 0, fin_reg_bankmfb = 0, fin_reg_sacco = 0, fin_reg_chama = 0)
+
+results_chama <- predict_data_control %>% select(-fin_reg_chama) %>% 
+  mutate(phat_control = predict(glm, newdata = predict_data_control, type = "response")) %>% 
+  mutate(phat_treat = predict(glm, newdata = predict_data_treat, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "treat", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    margin = "Chama", 
+    margin_category = case_when(
+      treat == "phat_treat" ~ "Member", 
+      treat == "phat_control" ~ "Not a member", 
+    )
+  ) %>% filter(resp_income == 6e3) %>% filter(row_number() %in% c(1,2)) %>% select(margin, margin_category, phat)
+
+
+margin_levels <- c("Mobile money", "Mobile banking", "Bank or microfinance bank", "SACCO", "Chama")
+margin_cat_levels <- c("No account", "Account", "Not a member", "Member")
+
+results <- bind_rows(results_mm, results_mb, results_b, results_sacco, results_chama) %>% 
+  mutate(margin = factor(margin, margin_levels, ordered = TRUE), 
+         margin_category = factor(str_wrap(margin_category, 10), str_wrap(margin_cat_levels, 10), ordered = TRUE)
+  ) %>% 
+  arrange(margin, margin_category) %>% 
+  group_by(margin) %>% 
+  mutate(
+    baseline = ifelse(row_number() ==1, 1, 0), 
+    baseline_val = max(ifelse(baseline == 1, phat, NA), na.rm = TRUE), 
+    diff = phat - baseline_val, 
+    startarrow = baseline_val, 
+    startarrow = ifelse(baseline == 1, NA, startarrow),
+    endarrow = phat, 
+    endarrow = ifelse(baseline == 1, NA, endarrow), 
+    color_dir = ifelse(diff < 0, "-", "+"), 
+    valuelabel = numclean(diff*100, n = 1),
+    valuelabel = ifelse(baseline == 1, NA, valuelabel),
+    valuelabel_pos = ifelse(color_dir == "+", (endarrow - startarrow)/2 + startarrow, (startarrow - endarrow)/2 + endarrow),
+  )
+
+ggplot(data = results, 
+       aes(
+         x = margin_category,
+         y = phat
+       )) +
+  facet_wrap(~margin, nrow = 1, scales = "free_x") + 
+  geom_col(fill = "grey90", width = 0.75) + 
+  geom_segment(aes(y = startarrow, yend = endarrow, color = color_dir), arrow = arrow(length=unit(.2, 'cm'), type = "closed"), size = 1.5) +
+  geom_point(aes(y = startarrow, color = color_dir), shape = 21, fill = "white", size = 2.5, stroke = 1.5) + 
+  geom_text(aes(label = valuelabel, y = valuelabel_pos), color = "black", hjust = -0.25) + 
+  labs(
+    title = "Marginal effects of financial services on the probability of a high financial health score", 
+    y = "Predicted probability of a\nhigh financial health score (> 0.6)", 
+    x = NULL, 
+     caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
+  ) + 
+  guides(
+    color = guide_legend(title = "Direction of effect")
+  ) + 
+  scale_color_manual(values = c("+" = "#31D522", "-" = "red"), guide = "legend") +
+  scale_y_continuous(labels = scales::label_percent()) + 
+  theme_custom()
+
+```
+
 
 ## Outcomes
 
-```{r, fig.width = 12, fig.asp = 0.55}
+```{r, fig.width = 12, fig.asp = 0.675}
 #| label: fig-reg_mfhiscore_drivers
 #| echo: false
 #| warning: false
 #| fig-cap: "Predictors of financial health outcomes"
 #| cap-location: margin
 
-fig_notes <- ""
+lm1 <- lm(mfhi_score_overall_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = FA2024)
+lm2 <- lm(mfhi_score_overall_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c + hh_urbrur_Urban + hh_size_all_c + hh_chronicdisease + resp_disability + resp_gender_group_wmn + resp_age_yrs_c_5 + resp_age_yrs_c_5_sq + resp_live_group_empl + resp_edu_group2_pri + resp_edu_group2_trt, data = FA2024)
+lm3 <- lm(mfhi_score_overall_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c + resp_live_group_empl + hh_urbrur_Urban + hh_size_all_c + hh_chronicdisease + resp_disability + resp_gender_group_wmn + resp_age_yrs_c_5 + resp_age_yrs_c_5_sq +  resp_edu_group2_pri + resp_edu_group2_trt + fb_decisions + fb_financial_plan + fb_emergency_savings + fin_debt_inc + fb_gambling_spend_inc + fl_literacy_all +  sc_ff_finhelp, data = FA2024)
+
+fig_notes <- "Notes: The results shown are based on a linear regression model that measures the the relationship of several individual characteristics with the MFHI score. The regression parameters are used to compute differences in the predicted MFHI scores between a 'typical' adult (the Baseline value) and an adult that satisfies the condition in the predictor. Income is mean centered and its effect corresponds to a change in the MFHI score associated with an increase in monthly income of Ksh 5,000. Age is mean centered and its effect corresponds to a change in the MFHI score associated with an increase of 5 years."
   
 # Defining regressions
   #depvars <- c("mfhi_score_hi_c")
   depvars <- c("mfhi_score_overall_c")
   depvar_labels <- INDICATORS[depvars]
   
-  maineffects_base <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt")
-   maineffects_all <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt", "fb_financial_plan", "fb_emergency_savings", "fl_literacy_all",  "sc_ff_finhelp")
-      maineffects_all2 <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "fb_financial_plan", "fb_emergency_savings", "fl_literacy_all",  "sc_ff_finhelp", "fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+maineffects_base <- c("resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c")
+maineffects_all <- c("resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt", "hh_urbrur_Urban", "hh_size_all_c", "hh_chronicdisease", "resp_disability", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "fl_literacy_all")
+maineffects_all2 <- c("resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt", "hh_urbrur_Urban", "hh_size_all_c", "hh_chronicdisease", "resp_disability", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "fb_decisions", "fb_financial_plan", "fb_emergency_savings", "fin_debt_inc", "fl_literacy_all")
       
-  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects_all2])
+effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects_all2])
+
+effect_levels <- c("Baseline", "Income & employment", "HH characteristics", "Demographics", "Educational attainment", "Health", "Financial knowledge & behaviors", "Social capital")
 
 # Running regressions
 ests <- bind_rows(
-    map(depvars, model_and_prepfig, maineffects_base, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "Base model"), 
-    map(depvars, model_and_prepfig, maineffects_all, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "Base model+"), 
-        map(depvars, model_and_prepfig, maineffects_all2, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "Base model++")
+    map(depvars, model_and_prepfig, maineffects_base, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "Base model: Income-level and variation"), 
+    map(depvars, model_and_prepfig, maineffects_all, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "M2: Base model + Socio-economic characteristics"), 
+      map(depvars, model_and_prepfig, maineffects_all2, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "M3: M2 + Financial knowledge, behaviors & social capital ")
   ) %>% 
   separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
-  mutate(effect_label2 = ifelse(is.na(effect_label2), effect_label4, effect_label2)) %>% 
-  rename(effect_label = effect_label4)
+  mutate(effect_label3 = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4) %>% 
+  mutate(
+        effect_label3 = ifelse(effect_label3 %in% c("Financial behaviors", "Financial literacy", "Debt"), "Financial knowledge & behaviors", effect_label3), 
+         effect_label3 = ifelse(effect_label3 %in% c("HH location", "HH size"), "HH characteristics", effect_label3), 
+        effect_label3 = ifelse(effect_label3 %in% c("Primary income source", "Economic"), "Income & employment", effect_label3), 
+        effect_label3 = ifelse(is.na(effect_label3), "Health", effect_label3), 
+        effect_label3 = factor(str_wrap(effect_label3, 15), levels = str_wrap(effect_levels, 15), ordered = TRUE)
+         )
 
 # Preparing figure data
 factor_params <- list(
-  wrap_sizes = list(depvar_label = 20, effect_label = 80, model_type = 25), 
+  wrap_sizes = list(depvar_label = 20, effect_label = 75, model_type = 15), 
   reverse_order = list(depvar_label = TRUE, effect_label = FALSE, model_type = FALSE), 
   order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
 )
@@ -2321,7 +3106,7 @@ fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelab
       subtitle = NULL,
       y = "Predicted MFHI score (%)",
       x = NULL,
-      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
     )
  
  barparams <- list(
@@ -2331,15 +3116,15 @@ fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelab
     baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
 ) 
 
-miny <- 0.28
-maxy <- 0.55
+miny <- 0.35
+maxy <- 0.6
 
 scales <- list(
   y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
   x = list(txtwrap = 50, position = "bottom")
 )
 
-facets <- list(type = "grid",  rows = "effect_label2", cols = "model_type", scales = "free", space = "free", drop_row_label = FALSE) 
+facets <- list(type = "grid",  rows = "effect_label3", cols = "model_type", scales = "free", space = "free", drop_row_label = FALSE) 
     
 fig_regests(fig_data, labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the MFHI score", coord_flip = TRUE)
 
@@ -2357,14 +3142,14 @@ fig_notes <- ""
 # Defining regressions
   depvars <- c("mfhi_score_md2d_c", "mfhi_score_risk_c", "mfhi_score_inv_c")
   depvar_labels <- INDICATORS[depvars]
-  maineffects <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "fb_financial_plan", "fb_emergency_savings", "fl_literacy_all",  "sc_ff_finhelp", "fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  maineffects <- c("resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt", "hh_urbrur_Urban", "hh_size_all_c", "hh_chronicdisease", "resp_disability", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "fb_decisions", "fb_financial_plan", "fb_emergency_savings", "fin_debt_inc", "fl_literacy_all",  "sc_ff_finhelp")
       
       
   effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
 
 # Running regressions
 ests <- bind_rows(
-        map(depvars, model_and_prepfig, maineffects_all2, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "Base model++")
+        map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels, model_type_override = "Base model++")
   ) %>% 
   separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
   mutate(effect_label2 = ifelse(is.na(effect_label2), effect_label4, effect_label2)) %>% 
@@ -2423,9 +3208,9 @@ fig_notes <- ""
   depvars <- c("pfh_score_overall")
   depvar_labels <- INDICATORS[depvars]
   
-  maineffects_base <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt")
-   maineffects_all <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt", "fb_financial_plan", "fb_emergency_savings", "fl_literacy_all",  "sc_ff_finhelp")
-      maineffects_all2 <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "fb_financial_plan", "fb_emergency_savings", "fl_literacy_all",  "sc_ff_finhelp", "fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+maineffects_base <- c("resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c")
+maineffects_all <- c("resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt", "hh_urbrur_Urban", "hh_size_all_c", "hh_chronicdisease", "resp_disability", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "fl_literacy_all")
+maineffects_all2 <- c("resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl",  "resp_edu_group2_pri", "resp_edu_group2_trt", "hh_urbrur_Urban", "hh_size_all_c", "hh_chronicdisease", "resp_disability", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "fb_decisions", "fb_financial_plan", "fb_emergency_savings", "fin_debt_inc", "fl_literacy_all",  "sc_ff_finhelp")
       
       
   effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects_all2])
@@ -2490,7 +3275,7 @@ fig_notes <- ""
 # Defining regressions
   depvars <- c("mfhi_score_overall_c", "pfh_score_overall")
   depvar_labels <- INDICATORS[depvars]
-  maineffects <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "fb_financial_plan", "fb_emergency_savings", "fl_literacy_all",  "sc_ff_finhelp", "fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  maineffects <- c("hh_urbrur_Urban", "hh_size_all_c", "resp_gender_group_wmn", "resp_age_yrs_c_5", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "fb_financial_plan", "fb_emergency_savings", "fl_literacy_all",  "sc_ff_finhelp", "fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
       
       
   effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
@@ -2543,8 +3328,245 @@ fig_regests(fig_data, labels, facets = facets, barparams, scales, effect_desc = 
 
 ## Financial services 
 
-```{r, fig.width = 12, fig.asp = 0.45}
+### Overall
+
+```{r, fig.width = 12, fig.asp = 0.5}
 #| label: fig-reg_mfhiscore_findrivers
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health outcomes"
+#| cap-location: margin
+
+fig_notes <- "Notes: The results shown are based on a linear regression model that measures the association between access to financial services and the MFHI score. The regression parameters are used to compute differences in the predicted MFHI scores between a 'typical' adult without an account and a 'typical' adult that has an account or is a member with a financial institution. The regression adjusts for income-level, income volatility, education, employment and social capital."
+  
+# Defining regressions
+  depvars <- c("mfhi_score_md2d_c", "mfhi_score_risk_c", "mfhi_score_inv_c", "mfhi_score_overall_c")
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "sc_ff_finhelp")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+# Running regressions
+ests <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": "))
+
+# Preparing figure data
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 15, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+ labels <- list(
+      title = "Financial service predictors of financial health outcomes",
+      subtitle = NULL,
+      y = "Predicted MFHI score",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP)
+    )
+ 
+ barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+ miny <- round(min(fig_data$fig_data), 2) 
+maxy <- round(max(fig_data$fig_data), 2) 
+buffer <- (maxy - miny)/100
+miny <- miny - buffer*2
+if (miny > 0) { miny <- 0 }
+maxy <- maxy + buffer*4
+
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = TRUE) 
+    
+fig_regests(fig_data %>% filter(model_type == "Model: Adjusted"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the MFHI score", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+```
+
+### Credit, overall
+```{r, fig.width = 12, fig.asp = 0.45}
+#| label: fig-reg_mfhiscore_findrivers_intout_credit
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health outcomes - Credit"
+#| cap-location: margin
+
+fig_notes <- "Notes: The results shown are based on a linear regression model that measures the association between access to financial services and several outcomes associated with credit usage. The regression adjusts for income-level, income volatility, education, employment and social capital. With the exception of 'total oustanding debt as a share of monthly income' and 'total debt service as a share of monthly income' all outcome variables are binary and the effects should be interpreted as changes in predicted probabilities (i.e. percentage points)."
+  
+# Defining regressions
+  depvars <- c("fin_loan_agg4_informal_exchama", "fin_debt_any", "fin_debt_inc", "fin_debt_high", "fin_debtservice_inc", "fin_debtservice_high", "mfhi_d_secure", "fin_debt_defaulted_any")
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "sc_ff_finhelp")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+# Running regressions
+ests <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label4 = ifelse(depvar_label4 == "Currently uses", "Currently uses any informal loans", depvar_label4)) %>%
+  mutate(depvar_label = depvar_label4)
+
+# Preparing figure data
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 12, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+ 
+ barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = TRUE) 
+
+
+ labels <- list(
+      title = NULL,
+      subtitle = NULL,
+      y = "Predicted value",
+      x = NULL,
+      caption = NULL
+    )
+ 
+####
+miny = 0.35
+maxy = 0.5
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p1 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[1]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+####
+miny = 0.4
+maxy = 0.65
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p2 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[2]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 1.5
+maxy = 8
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p3 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[3]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+####
+miny = 0.1
+maxy = 0.4
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p4 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[4]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.1
+maxy = 0.7
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p5 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[5]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.1
+maxy = 0.25
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p6 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[6]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), , legend.posiiton = "none")
+
+####
+miny = 0.5
+maxy = 0.7
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p7 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[7]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.01
+maxy = 0.25
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p8 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[8]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+scale_f <- 1.1 
+
+(p1 | p2 | p3 | p4 | p5 | p6 | p7 | p8) + 
+  plot_layout(axes = "collect", guides = "collect") + 
+  plot_annotation(
+    title = str_wrap("The effect of financial services on informal credit uptake, debt and debt repayment stress", 70),  
+    subtitle = "Adults (% 18+)", 
+    caption = str_wrap(paste(SOURCE, "Notes:", fig_notes), CAP_WRAP)
+    ) & 
+  theme(
+    legend.position = "none",
+    plot.title.position = "plot",
+    plot.caption.position = "plot",
+    plot.subtitle = element_text(size = 11.5*scale_f, face = 'plain'),
+    plot.title = element_text(size = 14.25*scale_f, hjust = 0, face = 'bold', color = 'black'),
+    plot.caption=element_text(hjust=0, color="gray30", size=10.5*scale_f),
+    axis.text.x = element_blank(), 
+    axis.ticks.x = element_blank()
+  )
+
+
+```
+
+### Credit, by gender
+```{r, fig.width = 12, fig.asp = 0.8}
+#| label: fig-reg_mfhiscore_findrivers_intout_credit_bygender
 #| echo: false
 #| warning: false
 #| fig-cap: "Financial service predictors of financial health outcomes"
@@ -2553,11 +3575,979 @@ fig_regests(fig_data, labels, facets = facets, barparams, scales, effect_desc = 
 fig_notes <- ""
   
 # Defining regressions
-  depvars <- c("mfhi_score_md2d_c", "mfhi_score_risk_c", "mfhi_score_inv_c", "mfhi_score_overall_c")
+  depvars <- c("fin_loan_agg4_informal_exchama", "fin_debt_any", "fin_debt_inc", "fin_debt_high", "fin_debtservice_inc", "fin_debtservice_high", "mfhi_d_secure")
   depvar_labels <- INDICATORS[depvars]
 
   maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
-  confounds <- c("resp_income_c_5000", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+  data_women <-  FA2024 %>% filter(resp_gender_group_wmn == 1)
+  data_men <-  FA2024 %>% filter(resp_gender_group_wmn == 0)
+  
+# Running regressions
+  
+ests_women <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = data_women, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = data_women, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label4 = ifelse(depvar_label4 == "Currently uses", "Currenty uses any informal loans", depvar_label4)) %>%
+  mutate(depvar_label = depvar_label4, gender = "Women")
+  
+ests_men <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = data_men, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = data_men, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label4 = ifelse(depvar_label4 == "Currently uses", "Currenty uses any informal loans", depvar_label4)) %>%
+  mutate(depvar_label = depvar_label4, gender = "Men")
+  
+
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 15, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+ 
+barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = TRUE) 
+
+ 
+# Preparing figure data
+ests <- ests_men
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+labels <- list(
+      title = NULL,
+      subtitle = "Men",
+      y = "Predicted value",
+      x = NULL,
+      caption = NULL
+    )
+
+####
+miny = 0.25
+maxy = 0.4
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p1 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[1]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+labels <- list(
+      title = NULL,
+      subtitle = NULL,
+      y = "Predicted value",
+      x = NULL,
+      caption = NULL
+    )
+
+
+####
+miny = 0.3
+maxy = 0.65
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p2 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[2]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.2
+maxy = 7
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p3 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[3]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+####
+miny = 0.1
+maxy = 0.4
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p4 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[4]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.1
+maxy = 0.7
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p5 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[5]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.1
+maxy = 0.25
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p6 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[6]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), , legend.posiiton = "none")
+
+####
+miny = 0.5
+maxy = 0.75
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p7 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[7]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+labels <- list(
+      title = NULL,
+      subtitle = "Women",
+      y = "Predicted value",
+      x = NULL,
+      caption = NULL
+    )
+
+# Preparing figure data
+ests <- ests_women
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+
+####
+miny = 0.25
+maxy = 0.4
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p8 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[1]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+labels <- list(
+      title = NULL,
+      subtitle = NULL,
+      y = "Predicted value",
+      x = NULL,
+      caption = NULL
+    )
+
+
+####
+miny = 0.1
+maxy = 0.75
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p9 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[2]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.25
+maxy = 6
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p10 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[3]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+####
+miny = 0.1
+maxy = 0.4
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p11 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[4]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.05
+maxy = 0.4
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p12 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[5]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0.05
+maxy = 0.2
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p13 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[6]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), , legend.posiiton = "none")
+
+####
+miny = 0.4
+maxy = 0.8
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p14 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[7]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+scale_f <- 1.1 
+
+p_men <- (p1 | p2 | p3 | p4 | p5 | p6 | p7) + plot_layout(axes = "collect", guides = "collect") 
+p_women <- (p8 | p9 | p10 | p11 | p12 | p13 | p14) + plot_layout(axes = "collect", guides = "collect") 
+
+(p_men / p_women) +
+  plot_annotation(
+    title = str_wrap("The effect of financial services on informal savings uptake, emergency savings habit and financial health resilience and investment outcomes", 57), 
+    subtitle = "Adults (% 18+)", 
+    caption = str_wrap(paste(SOURCE, "Notes:", fig_notes), CAP_WRAP)
+    ) & 
+  theme(
+    legend.position = "none",
+    plot.title.position = "plot",
+    plot.caption.position = "plot",
+    plot.subtitle = element_text(size = 11.5*scale_f, face = 'plain'),
+    plot.title = element_text(size = 14.25*scale_f, hjust = 0, face = 'bold', color = 'black'),
+    plot.caption=element_text(hjust=0, color="gray30", size=10.5*scale_f),
+  )
+
+
+```
+
+### Savings, overall
+
+```{r, fig.width = 12, fig.asp = 0.45}
+#| label: fig-reg_mfhiscore_findrivers_intout_savings
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health outcomes"
+#| cap-location: margin
+
+fig_notes <- "Notes: The results shown are based on a linear regression model that measures the association between access to financial services and several outcomes associated with savings. The regression adjusts for income-level, income volatility, education, employment and social capital. All outcome variables are binary and the effects should be interpreted as changes in predicted probabilities (i.e. percentage points)."
+  
+# Defining regressions
+  depvars <- c("fin_sav_agg4_informal_exchama", "fb_emergency_savings", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any")
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+# Running regressions
+ests <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(
+    depvar_label4 = ifelse(depvar_label4 == "Currently uses", "Currenty uses any informal savings", depvar_label4), 
+    depvar_label4 = ifelse(depvar_label4 == "Purchased- or contributed to- physical or financial assets that support production, productivity or long-term financial security", "Purchased- or contributed to- long-term physical or financial assets", depvar_label4), 
+    depvar_label4 = ifelse(depvar_label4 == "Yes", depvar_label3, depvar_label4), 
+    depvar_label = depvar_label4
+    )
+  
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 20, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+ 
+barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = TRUE) 
+
+labels <- list(
+      title = NULL,
+      subtitle = NULL,
+      y = "Predicted probability",
+      x = NULL,
+      caption = NULL
+    )
+ 
+# Preparing figure data
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+####
+miny = 0
+maxy = 0.2
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p1 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[1]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+####
+miny = 0
+maxy = 0.3
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p2 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[2]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0
+maxy = 0.2
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p3 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[3]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+####
+miny = 0
+maxy = 0.4
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p4 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[4]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0
+maxy = 0.6
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p5 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[5]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+scale_f <- 1.1 
+
+(p1 | p2 | p3 | p4 | p5 ) + 
+  plot_layout(axes = "collect", guides = "collect") + 
+  plot_annotation(
+    title = str_wrap("The effect of financial services on informal savings uptake, emergency savings habit and financial health resilience and investment outcomes", 70), 
+    subtitle = "Adults (% 18+)", 
+    caption = str_wrap(paste(SOURCE, "Notes:", fig_notes), CAP_WRAP)
+    ) & 
+  theme(
+    legend.position = "none",
+    plot.title.position = "plot",
+    plot.caption.position = "plot",
+    plot.subtitle = element_text(size = 11.5*scale_f, face = 'plain'),
+    plot.title = element_text(size = 14.25*scale_f, hjust = 0, face = 'bold', color = 'black'),
+    plot.caption=element_text(hjust=0, color="gray30", size=10.5*scale_f),
+    axis.text.x = element_blank(), 
+    axis.ticks.x = element_blank()
+  )
+
+
+```
+
+### Savings, by gender
+```{r, fig.width = 12, fig.asp = 0.8}
+#| label: fig-reg_mfhiscore_findrivers_intout_savings_bygender
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health outcomes"
+#| cap-location: margin
+
+fig_notes <- ""
+  
+# Defining regressions
+  depvars <- c("fin_sav_agg4_informal_exchama", "fb_emergency_savings", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any")
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+  data_women <-  FA2024 %>% filter(resp_gender_group_wmn == 1)
+  data_men <-  FA2024 %>% filter(resp_gender_group_wmn == 0)
+  
+# Running regressions
+ests_women <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = data_women, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = data_women, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(
+    depvar_label4 = ifelse(depvar_label4 == "Currently uses", "Currenty uses any informal savings", depvar_label4), 
+    depvar_label4 = ifelse(depvar_label4 == "Purchased- or contributed to- physical or financial assets that support production, productivity or long-term financial security", "Purchased- or contributed to- long-term physical or financial assets", depvar_label4), 
+    depvar_label4 = ifelse(depvar_label4 == "Yes", depvar_label3, depvar_label4), 
+    depvar_label = depvar_label4,
+         gender = "Women")
+
+ests_men <-  bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = data_men, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = data_men, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(
+    depvar_label4 = ifelse(depvar_label4 == "Currently uses", "Currenty uses any informal savings", depvar_label4), 
+    depvar_label4 = ifelse(depvar_label4 == "Purchased- or contributed to- physical or financial assets that support production, productivity or long-term financial security", "Purchased- or contributed to- long-term physical or financial assets", depvar_label4), 
+    depvar_label4 = ifelse(depvar_label4 == "Yes", depvar_label3, depvar_label4), 
+    depvar_label = depvar_label4,
+         gender = "Men")
+  
+
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 20, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+ 
+barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = TRUE) 
+
+ 
+# Preparing figure data
+ests <- ests_men
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+labels <- list(
+      title = NULL,
+      subtitle = "Men",
+      y = "Predicted probability",
+      x = NULL,
+      caption = NULL
+    )
+
+####
+miny = 0
+maxy = 0.2
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p1 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[1]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+labels <- list(
+      title = NULL,
+      subtitle = NULL,
+      y = "Predicted probability",
+      x = NULL,
+      caption = NULL
+    )
+
+
+####
+miny = 0
+maxy = 0.3
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p2 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[2]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0
+maxy = 0.15
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p3 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[3]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+####
+miny = 0
+maxy = 0.35
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p4 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[4]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0
+maxy = 0.6
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p5 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[5]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+#### WOMEN
+
+ests <- ests_women
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+labels <- list(
+      title = NULL,
+      subtitle = "Women",
+      y = "Predicted probability",
+      x = NULL,
+      caption = NULL
+    )
+
+####
+miny = 0
+maxy = 0.2
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p6 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[1]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+labels <- list(
+      title = NULL,
+      subtitle = NULL,
+      y = "Predicted probability",
+      x = NULL,
+      caption = NULL
+    )
+
+
+####
+miny = 0
+maxy = 0.3
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p7 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[2]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0
+maxy = 0.15
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p8 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[3]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+####
+miny = 0
+maxy = 0.35
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p9 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[4]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+####
+miny = 0
+maxy = 0.6
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 2), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+p10 <- fig_regests(fig_data %>% filter(model_type == "Model: Adjusted") %>% filter(depvar == depvars[5]), labels, facets = facets, barparams, scales, effect_desc = NULL, coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"), legend.posiiton = "none")
+
+
+scale_f <- 1.1 
+
+p_men <- (p1 | p2 | p3 | p4 | p5 ) + plot_layout(axes = "collect", guides = "collect") 
+p_women <- (p6 | p7 | p8 | p9 | p10) + plot_layout(axes = "collect", guides = "collect") 
+
+(p_men / p_women) +
+  plot_annotation(
+    title = str_wrap("The effect of financial services on informal savings uptake, emergency savings habit and financial health resilience and investment outcomes", 57), 
+    subtitle = "Adults (% 18+)", 
+    caption = str_wrap(paste(SOURCE, "Notes:", fig_notes), CAP_WRAP)
+    ) & 
+  theme(
+    legend.position = "none",
+    plot.title.position = "plot",
+    plot.caption.position = "plot",
+    plot.subtitle = element_text(size = 11.5*scale_f, face = 'plain'),
+    plot.title = element_text(size = 14.25*scale_f, hjust = 0, face = 'bold', color = 'black'),
+    plot.caption=element_text(hjust=0, color="gray30", size=10.5*scale_f),
+  )
+
+
+```
+
+
+```{r, fig.width = 12, fig.asp = 0.45}
+#| label: fig-reg_mfhiscore_findrivers_bygender
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health outcomes"
+#| cap-location: margin
+
+fig_notes <- ""
+  
+# Defining regressions
+  depvars <- c("mfhi_score_md2d_c", "mfhi_score_risk_c", "mfhi_score_inv_c")
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "sc_ff_finhelp")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+  data_f <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)")
+  
+# Running regressions
+ests_men <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = data_f %>% filter(resp_gender_group_men == 1)  , depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = data_f %>% filter(resp_gender_group_men == 1), depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": ")) %>% 
+  mutate(gender = "Men")
+
+ests_women <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = data_f %>% filter(resp_gender_group_men == 0)  , depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = data_f %>% filter(resp_gender_group_men == 0), depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": ")) %>% 
+  mutate(gender = "Women")
+
+ests <- bind_rows(ests_men, ests_women) %>% filter(model_type == "Model: Adjusted") %>% mutate(model_type = gender)
+
+# Preparing figure data
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 15, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE), b_round = 2) %>% mutate(effect_label = fct_rev(effect_label))
+
+ labels <- list(
+      title = "Financial service predictors of financial health outcomes",
+      subtitle = NULL,
+      y = "Predicted MFHI score",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+    )
+ 
+ barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+ miny <- 0
+ maxy <- 0.35
+ 
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "gender", scales = "free", space = "free", drop_row_label = TRUE) 
+
+ labels <- list(
+      subtitle = "Managing day to day (score)",
+      title = NULL,
+      y = "Predicted MFHI score",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+    )
+ 
+p1 <- fig_regests(fig_data %>% filter(depvar == "mfhi_score_md2d_c"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the MFHI score", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+ labels <- list(
+      subtitle = "Coping with risk (score)",
+      title = NULL,
+      y = "Predicted MFHI score",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+    )
+ 
+p2 <- fig_regests(fig_data %>% filter(depvar == "mfhi_score_risk_c"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the MFHI score", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+ labels <- list(
+      subtitle = "Investing for the future (score)",
+      title = NULL,
+      y = "Predicted MFHI score",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+    )
+ 
+p3 <- fig_regests(fig_data %>% filter(depvar == "mfhi_score_inv_c"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the MFHI score", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 10.5, face = "bold"))
+
+(p1 | p2 | p3) + plot_layout(axes = "collect") 
+
+
+```
+
+```{r, fig.width = 12, fig.asp = 0.55}
+#| label: fig-reg_mfhiscore_findrivers2
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health outcomes"
+#| cap-location: margin
+
+fig_notes <- ""
+  
+# Defining regressions
+  depvars <- c("mfhi_f_secure", "mfhi_nf_secure", "mfhi_d_secure", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any", "mfhi_score_hi_c")
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "sc_ff_finhelp")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+# Running regressions
+ests <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
+  rename(effect_label = effect_label4)  %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": "))
+
+# Preparing figure data
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 18, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE)) %>% mutate(effect_label = fct_rev(effect_label))
+
+ labels <- list(
+      title = "Financial service predictors of financial health",
+      subtitle = NULL,
+      y = "Predicted probability (%)",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+    )
+ 
+ barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+ miny <- round(min(fig_data$fig_data), 2) 
+maxy <- round(max(fig_data$fig_data), 2) 
+buffer <- (maxy - miny)/100
+miny <- miny - buffer*2
+if (miny > 0) { miny <- 0 }
+maxy <- maxy + buffer*4
+
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = TRUE) 
+    
+fig_regests(fig_data %>% filter(model_type == "Model: Adjusted"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each fnancial account type on the\npredicted probability of satisfying the condition of each indicator", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 9.5, face = "bold"))
+
+```
+
+
+```{r, fig.width = 12, fig.asp = 0.575}
+#| label: fig-reg_mfhiscore_findrivers3
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health"
+#| cap-location: margin
+
+fig_notes <- ""
+  
+# Defining regressions
+  depvars <-  c("mfhi_score_hi_c")
+  
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- names(FA2024)[str_detect(names(FA2024), "fin_sav_agg4|fin_loan_agg4")]
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "sc_ff_finhelp")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+# Running regressions
+ests <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label2), effect_label4, effect_label2)) %>% 
+  rename(effect_label = effect_label3) %>% 
+  mutate(effect_label = ifelse(is.na(effect_label), effect_label4, effect_label)) %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": "))
+
+# Preparing figure data
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 15, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE)) %>% mutate(effect_label = fct_rev(effect_label))
+
+ labels <- list(
+      title = "Financial-access predictors of financial health",
+      subtitle = NULL,
+      y = "Predicted probability (%)",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+    )
+ 
+ barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+miny <- 0
+maxy <- 1
+
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = FALSE) 
+    
+fig_regests(fig_data %>% filter(model_type == "Model: Adjusted"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the\npredicted probability of satisfying the condition of each indicator", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 9.5, face = "bold"))
+
+```
+
+```{r, fig.width = 12, fig.asp = 0.575}
+#| label: fig-reg_mfhiscore_findrivers4
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health"
+#| cap-location: margin
+
+fig_notes <- ""
+  
+# Defining regressions
+  depvars <-  c("mfhi_f_secure", "mfhi_nf_secure", "mfhi_d_secure", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any", "mfhi_score_hi_c")
+  
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- names(FA2024)[str_detect(names(FA2024), "fin_sav_agg4|fin_loan_agg4")]
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "sc_ff_finhelp")
+  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
+
+# Running regressions
+ests <- bind_rows(
+    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
+    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
+  ) %>% 
+  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(indicator_category = ifelse(is.na(effect_label2), effect_label4, effect_label2)) %>% 
+  rename(effect_label = effect_label3) %>% 
+  mutate(effect_label = ifelse(is.na(effect_label), effect_label4, effect_label)) %>% 
+  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
+  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": "))
+
+# Preparing figure data
+factor_params <- list(
+  wrap_sizes = list(depvar_label = 15, effect_label = 80, model_type = 25), 
+  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
+  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
+)
+
+fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE)) %>% mutate(effect_label = fct_rev(effect_label))
+
+ labels <- list(
+      title = "Financial-access predictors of financial health",
+      subtitle = NULL,
+      y = "Predicted probability (%)",
+      x = NULL,
+      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
+    )
+ 
+ barparams <- list(
+  bars = list(width = 0.6, color = "grey90"), 
+  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
+  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
+    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
+) 
+
+miny <- 0
+maxy <- 0.85
+
+scales <- list(
+  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
+  x = list(txtwrap = 50, position = "bottom")
+)
+
+facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = FALSE) 
+    
+fig_regests(fig_data %>% filter(model_type == "Model: Adjusted"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the\npredicted probability of satisfying the condition of each indicator", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 9.5, face = "bold"))
+
+```
+
+
+
+### Perceptions
+
+```{r, fig.width = 12, fig.asp = 0.45}
+#| label: fig-reg_perceptions_findrivers
+#| echo: false
+#| warning: false
+#| fig-cap: "Financial service predictors of financial health perceptions"
+#| cap-location: margin
+
+fig_notes <- ""
+  
+# Defining regressions
+  depvars <- c("pfh_dailyneeds_nw", "pfh_debt_nw", "pfh_goals_vc", "pfh_finstatus_imp","pfh_score_overall")
+  depvar_labels <- INDICATORS[depvars]
+
+  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
+  confounds <- c("resp_age_yrs_c_5", "resp_age_yrs_c_5_sq", "resp_income_c_5000", "resp_income_c_5000_2", "resp_income_var_c", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt", "sc_ff_finhelp")
   effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
 
 # Running regressions
@@ -2613,145 +4603,319 @@ fig_regests(fig_data %>% filter(model_type == "Model: Adjusted"), labels, facets
 
 ```
 
+
+
+# Annex
+
+
+```{r, fig.width = 12, fig.asp = 0.52}
+#| label: fig-mfhi_dim_inc_corr
+#| echo: false
+#| warning: false
+#| fig-cap: "Correlation between the MFHI score and income"
+#| cap-location: margin
+
+model_data <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)") %>% select(mfhi_f_secure, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var, resp_income_var_c)
+model_data <- model_data[complete.cases(model_data), ]
+
+lm <- lm(mfhi_f_secure ~ resp_income_c_5000 + resp_income_var_c, data = model_data)
+lm <- lm(mfhi_f_secure ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data)
+glm <- glm(mfhi_f_secure ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data, family = binomial(link = "logit"),  weights = model_data$sample_weights)
+
+predict_data_0 <- model_data %>% mutate(resp_income_var_c = min(resp_income_var_c))
+predict_data_p25 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.25)))
+predict_data_p50 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.5)))
+predict_data_p75 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.75)))
+
+predict_data <- predict_data_0 %>% select(-resp_income_var_c, -resp_income_var) %>% 
+  mutate(phat_incvar_p0 = predict(glm, newdata = predict_data_0, type = "response")) %>% 
+  mutate(phat_incvar_p25 = predict(glm, newdata = predict_data_p25, type = "response")) %>% 
+  mutate(phat_incvar_p50 = predict(glm, newdata = predict_data_p50, type = "response")) %>% 
+  mutate(phat_incvar_p75 = predict(glm, newdata = predict_data_p75, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_incvar"), 
+    names_to = "income_volatility_level", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    income_volatility_level = case_when(
+      income_volatility_level == "phat_incvar_p0" ~ "+ 0% (stable income)", 
+      income_volatility_level == "phat_incvar_p25" ~ "+ 20% (25th percentile)", 
+      income_volatility_level == "phat_incvar_p50" ~ "+ 75% (50th percentile)", 
+      income_volatility_level == "phat_incvar_p75" ~ "+ 200% (75th percentile)", 
+    )
+  )
+  
+ggplot(data = predict_data %>% filter(income_volatility_level == "+ 75% (50th percentile)"), 
+       aes(x = resp_income, 
+           y = phat)) + 
+  geom_point(size = 0.15) + 
+  geom_line(size = 0.125) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = 0.5, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  geom_vline(xintercept = 24e3, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=45e3, y= 0.54, label = "-->", hjust = 0, angle = 90, fontface = "plain") + 
+   annotate("text", x=45e3, y= 0.68, label = "More likely than not\nto have a high\nfinancial health score", hjust = 0, angle = 0, fontface = "plain", size = 3.5) + 
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of food security", 
+    subtitle = "Probaility of food security", 
+    title = NULL, 
+    caption = NULL,
+  ) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 75e3))
+
+
+model_data <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)") %>% select(mfhi_nf_secure, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var, resp_income_var_c)
+model_data <- model_data[complete.cases(model_data), ]
+
+lm <- lm(mfhi_nf_secure ~ resp_income_c_5000 + resp_income_var_c, data = model_data)
+lm <- lm(mfhi_nf_secure ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data)
+glm <- glm(mfhi_nf_secure ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data, family = binomial(link = "logit"),  weights = model_data$sample_weights)
+
+predict_data_0 <- model_data %>% mutate(resp_income_var_c = min(resp_income_var_c))
+predict_data_p25 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.25)))
+predict_data_p50 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.5)))
+predict_data_p75 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.75)))
+
+predict_data <- predict_data_0 %>% select(-resp_income_var_c, -resp_income_var) %>% 
+  mutate(phat_incvar_p0 = predict(glm, newdata = predict_data_0, type = "response")) %>% 
+  mutate(phat_incvar_p25 = predict(glm, newdata = predict_data_p25, type = "response")) %>% 
+  mutate(phat_incvar_p50 = predict(glm, newdata = predict_data_p50, type = "response")) %>% 
+  mutate(phat_incvar_p75 = predict(glm, newdata = predict_data_p75, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_incvar"), 
+    names_to = "income_volatility_level", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    income_volatility_level = case_when(
+      income_volatility_level == "phat_incvar_p0" ~ "+ 0% (stable income)", 
+      income_volatility_level == "phat_incvar_p25" ~ "+ 20% (25th percentile)", 
+      income_volatility_level == "phat_incvar_p50" ~ "+ 75% (50th percentile)", 
+      income_volatility_level == "phat_incvar_p75" ~ "+ 200% (75th percentile)", 
+    )
+  )
+  
+ggplot(data = predict_data %>% filter(income_volatility_level == "+ 75% (50th percentile)"), 
+       aes(x = resp_income, 
+           y = phat)) + 
+  geom_point(size = 0.15) + 
+  geom_line(size = 0.125) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = 0.5, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  geom_vline(xintercept = 24e3, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=45e3, y= 0.54, label = "-->", hjust = 0, angle = 90, fontface = "plain") + 
+   annotate("text", x=45e3, y= 0.68, label = "More likely than not\nto have a high\nfinancial health score", hjust = 0, angle = 0, fontface = "plain", size = 3.5) + 
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of non-food security", 
+    subtitle = "Probaility of non-food security", 
+    title = NULL, 
+    caption = NULL,
+  ) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 75e3))
+
+
+model_data <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)") %>% select(mfhi_ef_secure, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var, resp_income_var_c)
+model_data <- model_data[complete.cases(model_data), ]
+
+lm <- lm(mfhi_ef_secure ~ resp_income_c_5000 + resp_income_var_c, data = model_data)
+lm <- lm(mfhi_ef_secure ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data)
+glm <- glm(mfhi_ef_secure ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c, data = model_data, family = binomial(link = "logit"),  weights = model_data$sample_weights)
+
+predict_data_0 <- model_data %>% mutate(resp_income_var_c = min(resp_income_var_c))
+predict_data_p25 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.25)))
+predict_data_p50 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.5)))
+predict_data_p75 <- model_data %>% mutate(resp_income_var_c = quantile(resp_income_var_c, probs = c(0.75)))
+
+predict_data <- predict_data_0 %>% select(-resp_income_var_c, -resp_income_var) %>% 
+  mutate(phat_incvar_p0 = predict(glm, newdata = predict_data_0, type = "response")) %>% 
+  mutate(phat_incvar_p25 = predict(glm, newdata = predict_data_p25, type = "response")) %>% 
+  mutate(phat_incvar_p50 = predict(glm, newdata = predict_data_p50, type = "response")) %>% 
+  mutate(phat_incvar_p75 = predict(glm, newdata = predict_data_p75, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_incvar"), 
+    names_to = "income_volatility_level", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    income_volatility_level = case_when(
+      income_volatility_level == "phat_incvar_p0" ~ "+ 0% (stable income)", 
+      income_volatility_level == "phat_incvar_p25" ~ "+ 20% (25th percentile)", 
+      income_volatility_level == "phat_incvar_p50" ~ "+ 75% (50th percentile)", 
+      income_volatility_level == "phat_incvar_p75" ~ "+ 200% (75th percentile)", 
+    )
+  )
+  
+ggplot(data = predict_data %>% filter(income_volatility_level == "+ 75% (50th percentile)"), 
+       aes(x = resp_income, 
+           y = phat)) + 
+  geom_point(size = 0.15) + 
+  geom_line(size = 0.125) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = 0.5, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  geom_vline(xintercept = 24e3, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=45e3, y= 0.54, label = "-->", hjust = 0, angle = 90, fontface = "plain") + 
+   annotate("text", x=45e3, y= 0.68, label = "More likely than not\nto have a high\nfinancial health score", hjust = 0, angle = 0, fontface = "plain", size = 3.5) + 
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of access to emergency funds", 
+    subtitle = "Probaility of access to emergency fund", 
+    title = NULL, 
+    caption = NULL,
+  ) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 75e3))
+
+```
+
+
+```{r, fig.width = 12, fig.asp = 0.52}
+#| label: fig-mfhi_inc_corr_gender
+#| echo: false
+#| warning: false
+#| fig-cap: "Correlation between the MFHI score and income"
+#| cap-location: margin
+
+model_data <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)") %>% select(mfhi_score_overall_c, mfhi_score_hi_c, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var_c, resp_live_group_empl, resp_edu_group2_pri,  resp_edu_group2_trt,  resp_gender_group_wmn)
+model_data <- model_data[complete.cases(model_data), ]
+
+glm <- glm(mfhi_score_hi_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c + resp_gender_group_wmn, data = model_data, family = binomial(link = "logit"))
+
+predict_data_men <- model_data %>% mutate(resp_gender_group_wmn = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0)
+predict_data_women <- model_data %>% mutate(resp_gender_group_wmn = 1, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0)
+
+predict_data <- predict_data_men %>% select(-resp_gender_group_wmn) %>% 
+  mutate(phat_men = predict(glm, newdata = predict_data_men, type = "response")) %>% 
+  mutate(phat_women = predict(glm, newdata = predict_data_women, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "gender", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    gender = case_when(
+      gender == "phat_women" ~ "Women", 
+      gender == "phat_men" ~ "Men", 
+    )
+  )
+  
+ggplot(data = predict_data, 
+       aes(x = resp_income, 
+           y = phat, 
+           color = gender)) + 
+  geom_point(size = 0.15) + 
+  geom_line(size = 0.125) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = c(0.14, 0.19), color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  geom_vline(xintercept = c(6e3), color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=6.1e3, y= 0.25, label = "Median income level (Ksh 6,000)", hjust = 0, vjust = 1, angle = 90, fontface = "plain", size = 3.5) +
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of high financial health score", 
+    title = "Relationships between income, gender and probability of high financial health", 
+    subtitle = "C) ...by employment status",
+    caption = NULL
+  ) + 
+    scale_color_manual(values = c("Men" = "#31AFD4", "Women" = "#DD99BB")) +
+   guides(color = guide_legend(title = "Gender:")) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 15e3), ylim = c(0, 0.5))
+
+```
+
+
+
+```{r, fig.width = 12, fig.asp = 0.52}
+#| label: fig-mfhi_inc_corr_savings
+#| echo: false
+#| warning: false
+#| fig-cap: "Correlation between the MFHI score and income"
+#| cap-location: margin
+
+model_data <- FA2024 %>% filter(resp_age_group2_fct == "[25-65)") %>% select(mfhi_score_overall_c, mfhi_score_hi_c, resp_income,  resp_income_c_5000, resp_income_c_5000_2, resp_income_var_c, resp_live_group_empl, resp_edu_group2_pri,  resp_edu_group2_trt,  resp_gender_group_wmn, fb_financial_plan, fb_emergency_savings, fl_literacy_all, sc_ff_finhelp)
+model_data <- model_data[complete.cases(model_data), ]
+
+glm <- glm(mfhi_score_hi_c ~ resp_income_c_5000 + resp_income_c_5000_2 + resp_income_var_c + resp_gender_group_wmn + fb_financial_plan + fb_emergency_savings + fl_literacy_all + sc_ff_finhelp, data = model_data, family = binomial(link = "logit"))
+
+predict_data_savings <- model_data %>% mutate(resp_gender_group_wmn = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = 1, fl_literacy_all = 1, fb_financial_plan = 1, sc_ff_finhelp = 1)
+predict_data_nosavings <- model_data %>% mutate(resp_gender_group_wmn = 0, resp_income_var_c = median(resp_income_var_c), resp_live_group_empl = 0, resp_edu_group2_pri = 0, resp_edu_group2_trt = 0, fb_emergency_savings = 0, fl_literacy_all = 1, fb_financial_plan = 1, sc_ff_finhelp = 1)
+
+predict_data <- predict_data_savings %>% select(-fb_emergency_savings) %>% 
+  mutate(phat_savings = predict(glm, newdata = predict_data_savings, type = "response")) %>% 
+  mutate(phat_nosavings = predict(glm, newdata = predict_data_nosavings, type = "response")) %>% 
+  pivot_longer(
+    cols = starts_with("phat_"), 
+    names_to = "savings", 
+    values_to = "phat"
+  ) %>% 
+  mutate(
+    savings = case_when(
+      savings == "phat_savings" ~ "Yes", 
+      savings == "phat_nosavings" ~ "No", 
+    )
+  )
+  
+ggplot(data = predict_data, 
+       aes(x = resp_income, 
+           y = phat, 
+           color = savings)) + 
+  geom_point(size = 0.15) + 
+  geom_line(size = 0.125) + 
+  #geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_hline(yintercept = c(0.14, 0.19), color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  geom_vline(xintercept = c(6e3), color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  annotate("text", x=6.1e3, y= 0.25, label = "Median income level (Ksh 6,000)", hjust = 0, vjust = 1, angle = 90, fontface = "plain", size = 3.5) +
+  labs(
+    x = "Personal monthly income", 
+    y = "Predicted probability of high financial health score", 
+    title = "Relationships between income, gender and probability of high financial health", 
+    subtitle = "",
+    caption = NULL
+  ) + 
+    scale_color_manual(values = c("Yes" = "#31AFD4", "No" = "#DD99BB")) +
+   guides(color = guide_legend(title = "Keeps money aside for emergencies:")) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 15e3), ylim = c(0, 0.5))
+
+```
+
 ```{r, fig.width = 12, fig.asp = 0.55}
-#| label: fig-reg_mfhiscore_findrivers2
+#| label: fig-pfh_inc_corr
 #| echo: false
 #| warning: false
-#| fig-cap: "Financial service predictors of financial health outcomes"
+#| fig-cap: "Correlation between perceptions of financial health and income"
 #| cap-location: margin
 
-fig_notes <- ""
-  
-# Defining regressions
-  depvars <- c("mfhi_f_secure", "mfhi_nf_secure", "mfhi_d_secure", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any", "mfhi_score_hi_c")
-  depvar_labels <- INDICATORS[depvars]
+ggplot(data = FA2024 %>% filter(resp_age_group2_fct == "[25-65)"), 
+       aes(x = resp_income, 
+           y = pfh_score_overall, 
+           color = resp_live_employment_str)) + 
+  geom_point(size = 0.15) + 
+  geom_rug(linewidth = 0.1, length = unit(0.01, "npc")) + 
+  geom_smooth(se = FALSE) + 
+  #geom_hline(yintercept = 0.6, color = "blue", linewidth = 0.3, linetype = "dashed") + 
+  #annotate("text", x=100, y= 0.65, label = "High-level of financial health\n cut-off (0.6)", hjust = 0, fontface = "bold") + 
+  #facet_wrap(~hh_urbrur, nrow = 1) + 
+  labs(
+    x = "Personal monthly income", 
+    y = "Perceptions of financial health score", 
+    title = "Relationship between income and perceptions of financial health", 
+    caption = str_wrap(paste(SOURCE), CAP_WRAP)
+  ) + 
+  guides(color = guide_legend(title = "Primary income source:")) + 
+  scale_color_manual(values = c("Employment" = "orange", "Other source" = "grey75")) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8), labels = scales::label_currency(prefix = "KSh ")) +
+  theme_custom() + 
+  coord_cartesian(xlim = c(0, 75e3))
 
-  maineffects <- c("fin_reg_mobilemoney", "fin_reg_mobilebanking", "fin_reg_bankmfb", "fin_reg_sacco", "fin_reg_chama")
-  confounds <- c("resp_income_c_5000", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt")
-  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
-
-# Running regressions
-ests <- bind_rows(
-    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
-    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
-  ) %>% 
-  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
-  mutate(indicator_category = ifelse(is.na(effect_label3), effect_label4, effect_label3)) %>% 
-  rename(effect_label = effect_label4)  %>% 
-  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
-  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": "))
-
-# Preparing figure data
-factor_params <- list(
-  wrap_sizes = list(depvar_label = 18, effect_label = 80, model_type = 25), 
-  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
-  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
-)
-
-fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE)) %>% mutate(effect_label = fct_rev(effect_label))
-
- labels <- list(
-      title = "Financial service predictors of financial health",
-      subtitle = NULL,
-      y = "Predicted probability (%)",
-      x = NULL,
-      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
-    )
- 
- barparams <- list(
-  bars = list(width = 0.6, color = "grey90"), 
-  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
-  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
-    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
-) 
-
- miny <- round(min(fig_data$fig_data), 2) 
-maxy <- round(max(fig_data$fig_data), 2) 
-buffer <- (maxy - miny)/100
-miny <- miny - buffer*2
-if (miny > 0) { miny <- 0 }
-maxy <- maxy + buffer*4
-
-scales <- list(
-  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
-  x = list(txtwrap = 50, position = "bottom")
-)
-
-facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = TRUE) 
-    
-fig_regests(fig_data %>% filter(model_type == "Model: Adjusted"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the\npredicted probability of satisfying the condition of each indicator", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 9.5, face = "bold"))
 
 ```
-
-
-
-```{r, fig.width = 12, fig.asp = 0.575}
-#| label: fig-reg_mfhiscore_findrivers3
-#| echo: false
-#| warning: false
-#| fig-cap: "Financial service predictors of financial health"
-#| cap-location: margin
-
-fig_notes <- ""
-  
-# Defining regressions
-  depvars <-  c("mfhi_f_secure", "mfhi_nf_secure", "mfhi_d_secure", "mfhi_ef_secure", "mfhi_i_pcfc_p12mos_any", "mfhi_i_hc_p12mos_any", "mfhi_score_hi_c")
-  
-  depvar_labels <- INDICATORS[depvars]
-
-  maineffects <- names(FA2024)[str_detect(names(FA2024), "fin_sav_agg4|fin_loan_agg4")]
-  confounds <- c("resp_income_c_5000", "resp_income_var", "resp_live_group_empl", "resp_edu_group2_pri", "resp_edu_group2_trt")
-  effect_labels <- c("(Intercept)" = "Baseline", INDICATORS[maineffects])
-
-# Running regressions
-ests <- bind_rows(
-    map(depvars, model_and_prepfig, maineffects, confounds = NULL, data = FA2024, depvar_labels, effect_labels), 
-    map(depvars, model_and_prepfig, maineffects, confounds = confounds, data = FA2024, depvar_labels, effect_labels)
-  ) %>% 
-  separate_wider_delim(effect_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
-  mutate(indicator_category = ifelse(is.na(effect_label2), effect_label4, effect_label2)) %>% 
-  rename(effect_label = effect_label3) %>% 
-  mutate(effect_label = ifelse(is.na(effect_label), effect_label4, effect_label)) %>% 
-  separate_wider_delim(depvar_label, delim = ": ", names_sep = "", too_few = "align_end") %>% 
-  mutate(depvar_label = paste(depvar_label3, depvar_label4, sep = ": "))
-
-# Preparing figure data
-factor_params <- list(
-  wrap_sizes = list(depvar_label = 15, effect_label = 80, model_type = 25), 
-  reverse_order = list(depvar_label = FALSE, effect_label = FALSE, model_type = FALSE), 
-  order_vars = list(depvar_label = NULL, effect_label = NULL, model_type = NULL)
-)
-
-fig_data <- prep_reg_data(prep_reg_factors(ests, factor_params, include_valuelabel = FALSE)) %>% mutate(effect_label = fct_rev(effect_label))
-
- labels <- list(
-      title = "Financial-access predictors of financial health",
-      subtitle = NULL,
-      y = "Predicted probability (%)",
-      x = NULL,
-      caption = str_wrap(paste(SOURCE, fig_notes), CAP_WRAP*1.2)
-    )
- 
- barparams <- list(
-  bars = list(width = 0.6, color = "grey90"), 
-  valuelabels = list(show = FALSE, lab_vjust = 0, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0.25, lab_face = "plain", lab_size = 3), 
-  arrowlabels = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0.5, lab_ndgy = 0, lab_ndgx = -0.25,  lab_face = "plain", lab_size = 3), 
-    baselinelabel = list(show = TRUE, lab_vjust = 0.5, lab_hjust = 0, lab_ndgy = 0, lab_ndgx = 0,  lab_face = "bold", lab_size = 3.5)
-) 
-
-miny <- 0
-maxy <- 1
-
-scales <- list(
-  y = list(limits = c(miny,maxy), position = "left", nbreaks = 3), 
-  x = list(txtwrap = 50, position = "bottom")
-)
-
-facets <- list(type = "grid",  rows = "indicator_category", cols = "depvar_label", scales = "free", space = "free", drop_row_label = FALSE) 
-    
-fig_regests(fig_data %>% filter(model_type == "Model: Adjusted"), labels, facets = facets, barparams, scales, effect_desc = "The effect of each predictor on the\npredicted probability of satisfying the condition of each indicator", coord_flip = TRUE) + theme(strip.text.x = element_text(size = 9.5, face = "bold"))
-
-```
-
-
-
